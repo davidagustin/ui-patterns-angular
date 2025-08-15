@@ -19,31 +19,34 @@ Visit the live application: [UI Patterns Angular](https://your-deployment-url.co
 
 ### Navigation & Layout
 - **Accordion Menu** - Expandable content sections with smooth animations
-- **Tabs** - Organize content into navigable sections
-- **Modal** - Overlay dialogs with backdrop and focus management
-- **Dropdown Menu** - Interactive dropdowns with advanced features
+- **Tabs** - Organize content into navigable sections with icons and disabled states
+- **Modal** - Overlay dialogs with backdrop, focus management, and form support
+- **Dropdown Menu** - Interactive dropdowns with separators, icons, and disabled items
 
 ### Data & Forms
-- **Cards** - Content cards with filtering and view modes
-- **Forms** - Comprehensive form patterns with validation
+- **Cards** - Content cards with filtering, grid/list views, and interactive actions
+- **Forms** - Comprehensive form patterns with validation and reactive forms
+- **Pagination** - Page navigation with customizable page ranges and item counts
 
-### Coming Soon
-- Data Tables, Pagination, Search, and 50+ more patterns
+### Component Library
+- **90+ Additional Patterns** identified for conversion from React source
+- **Shared Components** - CodeTabsComponent, PatternHeaderComponent for consistency
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Angular 19.1.0
-- **Language**: TypeScript 5.6
-- **Styling**: Tailwind CSS 3.4.0
+- **Framework**: Angular 15+
+- **Language**: TypeScript 4.9+
+- **Styling**: Pure SCSS with CSS Custom Properties
 - **Build**: Angular CLI with Webpack
 - **Testing**: Jasmine & Karma
+- **Forms**: Angular Reactive Forms
 
 ## 📦 Installation
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 16+ 
 - npm 8+
-- Angular CLI 19+
+- Angular CLI 15+
 
 ### Setup
 ```bash
@@ -169,10 +172,10 @@ export class PatternComponent {
 - **Copy-Paste Ready**: All code examples are production-ready
 
 ### 🎨 Design System
-- **Tailwind CSS**: Consistent utility-first styling
-- **Dark Mode**: Automatic dark/light theme switching
-- **Responsive**: Mobile-first responsive design
-- **Accessibility**: ARIA attributes and keyboard navigation
+- **Pure SCSS**: Custom SCSS with CSS variables and mixins (no Tailwind dependency)
+- **Dark Mode**: Automatic dark/light theme switching via CSS media queries
+- **Responsive**: Mobile-first responsive design with breakpoint mixins
+- **Accessibility**: ARIA attributes, keyboard navigation, and focus management
 
 ### 🔧 Developer Experience
 - **TypeScript**: Full type safety throughout
@@ -257,10 +260,10 @@ Current bundle sizes (production build):
 
 | Chunk     | Size     | Gzipped |
 |-----------|----------|---------|
-| main      | 375.9 kB | 86.4 kB |
+| main      | 349.4 kB | 81.3 kB |
 | polyfills | 33.1 kB  | 10.7 kB |
 | styles    | 1.6 kB   | 0.6 kB  |
-| **Total** | **411.4 kB** | **98.2 kB** |
+| **Total** | **384.9 kB** | **93.1 kB** |
 
 ## 🚀 Deployment
 
