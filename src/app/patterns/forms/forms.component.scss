@@ -1,0 +1,179 @@
+// Since we're using Tailwind CSS classes, minimal styles are needed
+// Any component-specific styles that can't be handled by Tailwind can go here
+
+/* Form animations */
+.form-field-enter {
+  animation: formFieldSlideIn 0.3s ease-out;
+}
+
+@keyframes formFieldSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Error shake animation */
+.form-error {
+  animation: errorShake 0.3s ease-in-out;
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Success fade in */
+.success-message {
+  animation: successFadeIn 0.5s ease-out;
+}
+
+@keyframes successFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Loading spinner animation */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Focus ring enhancement */
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Custom checkbox and radio styling */
+.custom-checkbox,
+.custom-radio {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid #d1d5db;
+  background-color: white;
+  transition: all 0.2s ease;
+  
+  &:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+  }
+  
+  &:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  }
+}
+
+.custom-checkbox {
+  border-radius: 0.25rem;
+  
+  &:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='m13.854 3.646-7.5 7.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6 10.293l7.146-7.147a.5.5 0 0 1 .708.708z'/%3e%3c/svg%3e");
+  }
+}
+
+.custom-radio {
+  border-radius: 50%;
+  
+  &:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+  }
+}
+
+/* File input styling */
+.file-input {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  
+  input[type="file"] {
+    position: absolute;
+    left: -9999px;
+  }
+  
+  .file-label {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: #f3f4f6;
+    }
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .form-input,
+  .form-select,
+  .form-textarea {
+    border-width: 2px;
+  }
+  
+  .form-error {
+    font-weight: bold;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .form-field-enter,
+  .form-error,
+  .success-message,
+  .spinner {
+    animation: none;
+  }
+  
+  * {
+    transition: none !important;
+  }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .custom-checkbox,
+  .custom-radio {
+    border-color: #4b5563;
+    background-color: #374151;
+    
+    &:checked {
+      background-color: #3b82f6;
+      border-color: #3b82f6;
+    }
+  }
+  
+  .file-label:hover {
+    background-color: #374151;
+  }
+}
+
+/* Print styles */
+@media print {
+  .form-field {
+    break-inside: avoid;
+  }
+  
+  .form-button {
+    display: none;
+  }
+}

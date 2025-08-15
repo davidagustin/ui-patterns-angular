@@ -1,0 +1,46 @@
+<app-pattern-header 
+  title="Pagination Pattern" 
+  icon="=�"
+  description="Break large datasets into manageable pages with intuitive navigation controls.">
+</app-pattern-header>
+
+<div class="pattern-demo">
+  <div class="pagination-container">
+    <div class="pagination-info">
+      <span>Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
+      {{ currentPage * itemsPerPage > totalItems ? totalItems : currentPage * itemsPerPage }} of {{ totalItems }} entries</span>
+    </div>
+
+    <nav class="pagination-nav" aria-label="Pagination">
+      <button 
+        (click)="previousPage()"
+        [disabled]="currentPage === 1"
+        class="pagination-button prev">
+        � Previous
+      </button>
+
+      <div class="pagination-pages">
+        <button 
+          *ngFor="let page of getVisiblePages()"
+          (click)="goToPage(page)"
+          [class.active]="page === currentPage"
+          class="pagination-button page">
+          {{ page }}
+        </button>
+      </div>
+
+      <button 
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages"
+        class="pagination-button next">
+        Next �
+      </button>
+    </nav>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

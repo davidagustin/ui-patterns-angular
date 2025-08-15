@@ -1,0 +1,28 @@
+// Since we're using Tailwind CSS classes, minimal styles are needed
+// Any component-specific styles that can't be handled by Tailwind can go here
+
+// Focus styles for better accessibility
+table:focus-within {
+  outline: 2px solid theme('colors.blue.500');
+  outline-offset: 2px;
+}
+
+// Ensure proper checkbox styling
+input[type="checkbox"] {
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+  }
+}
+
+// Better mobile table experience
+@media (max-width: 640px) {
+  .table-container {
+    font-size: 0.8125rem;
+  }
+  
+  table th,
+  table td {
+    padding: 0.5rem 0.25rem;
+  }
+}

@@ -1,0 +1,142 @@
+<div class="autocomplete-pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title gradient-text">🔍 Autocomplete Pattern</h1>
+    <p class="pattern-description">
+      Provide real-time suggestions as users type, helping them find options quickly and reducing input errors.
+    </p>
+  </div>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Example</h2>
+        <p class="example-description">
+          Start typing a country name to see autocomplete suggestions. Use arrow keys to navigate and Enter to select.
+        </p>
+        
+        <div class="autocomplete-container">
+          <label for="autocomplete-input" class="sr-only">Search countries</label>
+          <input
+            #inputRef
+            id="autocomplete-input"
+            type="text"
+            [(ngModel)]="query"
+            (input)="onInputChange($any($event.target).value)"
+            (keydown)="onKeyDown($event)"
+            (focus)="onInputFocus()"
+            (blur)="onInputBlur()"
+            placeholder="Type to search..."
+            class="autocomplete-input"
+            autocomplete="off"
+            [attr.aria-expanded]="isOpen"
+            aria-haspopup="listbox"
+            aria-controls="suggestions-listbox"
+            [attr.aria-activedescendant]="selectedIndex >= 0 ? 'suggestion-' + selectedIndex : null"
+            role="combobox"
+            aria-autocomplete="list"
+          />
+          
+          <div *ngIf="isOpen && suggestions.length > 0" 
+               id="suggestions-listbox"
+               class="suggestions-dropdown"
+               role="listbox"
+               aria-label="Country suggestions">
+            <button
+              *ngFor="let suggestion of suggestions; let i = index"
+              [id]="'suggestion-' + i"
+              (click)="onSuggestionClick(suggestion)"
+              [class]="'suggestion-item ' + (i === selectedIndex ? 'selected' : '')"
+              role="option"
+              [attr.aria-selected]="i === selectedIndex">
+              {{ suggestion }}
+            </button>
+          </div>
+        </div>
+
+        <div class="keyboard-shortcuts">
+          <h4 class="shortcuts-title">Keyboard Shortcuts</h4>
+          <div class="shortcuts-list">
+            <div class="shortcut-item">
+              • <kbd class="keyboard-key">↑↓</kbd> Navigate suggestions
+            </div>
+            <div class="shortcut-item">
+              • <kbd class="keyboard-key">Enter</kbd> Select highlighted suggestion
+            </div>
+            <div class="shortcut-item">
+              • <kbd class="keyboard-key">Escape</kbd> Close suggestions
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Real-time Filtering</h4>
+          <p class="feature-description">Instant suggestions as user types</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Keyboard Navigation</h4>
+          <p class="feature-description">Arrow keys, Enter, and Escape support</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Visual Feedback</h4>
+          <p class="feature-description">Highlighted selection and hover states</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Accessibility</h4>
+          <p class="feature-description">Screen reader support and ARIA labels</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">🌍</div>
+        <h4 class="use-case-name">Country Selection</h4>
+        <p class="use-case-description">Quick country lookup in forms and settings</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🔍</div>
+        <h4 class="use-case-name">Search Suggestions</h4>
+        <p class="use-case-description">Product search with instant results</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">👤</div>
+        <h4 class="use-case-name">User Selection</h4>
+        <p class="use-case-description">Tagging users in comments or mentions</p>
+      </div>
+    </div>
+  </div>
+</div>

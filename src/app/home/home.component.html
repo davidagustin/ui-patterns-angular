@@ -1,0 +1,28 @@
+<div class="home-container">
+  <div class="intro-section">
+    <h2 class="intro-title gradient-text">Choose a UI Pattern to Learn</h2>
+    <p class="intro-description">
+      Explore interactive examples of common UI design patterns. Each pattern includes working demos and clean, readable code examples.
+    </p>
+  </div>
+  
+  <div class="patterns-section" *ngFor="let category of uiPatterns">
+    <div class="pattern-card">
+      <h3 class="category-title">
+        <span class="category-icon">📁</span>
+        {{ category.category }}
+      </h3>
+      <div class="patterns-grid">
+        <a
+          *ngFor="let pattern of category.patterns"
+          [routerLink]="pattern.path"
+          class="pattern-item"
+        >
+          <h4 class="pattern-name">{{ pattern.name }}</h4>
+          <p class="pattern-description">{{ pattern.description }}</p>
+          <div class="pattern-link">Learn more →</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

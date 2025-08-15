@@ -1,0 +1,144 @@
+<div class="accordion-pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title gradient-text">🎢 Accordion Menu Pattern</h1>
+    <p class="pattern-description">
+      Organize content in expandable sections that can be opened and closed independently, perfect for FAQs, documentation, and navigation.
+    </p>
+  </div>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Example</h2>
+        <p class="example-description">
+          Click on section headers to expand or collapse content. Multiple sections can be open simultaneously.
+        </p>
+        
+        <div class="accordion-menu">
+          <div *ngFor="let section of accordionSections; let last = last" 
+               class="accordion-section"
+               [class.last]="last">
+            
+            <!-- Accordion Header -->
+            <button 
+              (click)="toggleAccordion(section.id)"
+              class="accordion-header"
+              [class.active]="isAccordionOpen(section.id)">
+              
+              <div class="header-content">
+                <span class="section-icon">{{ section.icon }}</span>
+                <div class="section-info">
+                  <h3 class="section-title">{{ section.title }}</h3>
+                  <p class="section-count">{{ section.items.length }} items</p>
+                </div>
+              </div>
+              
+              <div class="chevron" [class.open]="isAccordionOpen(section.id)">
+                <svg class="chevron-icon" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </button>
+
+            <!-- Accordion Content -->
+            <div class="accordion-content" [class.open]="isAccordionOpen(section.id)">
+              <div class="content-inner">
+                <div class="items-container">
+                  <div *ngFor="let item of section.items" class="accordion-item">
+                    <div class="item-indicator"></div>
+                    <div class="item-content">
+                      <h4 class="item-title">{{ item.title }}</h4>
+                      <p class="item-description">{{ item.description }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Control Buttons -->
+          <div class="accordion-controls">
+            <button (click)="expandAll()" class="control-btn expand">
+              Expand All
+            </button>
+            <button (click)="collapseAll()" class="control-btn collapse">
+              Collapse All
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Independent Sections</h4>
+          <p class="feature-description">Each section can be expanded/collapsed independently</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Smooth Animations</h4>
+          <p class="feature-description">Smooth expand/collapse transitions</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Control Options</h4>
+          <p class="feature-description">Expand all/collapse all functionality</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Rich Content</h4>
+          <p class="feature-description">Support for icons, descriptions, and nested items</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">❓</div>
+        <h4 class="use-case-name">FAQ Sections</h4>
+        <p class="use-case-description">Organize frequently asked questions</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📚</div>
+        <h4 class="use-case-name">Documentation</h4>
+        <p class="use-case-description">Structure documentation content</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📝</div>
+        <h4 class="use-case-name">Form Sections</h4>
+        <p class="use-case-description">Group related form fields</p>
+      </div>
+    </div>
+  </div>
+</div>

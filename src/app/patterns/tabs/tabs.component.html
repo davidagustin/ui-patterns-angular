@@ -1,0 +1,41 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">📑</span>
+    Tabs Pattern
+  </h1>
+  <p class="pattern-description">
+    Organize content into multiple sections that users can navigate between without leaving the page context.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="tabs-container">
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+      <button 
+        *ngFor="let tab of tabs"
+        (click)="setActiveTab(tab.id)"
+        [class.active]="activeTab === tab.id"
+        [class.disabled]="tab.disabled"
+        class="tab-button"
+        [disabled]="tab.disabled">
+        <span class="tab-icon" *ngIf="tab.icon">{{ tab.icon }}</span>
+        <span class="tab-title">{{ tab.title }}</span>
+      </button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <div class="tab-panel" *ngFor="let tab of tabs" [hidden]="activeTab !== tab.id">
+        <h3 class="panel-title">{{ tab.title }}</h3>
+        <p class="panel-content">{{ tab.content }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

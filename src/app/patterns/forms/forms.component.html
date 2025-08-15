@@ -1,0 +1,304 @@
+<div class="space-y-8">
+  <div class="text-center">
+    <h1 class="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+      📝 Forms Pattern
+    </h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+      Create accessible, validated forms with modern styling, real-time feedback, and comprehensive input types.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Interactive Example -->
+    <div class="space-y-6">
+      <div class="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-800">
+        <h2 class="text-xl font-semibold mb-4 text-blue-800 dark:text-blue-200">
+          🎯 Interactive Example
+        </h2>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+          Try different form layouts, validation modes, and input types. See real-time validation in action.
+        </p>
+        
+        <!-- Form Configuration -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Layout
+            </label>
+            <select (change)="updateConfig('layout', $any($event.target).value)" 
+                    [value]="config.layout"
+                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+              <option value="vertical">Vertical</option>
+              <option value="horizontal">Horizontal</option>
+              <option value="inline">Inline</option>
+            </select>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Validation
+            </label>
+            <select (change)="updateConfig('validation', $any($event.target).value)" 
+                    [value]="config.validation"
+                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+              <option value="realtime">Real-time</option>
+              <option value="onblur">On Blur</option>
+              <option value="onsubmit">On Submit</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Basic Form Example -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <h3 class="font-medium text-gray-900 dark:text-gray-100 mb-4">Basic Form</h3>
+          
+          <form (ngSubmit)="onSubmit(basicFields)" [class]="getLayoutClasses()">
+            <div *ngFor="let field of basicFields" class="form-field">
+              <label [for]="field.id" [class]="getLabelClasses(field)">
+                {{ field.label }}
+                <span *ngIf="field.required" class="text-red-500 ml-1">*</span>
+                <span *ngIf="!field.required && config.showOptional" class="text-gray-400 ml-1 text-xs">(optional)</span>
+              </label>
+              
+              <!-- Text/Email/Tel/Password/Number Input -->
+              <input 
+                *ngIf="field.type === 'text' || field.type === 'email' || field.type === 'tel' || field.type === 'password' || field.type === 'number'"
+                [type]="field.type"
+                [id]="field.id"
+                [placeholder]="field.placeholder"
+                [disabled]="field.disabled"
+                [required]="field.required"
+                [min]="field.min"
+                [max]="field.max"
+                [class]="getFieldClasses(field)"
+                [value]="formData[field.id] || ''"
+                (input)="onFieldChange(field.id, $any($event.target).value)"
+                (blur)="onFieldBlur(field.id)">
+              
+              <!-- Description Text -->
+              <p *ngIf="field.description" 
+                 class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                {{ field.description }}
+              </p>
+              
+              <!-- Error Message -->
+              <p *ngIf="formErrors[field.id]" 
+                 class="text-red-500 dark:text-red-400 text-sm mt-1">
+                {{ formErrors[field.id] }}
+              </p>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="flex items-center justify-end space-x-3 mt-6">
+              <button 
+                type="button" 
+                (click)="resetForm()"
+                class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                Reset
+              </button>
+              
+              <button 
+                type="submit" 
+                [disabled]="isSubmitting"
+                class="px-6 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 text-white rounded-lg transition-colors flex items-center space-x-2">
+                <span *ngIf="isSubmitting" class="animate-spin text-sm">⏳</span>
+                <span>{{ isSubmitting ? 'Submitting...' : 'Submit' }}</span>
+              </button>
+            </div>
+            
+            <!-- Success Message -->
+            <div *ngIf="submitSuccess" 
+                 class="mt-4 p-3 bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700 rounded-lg text-green-800 dark:text-green-200 text-sm">
+              ✅ Form submitted successfully!
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Advanced Form Example -->
+      <div class="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-xl p-6 border border-green-200 dark:border-green-800">
+        <h3 class="text-lg font-semibold mb-4 text-green-800 dark:text-green-200">
+          ⚡ Advanced Form
+        </h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+          Complex form with various input types, validation patterns, and interactive elements.
+        </p>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <form (ngSubmit)="onSubmit(advancedFields)" class="space-y-6">
+            <div *ngFor="let field of advancedFields.slice(0, 6)" class="form-field">
+              <label [for]="field.id" [class]="getLabelClasses(field)">
+                {{ field.label }}
+                <span *ngIf="field.required" class="text-red-500 ml-1">*</span>
+              </label>
+              
+              <!-- Text/Email/Password/Number Input -->
+              <input 
+                *ngIf="field.type === 'text' || field.type === 'email' || field.type === 'password' || field.type === 'number'"
+                [type]="field.type"
+                [id]="field.id"
+                [placeholder]="field.placeholder"
+                [disabled]="field.disabled"
+                [required]="field.required"
+                [min]="field.min"
+                [max]="field.max"
+                [class]="getFieldClasses(field)"
+                [value]="formData[field.id] || ''"
+                (input)="onFieldChange(field.id, $any($event.target).value)"
+                (blur)="onFieldBlur(field.id)">
+              
+              <!-- Select Dropdown -->
+              <select 
+                *ngIf="field.type === 'select'"
+                [id]="field.id"
+                [disabled]="field.disabled"
+                [required]="field.required"
+                [class]="getFieldClasses(field)"
+                [value]="formData[field.id] || ''"
+                (change)="onFieldChange(field.id, $any($event.target).value)"
+                (blur)="onFieldBlur(field.id)">
+                <option *ngFor="let option of field.options" [value]="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+              
+              <!-- Textarea -->
+              <textarea 
+                *ngIf="field.type === 'textarea'"
+                [id]="field.id"
+                [placeholder]="field.placeholder"
+                [disabled]="field.disabled"
+                [required]="field.required"
+                [class]="getFieldClasses(field) + ' resize-none'"
+                [value]="formData[field.id] || ''"
+                (input)="onFieldChange(field.id, $any($event.target).value)"
+                (blur)="onFieldBlur(field.id)"
+                rows="3">
+              </textarea>
+              
+              <!-- Date Input -->
+              <input 
+                *ngIf="field.type === 'date'"
+                type="date"
+                [id]="field.id"
+                [disabled]="field.disabled"
+                [required]="field.required"
+                [class]="getFieldClasses(field)"
+                [value]="formData[field.id] || ''"
+                (input)="onFieldChange(field.id, $any($event.target).value)"
+                (blur)="onFieldBlur(field.id)">
+              
+              <!-- Description Text -->
+              <p *ngIf="field.description" 
+                 class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                {{ field.description }}
+              </p>
+              
+              <!-- Error Message -->
+              <p *ngIf="formErrors[field.id]" 
+                 class="text-red-500 dark:text-red-400 text-sm mt-1">
+                {{ formErrors[field.id] }}
+              </p>
+            </div>
+            
+            <!-- Submit Button -->
+            <div class="flex items-center justify-end space-x-3">
+              <button 
+                type="button" 
+                (click)="resetForm()"
+                class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                Reset
+              </button>
+              
+              <button 
+                type="submit" 
+                [disabled]="isSubmitting"
+                class="px-6 py-2 bg-green-500 hover:bg-green-600 disabled:bg-green-300 text-white rounded-lg transition-colors flex items-center space-x-2">
+                <span *ngIf="isSubmitting" class="animate-spin text-sm">⏳</span>
+                <span>{{ isSubmitting ? 'Creating Account...' : 'Create Account' }}</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="space-y-6">
+      <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+        <app-code-tabs 
+          [htmlCode]="htmlCode" 
+          [scssCode]="cssCode" 
+          [typescriptCode]="typescriptCode"
+          title="Code Example">
+        </app-code-tabs>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-xl p-6 border border-green-200 dark:border-green-800">
+    <h3 class="text-lg font-semibold mb-4 text-green-800 dark:text-green-200">
+      ✨ Key Features
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex items-start space-x-3">
+        <span class="text-green-600 dark:text-green-400 text-lg">✓</span>
+        <div>
+          <h4 class="font-medium text-gray-800 dark:text-gray-200">Real-time Validation</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Instant feedback as users type or interact</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-3">
+        <span class="text-green-600 dark:text-green-400 text-lg">✓</span>
+        <div>
+          <h4 class="font-medium text-gray-800 dark:text-gray-200">Multiple Layouts</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Vertical, horizontal, and inline form layouts</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-3">
+        <span class="text-green-600 dark:text-green-400 text-lg">✓</span>
+        <div>
+          <h4 class="font-medium text-gray-800 dark:text-gray-200">Input Types</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Text, email, password, select, textarea, and more</p>
+        </div>
+      </div>
+      <div class="flex items-start space-x-3">
+        <span class="text-green-600 dark:text-green-400 text-lg">✓</span>
+        <div>
+          <h4 class="font-medium text-gray-800 dark:text-gray-200">Accessibility</h4>
+          <p class="text-sm text-gray-600 dark:text-gray-400">Screen reader support and keyboard navigation</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl p-6 border border-purple-200 dark:border-purple-800">
+    <h3 class="text-lg font-semibold mb-4 text-purple-800 dark:text-purple-200">
+      🎯 Common Use Cases
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+        <div class="text-2xl mb-2">📝</div>
+        <h4 class="font-medium text-gray-800 dark:text-gray-200">Contact Forms</h4>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Customer inquiries and support</p>
+      </div>
+      <div class="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+        <div class="text-2xl mb-2">👤</div>
+        <h4 class="font-medium text-gray-800 dark:text-gray-200">Registration</h4>
+        <p class="text-sm text-gray-600 dark:text-gray-400">User account creation and signup</p>
+      </div>
+      <div class="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+        <div class="text-2xl mb-2">⚙️</div>
+        <h4 class="font-medium text-gray-800 dark:text-gray-200">Settings</h4>
+        <p class="text-sm text-gray-600 dark:text-gray-400">User preferences and configuration</p>
+      </div>
+      <div class="text-center p-4 bg-white dark:bg-gray-800 rounded-lg">
+        <div class="text-2xl mb-2">🛒</div>
+        <h4 class="font-medium text-gray-800 dark:text-gray-200">Checkout</h4>
+        <p class="text-sm text-gray-600 dark:text-gray-400">E-commerce payment and shipping</p>
+      </div>
+    </div>
+  </div>
+</div>

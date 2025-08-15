@@ -1,0 +1,132 @@
+<div class="autosave-pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title gradient-text">💾 Autosave Pattern</h1>
+    <p class="pattern-description">
+      Automatically save user progress to prevent data loss and provide peace of mind during content creation.
+    </p>
+  </div>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Example</h2>
+        <p class="example-description">
+          Start typing in the text area below. The content will automatically save after you stop typing for 1 second.
+        </p>
+        
+        <div class="autosave-demo">
+          <div class="editor-header">
+            <h3 class="editor-title">Document Editor</h3>
+            <div [class]="'status-indicator ' + getStatusClass()" 
+                 [attr.aria-live]="saveStatus === 'saving' ? 'polite' : null">
+              <span *ngIf="isSaving" class="status-icon saving">⏳</span>
+              <span *ngIf="saveStatus === 'saved'" class="status-icon success">✅</span>
+              <span *ngIf="saveStatus === 'error'" class="status-icon error">❌</span>
+              {{ getStatusText() }}
+            </div>
+          </div>
+          
+          <textarea
+            [(ngModel)]="content"
+            (input)="onContentChange($any($event.target).value)"
+            placeholder="Start typing your content here... The autosave feature will automatically save your work as you type."
+            rows="8"
+            class="autosave-textarea"
+            aria-label="Document content editor with autosave">
+          </textarea>
+          
+          <div class="editor-footer">
+            <span class="character-count">{{ content.length }} characters</span>
+            <span class="save-info">Auto-saves every 1 second after you stop typing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Debounced Saving</h4>
+          <p class="feature-description">Saves after user stops typing to avoid excessive API calls</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Visual Feedback</h4>
+          <p class="feature-description">Clear indicators showing save status and last saved time</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Error Handling</h4>
+          <p class="feature-description">Graceful handling of save failures with user notification</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Data Recovery</h4>
+          <p class="feature-description">Automatic recovery of unsaved changes on page reload</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Best Practices -->
+  <div class="best-practices-section">
+    <h3 class="best-practices-title">💡 Best Practices</h3>
+    <div class="practices-grid">
+      <div class="practices-column">
+        <div class="practice-item">
+          <span class="practice-number">1.</span>
+          <div class="practice-content">
+            <h4 class="practice-name">Use Debouncing</h4>
+            <p class="practice-description">Wait for user to stop typing before saving</p>
+          </div>
+        </div>
+        <div class="practice-item">
+          <span class="practice-number">2.</span>
+          <div class="practice-content">
+            <h4 class="practice-name">Show Save Status</h4>
+            <p class="practice-description">Provide clear visual feedback about save state</p>
+          </div>
+        </div>
+      </div>
+      <div class="practices-column">
+        <div class="practice-item">
+          <span class="practice-number">3.</span>
+          <div class="practice-content">
+            <h4 class="practice-name">Handle Errors Gracefully</h4>
+            <p class="practice-description">Retry failed saves and notify users appropriately</p>
+          </div>
+        </div>
+        <div class="practice-item">
+          <span class="practice-number">4.</span>
+          <div class="practice-content">
+            <h4 class="practice-name">Optimize Performance</h4>
+            <p class="practice-description">Use efficient save intervals and batch updates</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

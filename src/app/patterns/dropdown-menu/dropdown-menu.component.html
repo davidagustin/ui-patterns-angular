@@ -1,0 +1,40 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">📋</span>
+    Dropdown Menu Pattern
+  </h1>
+  <p class="pattern-description">
+    Dropdown menus provide users with a list of options that can be selected from a compact interface.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="dropdown-container" (clickOutside)="closeDropdown()">
+    <button 
+      (click)="toggleDropdown()"
+      class="dropdown-trigger"
+      [class.active]="isOpen">
+      <span>{{ selectedValue }}</span>
+      <span class="dropdown-icon" [class.rotate]="isOpen">▼</span>
+    </button>
+
+    <div class="dropdown-menu" [class.open]="isOpen">
+      <div 
+        *ngFor="let item of dropdownItems"
+        [class.separator]="item.separator"
+        [class.disabled]="item.disabled"
+        class="dropdown-item"
+        (click)="selectItem(item)">
+        
+        <span *ngIf="item.icon" class="item-icon">{{ item.icon }}</span>
+        <span *ngIf="!item.separator" class="item-label">{{ item.label }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>
