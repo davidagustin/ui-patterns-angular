@@ -1,0 +1,207 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">='</span>
+    Filter & Sort Pattern
+  </h1>
+  <p class="pattern-description">
+    Advanced filtering and sorting interface for managing large datasets with multiple criteria and real-time search.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="filter-sort-container">
+    <!-- Search and Controls -->
+    <div class="search-controls">
+      <div class="search-bar">
+        <input 
+          type="text"
+          [(ngModel)]="searchQuery"
+          (input)="onSearchChange()"
+          placeholder="Search products..."
+          class="search-input">
+        <span class="search-icon">=</span>
+      </div>
+      
+      <button 
+        (click)="toggleFilters()"
+        class="filter-toggle"
+        [class.active]="showFilters">
+        =' Filters
+        <span *ngIf="activeFiltersCount > 0" class="filter-badge">
+          {{ activeFiltersCount }}
+        </span>
+      </button>
+      
+      <select 
+        [(ngModel)]="currentSort"
+        (change)="onSortChange()"
+        class="sort-select">
+        <option *ngFor="let option of sortOptions" [ngValue]="option">
+          {{ option.label }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Filter Panel -->
+    <div class="filter-panel" *ngIf="showFilters">
+      <div class="filter-header">
+        <h3>Filters</h3>
+        <button (click)="clearFilters()" class="clear-filters">
+          Clear All
+        </button>
+      </div>
+      
+      <div class="filter-groups">
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <label>Category</label>
+          <select 
+            [(ngModel)]="filters.category"
+            (change)="onCategoryChange()"
+            class="filter-select">
+            <option value="">All Categories</option>
+            <option *ngFor="let category of categories" [value]="category">
+              {{ category }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Brand Filter -->
+        <div class="filter-group">
+          <label>Brand</label>
+          <select 
+            [(ngModel)]="filters.brand"
+            (change)="onBrandChange()"
+            class="filter-select">
+            <option value="">All Brands</option>
+            <option *ngFor="let brand of brands" [value]="brand">
+              {{ brand }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Price Range -->
+        <div class="filter-group">
+          <label>Price Range</label>
+          <div class="price-inputs">
+            <input 
+              type="number"
+              [(ngModel)]="filters.priceRange.min"
+              (input)="onPriceRangeChange()"
+              placeholder="Min"
+              class="price-input">
+            <span>-</span>
+            <input 
+              type="number"
+              [(ngModel)]="filters.priceRange.max"
+              (input)="onPriceRangeChange()"
+              placeholder="Max"
+              class="price-input">
+          </div>
+        </div>
+
+        <!-- Rating Filter -->
+        <div class="filter-group">
+          <label>Minimum Rating</label>
+          <select 
+            [(ngModel)]="filters.minRating"
+            (change)="onRatingChange()"
+            class="filter-select">
+            <option [value]="0">Any Rating</option>
+            <option [value]="4">4+ Stars</option>
+            <option [value]="3">3+ Stars</option>
+            <option [value]="2">2+ Stars</option>
+            <option [value]="1">1+ Stars</option>
+          </select>
+        </div>
+
+        <!-- Stock Filter -->
+        <div class="filter-group">
+          <label>Availability</label>
+          <select 
+            [(ngModel)]="filters.inStock"
+            (change)="onStockFilterChange()"
+            class="filter-select">
+            <option [ngValue]="null">All Products</option>
+            <option [ngValue]="true">In Stock</option>
+            <option [ngValue]="false">Out of Stock</option>
+          </select>
+        </div>
+
+        <!-- Tags Filter -->
+        <div class="filter-group">
+          <label>Tags</label>
+          <div class="tag-filters">
+            <button 
+              *ngFor="let tag of allTags"
+              (click)="onTagToggle(tag)"
+              class="tag-filter"
+              [class.active]="filters.tags.includes(tag)">
+              {{ tag }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results-section">
+      <div class="results-header">
+        <h2>Products ({{ filteredProducts.length }})</h2>
+        <div class="view-options">
+          <button class="view-btn active">ž Grid</button>
+          <button class="view-btn">0 List</button>
+        </div>
+      </div>
+
+      <div class="products-grid">
+        <div 
+          *ngFor="let product of filteredProducts" 
+          class="product-card"
+          [class.out-of-stock]="!product.inStock">
+          
+          <div class="product-header">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <div class="product-brand">{{ product.brand }}</div>
+          </div>
+          
+          <div class="product-details">
+            <div class="product-category">{{ product.category }}</div>
+            <div class="product-price">{{ formatPrice(product.price) }}</div>
+            <div class="product-rating">
+              <span class="stars">{{ getRatingStars(product.rating) }}</span>
+              <span class="rating-value">({{ product.rating }})</span>
+            </div>
+            
+            <div class="product-status">
+              <span 
+                class="stock-status"
+                [class.in-stock]="product.inStock"
+                [class.out-of-stock]="!product.inStock">
+                {{ product.inStock ? ' In Stock' : 'L Out of Stock' }}
+              </span>
+            </div>
+            
+            <div class="product-tags">
+              <span *ngFor="let tag of product.tags" class="tag">
+                {{ tag }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="filteredProducts.length === 0" class="no-results">
+        <div class="no-results-icon">=</div>
+        <h3>No products found</h3>
+        <p>Try adjusting your filters or search terms</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

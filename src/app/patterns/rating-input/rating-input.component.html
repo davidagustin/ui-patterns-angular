@@ -1,0 +1,230 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">P</span>
+    Rating Input Pattern
+  </h1>
+  <p class="pattern-description">
+    Interactive rating components including stars, hearts, emojis, and thumbs with advanced configuration options.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="rating-input-container">
+    <!-- Example Navigation -->
+    <div class="example-navigation">
+      <button 
+        (click)="setExample('basic')"
+        class="nav-button"
+        [class.active]="currentExample === 'basic'">
+        P Basic Ratings
+      </button>
+      <button 
+        (click)="setExample('advanced')"
+        class="nav-button"
+        [class.active]="currentExample === 'advanced'">
+        =' Advanced Config
+      </button>
+      <button 
+        (click)="setExample('reviews')"
+        class="nav-button"
+        [class.active]="currentExample === 'reviews'">
+        =Ý Review System
+      </button>
+    </div>
+
+    <!-- Basic Rating Examples -->
+    <div *ngIf="currentExample === 'basic'" class="basic-examples">
+      <!-- Star Rating -->
+      <div class="rating-section">
+        <h3>Star Rating</h3>
+        <div class="star-rating">
+          <span 
+            *ngFor="let star of [1,2,3,4,5]; let i = index"
+            class="star"
+            [class]="getStarClass(star, basicRating, hoveredStar)"
+            (click)="setStarRating(star)"
+            (mouseenter)="onStarHover(star)"
+            (mouseleave)="onStarLeave()">
+            
+          </span>
+        </div>
+        <p>Rating: {{ basicRating }}/5</p>
+      </div>
+
+      <!-- Heart Rating -->
+      <div class="rating-section">
+        <h3>Heart Rating</h3>
+        <div class="heart-rating">
+          <span 
+            *ngFor="let heart of [1,2,3,4,5]; let i = index"
+            class="heart"
+            [class]="getHeartClass(heart)"
+            (click)="setHeartRating(heart)"
+            (mouseenter)="onHeartHover(heart)"
+            (mouseleave)="onHeartLeave()">
+            e
+          </span>
+        </div>
+        <p>Rating: {{ heartRating }}/5</p>
+      </div>
+
+      <!-- Emoji Rating -->
+      <div class="rating-section">
+        <h3>Emoji Rating</h3>
+        <div class="emoji-rating">
+          <span 
+            *ngFor="let emoji of emojiLabels; let i = index"
+            class="emoji"
+            [class]="getEmojiClass(i + 1)"
+            (click)="setEmojiRating(i + 1)"
+            (mouseenter)="onEmojiHover(i + 1)"
+            (mouseleave)="onEmojiLeave()">
+            {{ emoji }}
+          </span>
+        </div>
+        <p>Rating: {{ emojiRating }}/5 - {{ ratingLabels[emojiRating - 1] || 'Not rated' }}</p>
+      </div>
+
+      <!-- Thumbs Rating -->
+      <div class="rating-section">
+        <h3>Thumbs Rating</h3>
+        <div class="thumbs-rating">
+          <button 
+            class="thumb-button"
+            [class.active]="thumbsRating === 1"
+            (click)="setThumbsRating(1)">
+            =M Like
+          </button>
+          <button 
+            class="thumb-button"
+            [class.active]="thumbsRating === -1"
+            (click)="setThumbsRating(-1)">
+            =N Dislike
+          </button>
+        </div>
+        <p>Status: {{ thumbsRating === 1 ? 'Liked' : thumbsRating === -1 ? 'Disliked' : 'No rating' }}</p>
+      </div>
+    </div>
+
+    <!-- Advanced Configuration -->
+    <div *ngIf="currentExample === 'advanced'" class="advanced-examples">
+      <div *ngFor="let config of advancedConfigs; let i = index" class="config-card">
+        <h3>Configuration {{ i + 1 }}</h3>
+        
+        <!-- Configuration Controls -->
+        <div class="config-controls">
+          <div class="control-group">
+            <label>Max Rating:</label>
+            <input 
+              type="number" 
+              [ngModel]="config.maxRating"
+              (ngModelChange)="updateConfig(i, 'maxRating', $event)"
+              min="1" max="10">
+          </div>
+          
+          <div class="control-group">
+            <label>Size:</label>
+            <select 
+              [ngModel]="config.size"
+              (ngModelChange)="updateConfig(i, 'size', $event)">
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+          
+          <div class="control-group checkbox">
+            <label>
+              <input 
+                type="checkbox"
+                [ngModel]="config.readonly"
+                (ngModelChange)="updateConfig(i, 'readonly', $event)">
+              Read Only
+            </label>
+          </div>
+          
+          <div class="control-group checkbox">
+            <label>
+              <input 
+                type="checkbox"
+                [ngModel]="config.allowHalf"
+                (ngModelChange)="updateConfig(i, 'allowHalf', $event)">
+              Allow Half Stars
+            </label>
+          </div>
+        </div>
+
+        <!-- Rating Display -->
+        <div class="rating-display" [class]="config.size">
+          <div class="star-rating advanced">
+            <span 
+              *ngFor="let star of getStarArray(config.maxRating); let j = index"
+              class="star"
+              [class]="getStarClass(j + 1, config.value)"
+              (click)="!config.readonly && updateConfig(i, 'value', j + 1)">
+              
+            </span>
+          </div>
+          <span class="rating-value">{{ config.value }}/{{ config.maxRating }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Review System -->
+    <div *ngIf="currentExample === 'reviews'" class="reviews-examples">
+      <div class="reviews-summary">
+        <h3>Customer Reviews</h3>
+        <div class="summary-stats">
+          <div class="average-rating">
+            <span class="rating-number">{{ averageRating.toFixed(1) }}</span>
+            <div class="rating-stars">{{ getRatingStars(averageRating) }}</div>
+            <span class="review-count">Based on {{ reviews.length }} reviews</span>
+          </div>
+          
+          <div class="rating-breakdown">
+            <div *ngFor="let rating of [5,4,3,2,1]" class="breakdown-row">
+              <span class="rating-label">{{ rating }} </span>
+              <div class="progress-bar">
+                <div 
+                  class="progress-fill"
+                  [style.width.%]="getDistributionPercentage(rating)">
+                </div>
+              </div>
+              <span class="percentage">{{ getDistributionPercentage(rating).toFixed(0) }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="reviews-list">
+        <div *ngFor="let review of reviews" class="review-card">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <span class="reviewer-name">{{ review.author }}</span>
+              <span class="review-date">{{ formatDate(review.date) }}</span>
+            </div>
+            <div class="review-rating">
+              <span class="stars">{{ getRatingStars(review.rating) }}</span>
+              <span class="rating-number">({{ review.rating }})</span>
+            </div>
+          </div>
+          
+          <h4 class="product-name">{{ review.product }}</h4>
+          <p class="review-text">{{ review.review }}</p>
+          
+          <div class="review-actions">
+            <button class="helpful-button">
+              =M Helpful ({{ review.helpful }})
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

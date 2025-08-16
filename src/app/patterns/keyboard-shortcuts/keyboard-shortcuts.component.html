@@ -1,0 +1,88 @@
+<app-pattern-header 
+  title="Keyboard Shortcuts" 
+  description="Comprehensive keyboard shortcuts system with help modal and visual feedback"
+  icon="⌨️">
+</app-pattern-header>
+
+<div class="keyboard-shortcuts-demo">
+  <!-- Demo Controls -->
+  <div class="demo-section">
+    <h3>Try These Shortcuts</h3>
+    <div class="shortcut-cards">
+      <div class="shortcut-card" *ngFor="let shortcut of shortcuts.slice(0, 6)">
+        <div class="card-header">
+          <h4>{{ shortcut.name }}</h4>
+          <div class="keys-display">
+            <kbd *ngFor="let key of shortcut.keys">{{ key }}</kbd>
+          </div>
+        </div>
+        <p>{{ shortcut.description }}</p>
+        <button (click)="shortcut.action()" class="test-btn">Test</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Feedback -->
+  <div class="feedback-section" *ngIf="lastAction">
+    <div class="feedback-message">
+      <span class="feedback-icon">✓</span>
+      <span>{{ lastAction }}</span>
+    </div>
+  </div>
+
+  <!-- Help Button -->
+  <div class="help-section">
+    <button class="help-btn" (click)="toggleShortcutsModal()">
+      <span class="help-icon">❓</span>
+      Show All Shortcuts (F1)
+    </button>
+  </div>
+
+  <!-- Shortcuts Modal -->
+  <div class="shortcuts-modal" *ngIf="showShortcutsModal" (click)="toggleShortcutsModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Keyboard Shortcuts</h2>
+        <button class="close-btn" (click)="toggleShortcutsModal()">×</button>
+      </div>
+      
+      <!-- Search -->
+      <div class="search-section">
+        <input 
+          type="search" 
+          placeholder="Search shortcuts..."
+          [(ngModel)]="searchQuery"
+          class="search-input">
+      </div>
+      
+      <!-- Categories -->
+      <div class="categories-section">
+        <div class="category-section" *ngFor="let category of ['navigation', 'editing', 'view', 'general']">
+          <h3 class="category-title">{{ category | titlecase }}</h3>
+          <div class="shortcuts-list">
+            <div class="shortcut-item" 
+                 *ngFor="let shortcut of getShortcutsByCategory(category)"
+                 [class.disabled]="!shortcut.enabled">
+              <div class="shortcut-info">
+                <div class="shortcut-name">{{ shortcut.name }}</div>
+                <div class="shortcut-description">{{ shortcut.description }}</div>
+              </div>
+              <div class="shortcut-keys">
+                <kbd *ngFor="let key of shortcut.keys; let last = last">
+                  {{ key }}<span *ngIf="!last" class="key-separator">+</span>
+                </kbd>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode"
+  [scssCode]="scssCode"
+  [typescriptCode]="typescriptCode"
+  [exampleCode]="exampleCode">
+</app-code-tabs>

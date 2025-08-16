@@ -1,0 +1,224 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">=÷</span>
+    Progressive Disclosure Pattern
+  </h1>
+  <p class="pattern-description">
+    Present information progressively to reduce cognitive load while maintaining access to detailed content when needed.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="progressive-disclosure-container">
+    <!-- Example Navigation -->
+    <div class="example-navigation">
+      <button 
+        (click)="setExample('content')"
+        class="nav-button"
+        [class.active]="currentExample === 'content'">
+        =ƒ Content Disclosure
+      </button>
+      <button 
+        (click)="setExample('form')"
+        class="nav-button"
+        [class.active]="currentExample === 'form'">
+        =› Multi-Step Form
+      </button>
+      <button 
+        (click)="setExample('settings')"
+        class="nav-button"
+        [class.active]="currentExample === 'settings'">
+        ô Settings Disclosure
+      </button>
+    </div>
+
+    <!-- Content Disclosure Example -->
+    <div *ngIf="currentExample === 'content'" class="content-disclosure">
+      <div class="disclosure-controls">
+        <button (click)="toggleAllSections(true)" class="control-button">
+          =÷ Expand All
+        </button>
+        <button (click)="toggleAllSections(false)" class="control-button">
+          =’ Collapse All
+        </button>
+      </div>
+
+      <div class="disclosure-sections">
+        <div 
+          *ngFor="let section of contentSections" 
+          class="disclosure-section"
+          [class.expanded]="section.expanded"
+          [class.level-2]="section.level === 2">
+          
+          <button 
+            (click)="toggleSection(section)"
+            class="section-header"
+            [attr.aria-expanded]="section.expanded">
+            <span class="section-icon">{{ section.icon }}</span>
+            <div class="section-content">
+              <h3 class="section-title">{{ section.title }}</h3>
+              <p class="section-summary">{{ section.summary }}</p>
+            </div>
+            <span class="expand-icon">{{ section.expanded ? 'º' : '∂' }}</span>
+          </button>
+          
+          <div class="section-details" *ngIf="section.expanded">
+            <p>{{ section.content }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Multi-Step Form Example -->
+    <div *ngIf="currentExample === 'form'" class="form-disclosure">
+      <div class="step-indicator">
+        <div 
+          *ngFor="let step of formSteps; let i = index"
+          class="step-item"
+          [class.completed]="step.completed"
+          [class.current]="step.current"
+          (click)="goToStep(i)">
+          <div class="step-number">{{ i + 1 }}</div>
+          <div class="step-title">{{ step.title }}</div>
+        </div>
+      </div>
+
+      <div class="step-content">
+        <h3>{{ currentStep.title }}</h3>
+        
+        <div class="form-fields" *ngIf="currentStep.fields.length > 0">
+          <div *ngFor="let field of currentStep.fields" class="form-field">
+            <label [for]="field.id">{{ field.label }}</label>
+            
+            <input 
+              *ngIf="field.type === 'text' || field.type === 'email'"
+              [id]="field.id"
+              [type]="field.type"
+              [(ngModel)]="field.value"
+              [required]="field.required"
+              class="form-input">
+            
+            <select 
+              *ngIf="field.type === 'select'"
+              [id]="field.id"
+              [(ngModel)]="field.value"
+              class="form-select">
+              <option value="">Select...</option>
+              <option *ngFor="let option of field.options" [value]="option">
+                {{ option }}
+              </option>
+            </select>
+            
+            <label *ngIf="field.type === 'checkbox'" class="checkbox-label">
+              <input 
+                [id]="field.id"
+                type="checkbox"
+                [(ngModel)]="field.value">
+              <span>{{ field.label }}</span>
+            </label>
+          </div>
+        </div>
+        
+        <div *ngIf="currentStep.id === 'review'" class="review-section">
+          <h4>Review Your Information</h4>
+          <div class="review-item" *ngFor="let step of formSteps">
+            <h5>{{ step.title }}</h5>
+            <div *ngFor="let field of step.fields">
+              <strong>{{ field.label }}:</strong> {{ field.value || 'Not provided' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="step-navigation">
+          <button 
+            *ngIf="currentStepIndex > 0"
+            (click)="previousStep()"
+            class="nav-button secondary">
+            ê Previous
+          </button>
+          
+          <button 
+            *ngIf="currentStepIndex < formSteps.length - 1"
+            (click)="nextStep()"
+            [disabled]="!allFieldsValid"
+            class="nav-button primary">
+            Next í
+          </button>
+          
+          <button 
+            *ngIf="currentStepIndex === formSteps.length - 1"
+            class="nav-button primary">
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Example -->
+    <div *ngIf="currentExample === 'settings'" class="settings-disclosure">
+      <div class="settings-section">
+        <h3>Basic Settings</h3>
+        <div class="setting-item">
+          <label>Theme</label>
+          <select [(ngModel)]="basicSettings.theme">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="auto">Auto</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <label>Language</label>
+          <select [(ngModel)]="basicSettings.language">
+            <option value="en">English</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+          </select>
+        </div>
+      </div>
+
+      <button 
+        (click)="toggleAdvancedSettings()"
+        class="disclosure-toggle"
+        [class.expanded]="showAdvancedSettings">
+        ô Advanced Settings
+        <span class="toggle-icon">{{ showAdvancedSettings ? 'º' : '∂' }}</span>
+      </button>
+
+      <div *ngIf="showAdvancedSettings" class="advanced-settings">
+        <div class="setting-item">
+          <label>Cache Size (MB)</label>
+          <input type="number" [(ngModel)]="advancedSettings.cacheSize">
+        </div>
+        <div class="setting-item">
+          <label>Auto Save</label>
+          <input type="checkbox" [(ngModel)]="advancedSettings.autoSave">
+        </div>
+
+        <button 
+          (click)="toggleExpertOptions()"
+          class="disclosure-toggle sub-toggle"
+          [class.expanded]="showExpertOptions">
+          =' Expert Options
+          <span class="toggle-icon">{{ showExpertOptions ? 'º' : '∂' }}</span>
+        </button>
+
+        <div *ngIf="showExpertOptions" class="expert-settings">
+          <div class="setting-item">
+            <label>API Timeout (ms)</label>
+            <input type="number" [(ngModel)]="expertSettings.apiTimeout">
+          </div>
+          <div class="setting-item">
+            <label>Retry Attempts</label>
+            <input type="number" [(ngModel)]="expertSettings.retryAttempts">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

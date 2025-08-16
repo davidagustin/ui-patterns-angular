@@ -1,0 +1,179 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">ó</span>
+    Loading States Pattern
+  </h1>
+  <p class="pattern-description">
+    Comprehensive loading indicators including spinners, skeleton screens, progress bars, and state management.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="loading-states-container">
+    <!-- Example Navigation -->
+    <div class="example-navigation">
+      <button 
+        (click)="setExample('spinners')"
+        class="nav-button"
+        [class.active]="currentExample === 'spinners'">
+        ó Spinners
+      </button>
+      <button 
+        (click)="setExample('skeleton')"
+        class="nav-button"
+        [class.active]="currentExample === 'skeleton'">
+        =€ Skeleton
+      </button>
+      <button 
+        (click)="setExample('progress')"
+        class="nav-button"
+        [class.active]="currentExample === 'progress'">
+        =Ê Progress
+      </button>
+      <button 
+        (click)="setExample('states')"
+        class="nav-button"
+        [class.active]="currentExample === 'states'">
+        = States
+      </button>
+    </div>
+
+    <!-- Spinner Examples -->
+    <div *ngIf="currentExample === 'spinners'" class="spinner-examples">
+      <div class="spinner-grid">
+        <div class="spinner-item">
+          <div class="spinner-basic"></div>
+          <span>Basic Spinner</span>
+        </div>
+        
+        <div class="spinner-item">
+          <div class="spinner-dots">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <span>Dot Spinner</span>
+        </div>
+        
+        <div class="spinner-item">
+          <div class="spinner-pulse"></div>
+          <span>Pulse Spinner</span>
+        </div>
+        
+        <div class="spinner-item">
+          <div class="spinner-bars">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <span>Bar Spinner</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skeleton Examples -->
+    <div *ngIf="currentExample === 'skeleton'" class="skeleton-examples">
+      <button (click)="toggleSkeletonLoading()" class="demo-button">
+        {{ skeletonLoading ? 'Stop Loading' : 'Start Skeleton Demo' }}
+      </button>
+      
+      <div class="skeleton-card" [class.loading]="skeletonLoading">
+        <div class="skeleton-avatar" *ngIf="skeletonLoading"></div>
+        <img *ngIf="!skeletonLoading" src="https://via.placeholder.com/60" alt="Avatar" class="avatar">
+        
+        <div class="skeleton-content">
+          <div class="skeleton-line title" *ngIf="skeletonLoading"></div>
+          <h3 *ngIf="!skeletonLoading">John Doe</h3>
+          
+          <div class="skeleton-line" *ngIf="skeletonLoading"></div>
+          <div class="skeleton-line" *ngIf="skeletonLoading"></div>
+          <p *ngIf="!skeletonLoading">Software Engineer with 5+ years of experience...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Progress Examples -->
+    <div *ngIf="currentExample === 'progress'" class="progress-examples">
+      <button (click)="startProgressDemo()" class="demo-button">
+        Start Progress Demo
+      </button>
+      
+      <div class="progress-bars">
+        <div class="progress-item">
+          <label>Linear Progress</label>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="progressValue"></div>
+          </div>
+          <span class="progress-text">{{ progressValue.toFixed(0) }}%</span>
+        </div>
+        
+        <div class="progress-item">
+          <label>Circular Progress</label>
+          <div class="progress-circle">
+            <svg class="progress-svg" width="80" height="80">
+              <circle cx="40" cy="40" r="30" class="progress-bg"></circle>
+              <circle 
+                cx="40" 
+                cy="40" 
+                r="30" 
+                class="progress-stroke"
+                [style.stroke-dasharray]="188.4"
+                [style.stroke-dashoffset]="188.4 - (progressValue / 100 * 188.4)">
+              </circle>
+            </svg>
+            <span class="progress-value">{{ progressValue.toFixed(0) }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading States Examples -->
+    <div *ngIf="currentExample === 'states'" class="states-examples">
+      <div class="state-grid">
+        <div *ngFor="let example of loadingExamples" class="state-card">
+          <h3>{{ example.title }}</h3>
+          <p>{{ example.description }}</p>
+          
+          <div class="state-content">
+            <div *ngIf="!example.isLoading && !example.hasError" class="success-state">
+               Content loaded successfully
+            </div>
+            
+            <div *ngIf="example.isLoading" class="loading-state">
+              <div class="spinner-basic small"></div>
+              <span>Loading...</span>
+              <div *ngIf="example.progress !== undefined" class="inline-progress">
+                <div class="progress-bar small">
+                  <div class="progress-fill" [style.width.%]="example.progress"></div>
+                </div>
+                <span>{{ example.progress?.toFixed(0) }}%</span>
+              </div>
+            </div>
+            
+            <div *ngIf="example.hasError" class="error-state">
+              <span class="error-icon">L</span>
+              <span>Failed to load content</span>
+              <button (click)="retryAction(example.id)" class="retry-button">
+                = Retry
+              </button>
+            </div>
+          </div>
+          
+          <button 
+            (click)="startLoading(example.id)"
+            [disabled]="example.isLoading"
+            class="start-button">
+            {{ example.isLoading ? 'Loading...' : 'Start Loading' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

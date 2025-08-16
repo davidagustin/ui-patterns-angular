@@ -1,0 +1,171 @@
+<div class="radio-checkbox-pattern-container">
+  <app-pattern-header
+    title="Radio & Checkbox Pattern"
+    description="Provide clear selection controls for single-choice (radio) and multi-choice (checkbox) scenarios with enhanced styling and functionality."
+    icon="☑️">
+  </app-pattern-header>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Example</h2>
+        <p class="example-description">
+          Explore different radio button and checkbox implementations with various styles and configurations.
+        </p>
+        
+        <!-- Radio Button Examples -->
+        <div class="demo-section">
+          <h3 class="demo-title">📻 Radio Button Groups</h3>
+          
+          <div *ngFor="let section of formSections" class="form-section">
+            <h4 class="section-title">
+              {{ section.title }}
+              <span class="required-indicator" *ngIf="section.required">*</span>
+            </h4>
+            
+            <div class="radio-group">
+              <label 
+                *ngFor="let option of section.options" 
+                class="radio-option"
+                [class.selected]="section.selectedValue === option.value">
+                <input 
+                  type="radio" 
+                  [name]="section.id"
+                  [value]="option.value"
+                  [checked]="section.selectedValue === option.value"
+                  (change)="onRadioChange(section.id, option.value)"
+                  class="radio-input">
+                <span class="radio-custom"></span>
+                <div class="radio-content">
+                  <span class="radio-label">{{ option.label }}</span>
+                  <span class="radio-description" *ngIf="option.description">{{ option.description }}</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Checkbox Examples -->
+        <div class="demo-section">
+          <h3 class="demo-title">☑️ Checkbox Groups</h3>
+          
+          <div class="form-section">
+            <h4 class="section-title">Feature Preferences</h4>
+            <div class="checkbox-group">
+              <label 
+                *ngFor="let feature of features" 
+                class="checkbox-option"
+                [class.checked]="feature.value">
+                <input 
+                  type="checkbox" 
+                  [checked]="feature.value"
+                  (change)="onCheckboxChange(feature)"
+                  class="checkbox-input">
+                <span class="checkbox-custom">
+                  <svg class="check-icon" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                  </svg>
+                </span>
+                <div class="checkbox-content">
+                  <span class="checkbox-label">{{ feature.label }}</span>
+                  <span class="checkbox-description" *ngIf="feature.description">{{ feature.description }}</span>
+                </div>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h4 class="section-title">User Preferences</h4>
+            <div class="checkbox-grid">
+              <label 
+                *ngFor="let pref of preferences" 
+                class="checkbox-card"
+                [class.checked]="pref.value">
+                <input 
+                  type="checkbox" 
+                  [checked]="pref.value"
+                  (change)="onCheckboxChange(pref)"
+                  class="checkbox-input">
+                <span class="checkbox-custom-card">
+                  <svg class="check-icon" viewBox="0 0 16 16">
+                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                  </svg>
+                </span>
+                <span class="checkbox-label">{{ pref.label }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Custom Styling</h4>
+          <p class="feature-description">Beautiful, accessible radio buttons and checkboxes</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Multiple Layouts</h4>
+          <p class="feature-description">Cards, pills, tags, and traditional layouts</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Descriptive Options</h4>
+          <p class="feature-description">Add descriptions and context to choices</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Keyboard Navigation</h4>
+          <p class="feature-description">Full keyboard support and screen reader friendly</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">⚙️</div>
+        <h4 class="use-case-name">Settings & Preferences</h4>
+        <p class="use-case-description">User configuration and preference panels</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📋</div>
+        <h4 class="use-case-name">Forms & Surveys</h4>
+        <p class="use-case-description">Data collection and user input forms</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🛒</div>
+        <h4 class="use-case-name">Product Options</h4>
+        <p class="use-case-description">E-commerce product variants and features</p>
+      </div>
+    </div>
+  </div>
+</div>

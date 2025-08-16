@@ -24,15 +24,21 @@ import { DashboardComponent } from './patterns/dashboard/dashboard.component';
 import { DataGridComponent } from './patterns/data-grid/data-grid.component';
 import { DropdownMenuComponent } from './patterns/dropdown-menu/dropdown-menu.component';
 import { FileUploadComponent } from './patterns/file-upload/file-upload.component';
+import { FilterSortComponent } from './patterns/filter-sort/filter-sort.component';
 import { FormsComponent } from './patterns/forms/forms.component';
 import { ImageGalleryComponent } from './patterns/image-gallery/image-gallery.component';
+import { ImageUploadComponent } from './patterns/image-upload/image-upload.component';
 import { JumpingHierarchyComponent } from './patterns/jumping-hierarchy/jumping-hierarchy.component';
+import { LoadingStatesComponent } from './patterns/loading-states/loading-states.component';
 import { ModalComponent } from './patterns/modal/modal.component';
 import { NavbarComponent } from './patterns/navbar/navbar.component';
 import { NotificationsComponent } from './patterns/notifications/notifications.component';
 import { PaginationComponent } from './patterns/pagination/pagination.component';
+import { PasswordStrengthComponent } from './patterns/password-strength/password-strength.component';
 import { PatternsListComponent } from './patterns/patterns-list/patterns-list.component';
+import { ProgressiveDisclosureComponent } from './patterns/progressive-disclosure/progressive-disclosure.component';
 import { RangeSliderComponent } from './patterns/range-slider/range-slider.component';
+import { RatingInputComponent } from './patterns/rating-input/rating-input.component';
 import { SearchComponent } from './patterns/search/search.component';
 import { SelectDropdownComponent } from './patterns/select-dropdown/select-dropdown.component';
 import { SidebarComponent } from './patterns/sidebar/sidebar.component';
@@ -64,14 +70,20 @@ const routes: Routes = [
   { path: 'patterns/data-grid', component: DataGridComponent },
   { path: 'patterns/dropdown-menu', component: DropdownMenuComponent },
   { path: 'patterns/file-upload', component: FileUploadComponent },
+  { path: 'patterns/filter-sort', component: FilterSortComponent },
   { path: 'patterns/forms', component: FormsComponent },
   { path: 'patterns/image-gallery', component: ImageGalleryComponent },
+  { path: 'patterns/image-upload', component: ImageUploadComponent },
   { path: 'patterns/jumping-hierarchy', component: JumpingHierarchyComponent },
+  { path: 'patterns/loading-states', component: LoadingStatesComponent },
   { path: 'patterns/modal', component: ModalComponent },
   { path: 'patterns/navbar', component: NavbarComponent },
   { path: 'patterns/notifications', component: NotificationsComponent },
   { path: 'patterns/pagination', component: PaginationComponent },
+  { path: 'patterns/password-strength', component: PasswordStrengthComponent },
+  { path: 'patterns/progressive-disclosure', component: ProgressiveDisclosureComponent },
   { path: 'patterns/range-slider', component: RangeSliderComponent },
+  { path: 'patterns/rating-input', component: RatingInputComponent },
   { path: 'patterns/search', component: SearchComponent },
   { path: 'patterns/select-dropdown', component: SelectDropdownComponent },
   { path: 'patterns/sidebar', component: SidebarComponent },

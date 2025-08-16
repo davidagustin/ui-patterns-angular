@@ -1,0 +1,146 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">=¼</span>
+    Image Upload Pattern
+  </h1>
+  <p class="pattern-description">
+    Drag-and-drop image upload with progress tracking, validation, and preview functionality.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="image-upload-container">
+    <!-- Upload Area -->
+    <div 
+      class="upload-area"
+      [class.drag-over]="isDragOver"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+      (click)="openFileDialog()">
+      
+      <input
+        #fileInput
+        type="file"
+        multiple
+        accept="image/*"
+        (change)="onFileSelect($event)"
+        class="file-input">
+      
+      <div class="upload-content">
+        <div class="upload-icon">=ä</div>
+        <h3 class="upload-title">Drop images here or click to browse</h3>
+        <p class="upload-description">
+          Upload up to {{ maxFiles }} images (max {{ formatFileSize(maxFileSize) }} each)
+        </p>
+        <div class="upload-formats">
+          Supported: JPG, PNG, GIF, WebP
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Stats -->
+    <div class="upload-stats" *ngIf="uploadedImages.length > 0">
+      <div class="stat-item">
+        <span class="stat-label">Total:</span>
+        <span class="stat-value">{{ uploadedImages.length }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Completed:</span>
+        <span class="stat-value success">{{ completedUploads }}</span>
+      </div>
+      <div class="stat-item" *ngIf="failedUploads > 0">
+        <span class="stat-label">Failed:</span>
+        <span class="stat-value error">{{ failedUploads }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Remaining slots:</span>
+        <span class="stat-value">{{ remainingSlots }}</span>
+      </div>
+    </div>
+
+    <!-- Uploaded Images Grid -->
+    <div class="uploaded-images" *ngIf="uploadedImages.length > 0">
+      <div class="images-header">
+        <h3>Uploaded Images ({{ uploadedImages.length }})</h3>
+        <button (click)="clearAll()" class="clear-all-btn">
+          =Ñ Clear All
+        </button>
+      </div>
+
+      <div class="images-grid">
+        <div 
+          *ngFor="let image of uploadedImages" 
+          class="image-item"
+          [class.uploading]="image.status === 'uploading'"
+          [class.completed]="image.status === 'completed'"
+          [class.error]="image.status === 'error'">
+          
+          <div class="image-preview">
+            <img 
+              *ngIf="image.preview" 
+              [src]="image.preview" 
+              [alt]="image.name"
+              class="preview-img">
+            <div *ngIf="!image.preview" class="preview-placeholder">
+              =¼
+            </div>
+          </div>
+
+          <div class="image-info">
+            <div class="image-name">{{ image.name }}</div>
+            <div class="image-size">{{ formatFileSize(image.size) }}</div>
+            
+            <!-- Progress Bar -->
+            <div 
+              *ngIf="image.status === 'uploading'" 
+              class="progress-bar">
+              <div 
+                class="progress-fill"
+                [style.width.%]="image.uploadProgress">
+              </div>
+              <span class="progress-text">{{ image.uploadProgress.toFixed(0) }}%</span>
+            </div>
+
+            <!-- Status Icons -->
+            <div class="image-status">
+              <span *ngIf="image.status === 'completed'" class="status-icon success">
+                 Uploaded
+              </span>
+              <span *ngIf="image.status === 'error'" class="status-icon error">
+                L {{ image.error }}
+              </span>
+            </div>
+          </div>
+
+          <div class="image-actions">
+            <button 
+              *ngIf="image.status === 'error'"
+              (click)="retryUpload(image)"
+              class="action-btn retry">
+              = Retry
+            </button>
+            <button 
+              (click)="removeImage(image.id)"
+              class="action-btn remove">
+              =Ñ Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="uploadedImages.length === 0" class="empty-state">
+      <div class="empty-icon">=Â</div>
+      <h3>No images uploaded yet</h3>
+      <p>Drag and drop images above or click to browse your files</p>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

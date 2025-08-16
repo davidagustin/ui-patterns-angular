@@ -86,7 +86,8 @@ export class PasswordStrengthComponent {
     // Additional checks for stronger passwords
     if (this.password.length >= 12) score += 0.5;
     if (this.password.length >= 16) score += 0.5;
-    if (!/(.)\1{2,}/.test(this.password)) score += 0.5; // No repeated characters
+    const noRepeatedChars = !new RegExp('(.)\\1{2,}').test(this.password);
+    if (noRepeatedChars) score += 0.5; // No repeated characters
     if (!/123|abc|qwe|password|admin/i.test(this.password)) score += 0.5; // No common patterns
 
     const maxScore = this.requirements.length + 2; // 5 requirements + 2 bonus points
@@ -187,7 +188,7 @@ export class PasswordStrengthComponent {
         (click)="togglePasswordVisibility()"
         class="password-toggle"
         [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
-        {{ showPassword ? '=A' : '=A=è' }}
+        {{ showPassword ? '=A' : '=A=ï¿½' }}
       </button>
     </div>
   </div>
@@ -238,7 +239,7 @@ export class PasswordStrengthComponent {
         (click)="toggleConfirmPasswordVisibility()"
         class="password-toggle"
         [attr.aria-label]="showConfirmPassword ? 'Hide password' : 'Show password'">
-        {{ showConfirmPassword ? '=A' : '=A=è' }}
+        {{ showConfirmPassword ? '=A' : '=A=ï¿½' }}
       </button>
     </div>
     
@@ -257,7 +258,7 @@ export class PasswordStrengthComponent {
     type="button"
     (click)="generatePassword()"
     class="generate-button">
-    <² Generate Strong Password
+    <ï¿½ Generate Strong Password
   </button>
 </div>`;
   }
@@ -595,7 +596,8 @@ export class PasswordStrengthComponent {
     // Additional scoring for stronger passwords
     if (this.password.length >= 12) score += 0.5;
     if (this.password.length >= 16) score += 0.5;
-    if (!/(.)\1{2,}/.test(this.password)) score += 0.5;
+    const noRepeatedChars2 = !new RegExp('(.)\\1{2,}').test(this.password);
+    if (noRepeatedChars2) score += 0.5;
     if (!/123|abc|qwe|password|admin/i.test(this.password)) score += 0.5;
 
     const maxScore = this.requirements.length + 2;

@@ -1,0 +1,228 @@
+<div class="preview-pattern-container">
+  <app-pattern-header
+    title="Preview Pattern"
+    description="Show quick previews of content without navigating away from the current view. Perfect for images, documents, and media files."
+    icon="👁️">
+  </app-pattern-header>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Example</h2>
+        <p class="example-description">
+          Choose a preview mode and interact with the items below to see previews in action.
+        </p>
+        
+        <!-- Preview Mode Controls -->
+        <div class="mode-controls">
+          <button 
+            *ngFor="let mode of ['hover', 'click', 'modal']"
+            (click)="setPreviewMode(mode)"
+            class="mode-btn"
+            [class.active]="previewMode === mode">
+            {{ mode | titlecase }}
+          </button>
+        </div>
+        
+        <div class="preview-demo">
+          <!-- Items Grid -->
+          <div class="items-grid">
+            <div 
+              *ngFor="let item of previewItems"
+              class="preview-item"
+              [class.selected]="selectedItem?.id === item.id"
+              (mouseenter)="onItemHover(item)"
+              (mouseleave)="onItemLeave()"
+              (click)="onItemClick(item)">
+              
+              <div class="item-thumbnail">
+                <img [src]="item.imageUrl" [alt]="item.title" loading="lazy">
+                <div class="item-overlay">
+                  <span class="item-type">{{ getTypeIcon(item.type) }}</span>
+                </div>
+              </div>
+              
+              <div class="item-content">
+                <h3 class="item-title">{{ item.title }}</h3>
+                <p class="item-description">{{ item.description }}</p>
+                <div class="item-meta">
+                  <span class="item-size">{{ item.size }}</span>
+                  <span class="item-date">{{ formatDate(item.modifiedDate!) }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Preview Panel (for hover and click modes) -->
+          <div 
+            class="preview-panel"
+            [class.visible]="selectedItem && !showPreviewModal"
+            *ngIf="selectedItem && !showPreviewModal">
+            
+            <div class="preview-header">
+              <h3 class="preview-title">{{ selectedItem.title }}</h3>
+              <button 
+                *ngIf="previewMode === 'click'"
+                (click)="selectedItem = null"
+                class="close-btn">
+                ✕
+              </button>
+            </div>
+            
+            <div class="preview-content">
+              <div class="preview-image">
+                <img [src]="selectedItem.imageUrl" [alt]="selectedItem.title">
+              </div>
+              
+              <div class="preview-details">
+                <p class="preview-description">{{ selectedItem.description }}</p>
+                
+                <div class="preview-meta">
+                  <div class="meta-item">
+                    <span class="meta-label">Type:</span>
+                    <span class="meta-value">{{ getTypeIcon(selectedItem.type) }} {{ selectedItem.type | titlecase }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Size:</span>
+                    <span class="meta-value">{{ selectedItem.size }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Modified:</span>
+                    <span class="meta-value">{{ formatDate(selectedItem.modifiedDate!) }}</span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-label">Author:</span>
+                    <span class="meta-value">{{ selectedItem.author }}</span>
+                  </div>
+                </div>
+                
+                <div class="preview-actions">
+                  <button class="action-btn primary">Open</button>
+                  <button class="action-btn secondary">Download</button>
+                  <button class="action-btn secondary">Share</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Modal Preview -->
+  <div class="preview-modal" [class.visible]="showPreviewModal" *ngIf="showPreviewModal">
+    <div class="modal-backdrop" (click)="closeModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">{{ selectedItem?.title }}</h2>
+        <button (click)="closeModal()" class="modal-close">✕</button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="modal-image">
+          <img [src]="selectedItem?.imageUrl" [alt]="selectedItem?.title">
+        </div>
+        
+        <div class="modal-details">
+          <p class="modal-description">{{ selectedItem?.description }}</p>
+          
+          <div class="modal-meta">
+            <div class="meta-grid">
+              <div class="meta-item">
+                <span class="meta-label">Type</span>
+                <span class="meta-value">{{ getTypeIcon(selectedItem?.type || '') }} {{ selectedItem?.type | titlecase }}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Size</span>
+                <span class="meta-value">{{ selectedItem?.size }}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Modified</span>
+                <span class="meta-value">{{ formatDate(selectedItem?.modifiedDate!) }}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Author</span>
+                <span class="meta-value">{{ selectedItem?.author }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="action-btn primary">Open Full Size</button>
+        <button class="action-btn secondary">Download</button>
+        <button class="action-btn secondary">Share</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Multiple Trigger Modes</h4>
+          <p class="feature-description">Support for hover, click, and modal previews</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Rich Metadata</h4>
+          <p class="feature-description">Display file size, dates, authors, and more</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Media Support</h4>
+          <p class="feature-description">Works with images, videos, documents, and links</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Responsive Design</h4>
+          <p class="feature-description">Adapts to different screen sizes and devices</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">🖼️</div>
+        <h4 class="use-case-name">Image Galleries</h4>
+        <p class="use-case-description">Preview images before opening full view</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📁</div>
+        <h4 class="use-case-name">File Browsers</h4>
+        <p class="use-case-description">Quick file content previews</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📰</div>
+        <h4 class="use-case-name">Article Lists</h4>
+        <p class="use-case-description">Preview article content and metadata</p>
+      </div>
+    </div>
+  </div>
+</div>

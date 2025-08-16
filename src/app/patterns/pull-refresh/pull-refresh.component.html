@@ -1,0 +1,151 @@
+<div class="pull-refresh-pattern-container">
+  <app-pattern-header
+    title="Pull Refresh Pattern"
+    description="Enable users to refresh content by pulling down on mobile devices, providing an intuitive way to get fresh data."
+    icon="🔄">
+  </app-pattern-header>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">📱 Interactive Example</h2>
+        <p class="example-description">
+          Pull down on the content area below to refresh, or use the refresh button for desktop testing.
+        </p>
+        
+        <div class="demo-controls">
+          <button (click)="manualRefresh()" class="refresh-btn" [disabled]="isRefreshing">
+            <span class="refresh-icon" [class.spinning]="isRefreshing">🔄</span>
+            {{ isRefreshing ? 'Refreshing...' : 'Manual Refresh' }}
+          </button>
+          <span class="last-refresh">Last refresh: {{ getTimeSince(lastRefresh) }}</span>
+        </div>
+        
+        <div 
+          class="pull-refresh-demo"
+          #scrollContainer
+          (touchstart)="onTouchStart($event)"
+          (touchmove)="onTouchMove($event)"
+          (touchend)="onTouchEnd()">
+          
+          <!-- Pull Indicator -->
+          <div 
+            class="pull-indicator"
+            [style.height.px]="getPullHeight()"
+            [style.opacity]="getPullOpacity()">
+            <div class="pull-content" *ngIf="isPulling || isRefreshing">
+              <div class="pull-icon" [class.can-refresh]="canRefresh" [class.refreshing]="isRefreshing">
+                <svg 
+                  class="pull-arrow"
+                  [style.transform]="'rotate(' + getPullRotation() + 'deg)'"
+                  *ngIf="!isRefreshing"
+                  viewBox="0 0 24 24">
+                  <path d="M12 2l4 4h-3v6h-2V6H8l4-4z" fill="currentColor"/>
+                </svg>
+                <div class="pull-spinner" *ngIf="isRefreshing">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+              <span class="pull-text">
+                <ng-container *ngIf="!isRefreshing">
+                  {{ canRefresh ? 'Release to refresh' : 'Pull to refresh' }}
+                </ng-container>
+                <ng-container *ngIf="isRefreshing">
+                  Refreshing...
+                </ng-container>
+              </span>
+            </div>
+          </div>
+          
+          <!-- Content List -->
+          <div class="content-list">
+            <div *ngFor="let item of items; trackBy: trackItem" class="content-item">
+              <div class="item-header">
+                <h3 class="item-title">{{ item.title }}</h3>
+                <div class="item-actions">
+                  <button class="like-btn">
+                    ❤️ {{ item.likes }}
+                  </button>
+                </div>
+              </div>
+              <p class="item-description">{{ item.description }}</p>
+              <div class="item-meta">
+                <span class="item-author">{{ item.author }}</span>
+                <span class="item-time">{{ getTimeSince(item.timestamp) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Touch Gestures</h4>
+          <p class="feature-description">Native mobile pull-to-refresh interaction</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Visual Feedback</h4>
+          <p class="feature-description">Clear indicators for pull progress and state</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Smooth Animations</h4>
+          <p class="feature-description">Fluid pull and release animations</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Customizable</h4>
+          <p class="feature-description">Adjustable thresholds and styling</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">📱</div>
+        <h4 class="use-case-name">Social Media Feeds</h4>
+        <p class="use-case-description">Refresh timeline and news feeds</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📧</div>
+        <h4 class="use-case-name">Email Apps</h4>
+        <p class="use-case-description">Check for new messages</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📰</div>
+        <h4 class="use-case-name">News Applications</h4>
+        <p class="use-case-description">Update latest articles and stories</p>
+      </div>
+    </div>
+  </div>
+</div>

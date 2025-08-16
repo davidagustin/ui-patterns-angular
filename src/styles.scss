@@ -40,15 +40,37 @@
   --purple-600: #9333ea;
 
   /* Spacing */
+  --spacing-0: 0;
+  --spacing-px: 1px;
+  --spacing-0-5: 0.125rem;
   --spacing-1: 0.25rem;
+  --spacing-1-5: 0.375rem;
   --spacing-2: 0.5rem;
+  --spacing-2-5: 0.625rem;
   --spacing-3: 0.75rem;
+  --spacing-3-5: 0.875rem;
   --spacing-4: 1rem;
   --spacing-5: 1.25rem;
   --spacing-6: 1.5rem;
+  --spacing-7: 1.75rem;
   --spacing-8: 2rem;
+  --spacing-9: 2.25rem;
+  --spacing-10: 2.5rem;
+  --spacing-11: 2.75rem;
   --spacing-12: 3rem;
+  --spacing-14: 3.5rem;
   --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  --spacing-32: 8rem;
+
+  /* Breakpoints for responsive design */
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
 
   /* Typography */
   --font-size-xs: 0.75rem;
@@ -59,6 +81,12 @@
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 1.875rem;
   --font-size-4xl: 2.25rem;
+
+  /* Font weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
 
   /* Border radius */
   --radius-sm: 0.25rem;
@@ -105,6 +133,45 @@
   --pink-500: #ec4899;
   --pink-600: #db2777;
 
+  /* Text colors - semantic naming */
+  --text-primary: var(--gray-900);
+  --text-secondary: var(--gray-700);
+  --text-tertiary: var(--gray-500);
+  --text-muted: var(--gray-600);
+  --text-subtle: var(--gray-400);
+
+  /* Background colors - semantic naming */
+  --bg-primary: #ffffff;
+  --bg-secondary: var(--gray-50);
+  --bg-tertiary: var(--gray-100);
+  
+  /* Border colors - semantic naming */
+  --border-primary: var(--gray-200);
+  --border-secondary: var(--gray-300);
+  --border-hover: var(--gray-400);
+
+  /* Surface colors */
+  --surface: #ffffff;
+  --surface-hover: var(--gray-50);
+
+  /* Success colors */
+  --success-50: var(--green-50);
+  --success-100: var(--green-100);
+  --success-200: #bbf7d0;
+  --success-600: var(--green-600);
+  --success-800: #166534;
+
+  /* Warning colors */
+  --warning-100: var(--yellow-100);
+  --warning-500: var(--yellow-500);
+  --warning-800: #92400e;
+
+  /* Error colors */
+  --error-50: var(--red-50);
+  --error-100: var(--red-100);
+  --error-500: var(--red-500);
+  --error-800: #991b1b;
+
   /* Focus ring */
   --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.3);
 
@@ -129,6 +196,132 @@
     --text-tertiary: var(--gray-400);
     --border-primary: var(--gray-700);
     --border-secondary: var(--gray-600);
+  }
+}
+
+/* Responsive Design Mixins */
+// Mobile-first responsive breakpoints
+@mixin mobile-xs {
+  @media (max-width: calc(var(--breakpoint-xs) - 1px)) {
+    @content;
+  }
+}
+
+@mixin mobile-sm {
+  @media (max-width: calc(var(--breakpoint-sm) - 1px)) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: calc(var(--breakpoint-md) - 1px)) {
+    @content;
+  }
+}
+
+@mixin desktop-sm {
+  @media (min-width: var(--breakpoint-sm)) {
+    @content;
+  }
+}
+
+@mixin desktop-md {
+  @media (min-width: var(--breakpoint-md)) {
+    @content;
+  }
+}
+
+@mixin desktop-lg {
+  @media (min-width: var(--breakpoint-lg)) {
+    @content;
+  }
+}
+
+@mixin desktop-xl {
+  @media (min-width: var(--breakpoint-xl)) {
+    @content;
+  }
+}
+
+@mixin desktop-2xl {
+  @media (min-width: var(--breakpoint-2xl)) {
+    @content;
+  }
+}
+
+// Utility mixins for common responsive patterns
+@mixin container-responsive {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
+  
+  @include mobile-sm {
+    padding: 0 var(--spacing-3);
+  }
+  
+  @include mobile-xs {
+    padding: 0 var(--spacing-2);
+  }
+}
+
+@mixin grid-responsive($columns: 3) {
+  display: grid;
+  gap: var(--spacing-4);
+  grid-template-columns: 1fr;
+  
+  @include desktop-sm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @include desktop-md {
+    grid-template-columns: repeat(#{$columns}, 1fr);
+  }
+  
+  @include mobile-sm {
+    gap: var(--spacing-3);
+  }
+}
+
+@mixin text-responsive {
+  @include mobile-sm {
+    font-size: 0.9em;
+  }
+  
+  @include mobile-xs {
+    font-size: 0.8em;
+  }
+}
+
+@mixin button-responsive {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: var(--font-size-sm);
+  
+  @include mobile-sm {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-xs);
+  }
+  
+  @include mobile-xs {
+    padding: var(--spacing-1-5) var(--spacing-2-5);
+    font-size: var(--font-size-xs);
+    width: 100%;
+  }
+}
+
+@mixin card-responsive {
+  padding: var(--spacing-6);
+  
+  @include tablet {
+    padding: var(--spacing-4);
+  }
+  
+  @include mobile-sm {
+    padding: var(--spacing-3);
+  }
+  
+  @include mobile-xs {
+    padding: var(--spacing-2);
   }
 }
 
@@ -167,6 +360,17 @@ body {
   background-color: var(--bg-primary);
   min-height: 100vh;
   transition: background-color var(--transition-normal), color var(--transition-normal);
+  overflow-x: hidden; // Prevent horizontal scroll
+  
+  @include mobile-sm {
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+  }
+  
+  @include mobile-xs {
+    font-size: var(--font-size-xs);
+    line-height: 1.4;
+  }
 }
 
 /* Typography */

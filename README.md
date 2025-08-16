@@ -54,7 +54,15 @@ Visit the live application: [UI Patterns Angular](https://your-deployment-url.co
 - **Copy Box** - Code snippet copying with syntax highlighting
 - **Dashboard** - Analytics dashboards with charts and metrics
 
-### 90+ Total Patterns
+### Advanced Patterns
+- **Password Strength** - Real-time password validation with security scoring
+- **Progressive Disclosure** - Content disclosure with multi-step forms
+- **Image Upload** - Drag-and-drop upload with progress tracking and previews
+- **Filter & Sort** - Advanced filtering and sorting for large datasets
+- **Loading States** - Comprehensive loading indicators and skeleton screens
+- **Rating Input** - Star, heart, emoji, and thumbs rating systems
+
+### 45+ Total Patterns (Expanding)
 Complete Angular implementations converted from React patterns with:
 - **Four Code Examples** - Example, HTML, SCSS, TypeScript tabs
 - **Accessibility Features** - ARIA labels, keyboard navigation, focus management
