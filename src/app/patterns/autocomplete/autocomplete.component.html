@@ -1,142 +1,146 @@
-<div class="autocomplete-pattern-container">
-  <div class="pattern-header">
-    <h1 class="pattern-title gradient-text">🔍 Autocomplete Pattern</h1>
-    <p class="pattern-description">
-      Provide real-time suggestions as users type, helping them find options quickly and reducing input errors.
-    </p>
-  </div>
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">🔍</span>
+    Autocomplete Pattern
+  </h1>
+  <p class="pattern-description">
+    Smart search and selection components with type-ahead functionality, filtering, and keyboard navigation.
+  </p>
+</div>
 
-  <div class="pattern-layout">
-    <!-- Interactive Example -->
-    <div class="example-section">
-      <div class="example-card">
-        <h2 class="example-title">🎯 Interactive Example</h2>
-        <p class="example-description">
-          Start typing a country name to see autocomplete suggestions. Use arrow keys to navigate and Enter to select.
-        </p>
+<div class="pattern-demo">
+  <div class="autocomplete-demo">
+    <!-- Basic Autocomplete -->
+    <div class="demo-section">
+      <h3 class="demo-title">Basic Autocomplete</h3>
+      <div class="autocomplete-container">
+        <label class="autocomplete-label">Search Countries</label>
+        <input type="text"
+               class="autocomplete-input"
+               placeholder="Type to search countries..."
+               [(ngModel)]="basicQuery"
+               (input)="onBasicInput()"
+               (keydown)="onBasicKeydown($event)">
         
-        <div class="autocomplete-container">
-          <label for="autocomplete-input" class="sr-only">Search countries</label>
-          <input
-            #inputRef
-            id="autocomplete-input"
-            type="text"
-            [(ngModel)]="query"
-            (input)="onInputChange($any($event.target).value)"
-            (keydown)="onKeyDown($event)"
-            (focus)="onInputFocus()"
-            (blur)="onInputBlur()"
-            placeholder="Type to search..."
-            class="autocomplete-input"
-            autocomplete="off"
-            [attr.aria-expanded]="isOpen"
-            aria-haspopup="listbox"
-            aria-controls="suggestions-listbox"
-            [attr.aria-activedescendant]="selectedIndex >= 0 ? 'suggestion-' + selectedIndex : null"
-            role="combobox"
-            aria-autocomplete="list"
-          />
+        <div class="autocomplete-dropdown" [class.open]="basicIsOpen">
+          <div *ngFor="let option of getFilteredCountries(); let i = index"
+               class="autocomplete-option"
+               [class.highlighted]="i === basicSelectedIndex"
+               (click)="selectBasicOption(option)">
+            <span class="option-icon" *ngIf="option.icon">{{ option.icon }}</span>
+            <span class="option-label" [innerHTML]="highlightMatch(option.label, basicQuery)"></span>
+          </div>
           
-          <div *ngIf="isOpen && suggestions.length > 0" 
-               id="suggestions-listbox"
-               class="suggestions-dropdown"
-               role="listbox"
-               aria-label="Country suggestions">
-            <button
-              *ngFor="let suggestion of suggestions; let i = index"
-              [id]="'suggestion-' + i"
-              (click)="onSuggestionClick(suggestion)"
-              [class]="'suggestion-item ' + (i === selectedIndex ? 'selected' : '')"
-              role="option"
-              [attr.aria-selected]="i === selectedIndex">
-              {{ suggestion }}
-            </button>
-          </div>
-        </div>
-
-        <div class="keyboard-shortcuts">
-          <h4 class="shortcuts-title">Keyboard Shortcuts</h4>
-          <div class="shortcuts-list">
-            <div class="shortcut-item">
-              • <kbd class="keyboard-key">↑↓</kbd> Navigate suggestions
-            </div>
-            <div class="shortcut-item">
-              • <kbd class="keyboard-key">Enter</kbd> Select highlighted suggestion
-            </div>
-            <div class="shortcut-item">
-              • <kbd class="keyboard-key">Escape</kbd> Close suggestions
-            </div>
+          <div *ngIf="getFilteredCountries().length === 0 && basicQuery.trim()" 
+               class="no-results">
+            No countries found
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Code Example -->
-    <div class="code-section">
-      <app-code-tabs 
-        [exampleCode]="exampleCode"
-        [htmlCode]="htmlCode" 
-        [scssCode]="scssCode" 
-        [typescriptCode]="typescriptCode"
-        title="Code Example">
-      </app-code-tabs>
-    </div>
-  </div>
-
-  <!-- Key Features -->
-  <div class="features-section">
-    <h3 class="features-title">✨ Key Features</h3>
-    <div class="features-grid">
-      <div class="feature-item">
-        <span class="feature-icon">✓</span>
-        <div class="feature-content">
-          <h4 class="feature-name">Real-time Filtering</h4>
-          <p class="feature-description">Instant suggestions as user types</p>
+    <!-- Multi-select Autocomplete -->
+    <div class="demo-section">
+      <h3 class="demo-title">Multi-select Autocomplete</h3>
+      <div class="autocomplete-container multi-select">
+        <label class="autocomplete-label">Programming Languages</label>
+        <div class="autocomplete-multi-input">
+          <div class="selected-items">
+            <span *ngFor="let item of multiSelectedItems" 
+                  class="selected-tag">
+              <span class="tag-icon" *ngIf="item.icon">{{ item.icon }}</span>
+              {{ item.label }}
+              <button class="remove-btn" (click)="removeMultiItem(item)">×</button>
+            </span>
+          </div>
+          <input type="text"
+                 class="autocomplete-input"
+                 placeholder="Add programming languages..."
+                 [(ngModel)]="multiQuery"
+                 (input)="onMultiInput()"
+                 (keydown)="onMultiKeydown($event)">
         </div>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">✓</span>
-        <div class="feature-content">
-          <h4 class="feature-name">Keyboard Navigation</h4>
-          <p class="feature-description">Arrow keys, Enter, and Escape support</p>
-        </div>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">✓</span>
-        <div class="feature-content">
-          <h4 class="feature-name">Visual Feedback</h4>
-          <p class="feature-description">Highlighted selection and hover states</p>
-        </div>
-      </div>
-      <div class="feature-item">
-        <span class="feature-icon">✓</span>
-        <div class="feature-content">
-          <h4 class="feature-name">Accessibility</h4>
-          <p class="feature-description">Screen reader support and ARIA labels</p>
+        
+        <div class="autocomplete-dropdown" [class.open]="multiIsOpen">
+          <div *ngFor="let option of getFilteredLanguages(); let i = index"
+               class="autocomplete-option with-category"
+               [class.highlighted]="i === multiSelectedIndex"
+               (click)="selectMultiOption(option)">
+            <span class="option-icon" *ngIf="option.icon">{{ option.icon }}</span>
+            <div class="option-content">
+              <span class="option-label" [innerHTML]="highlightMatch(option.label, multiQuery)"></span>
+              <span class="option-category" *ngIf="option.category">{{ option.category }}</span>
+            </div>
+          </div>
+          
+          <div *ngIf="getFilteredLanguages().length === 0 && multiQuery.trim()" 
+               class="no-results">
+            No languages found
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Use Cases -->
-  <div class="use-cases-section">
-    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
-    <div class="use-cases-grid">
-      <div class="use-case-item">
-        <div class="use-case-icon">🌍</div>
-        <h4 class="use-case-name">Country Selection</h4>
-        <p class="use-case-description">Quick country lookup in forms and settings</p>
+    <!-- User Search Autocomplete -->
+    <div class="demo-section">
+      <h3 class="demo-title">User Search with Avatars</h3>
+      <div class="autocomplete-container">
+        <label class="autocomplete-label">Search Team Members</label>
+        <input type="text"
+               class="autocomplete-input"
+               placeholder="Search by name or role..."
+               [(ngModel)]="userQuery"
+               (input)="onUserInput()"
+               (keydown)="onUserKeydown($event)">
+        
+        <div class="autocomplete-dropdown" [class.open]="userIsOpen">
+          <div *ngFor="let option of getFilteredUsers(); let i = index"
+               class="autocomplete-option user-option"
+               [class.highlighted]="i === userSelectedIndex"
+               (click)="selectUserOption(option)">
+            <div class="user-avatar" *ngIf="option.avatar">{{ option.avatar }}</div>
+            <div class="user-content">
+              <div class="user-name" [innerHTML]="highlightMatch(option.label, userQuery)"></div>
+              <div class="user-description" *ngIf="option.description">{{ option.description }}</div>
+              <div class="user-category" *ngIf="option.category">{{ option.category }}</div>
+            </div>
+          </div>
+          
+          <div *ngIf="getFilteredUsers().length === 0 && userQuery.trim()" 
+               class="no-results">
+            No team members found
+          </div>
+        </div>
       </div>
-      <div class="use-case-item">
-        <div class="use-case-icon">🔍</div>
-        <h4 class="use-case-name">Search Suggestions</h4>
-        <p class="use-case-description">Product search with instant results</p>
-      </div>
-      <div class="use-case-item">
-        <div class="use-case-icon">👤</div>
-        <h4 class="use-case-name">User Selection</h4>
-        <p class="use-case-description">Tagging users in comments or mentions</p>
+    </div>
+
+    <!-- Demo Info -->
+    <div class="demo-info">
+      <h4 class="info-title">Interactive Features</h4>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-icon">⌨️</span>
+          <span>Use arrow keys to navigate options</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">⏎</span>
+          <span>Press Enter to select highlighted option</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">🏷️</span>
+          <span>Multi-select supports multiple values</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">🔍</span>
+          <span>Search highlights matching text</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

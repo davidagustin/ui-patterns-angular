@@ -1,0 +1,215 @@
+<div class="pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title">
+      📊 Completeness Meter Pattern
+    </h1>
+    <p class="pattern-description">
+      Visual progress indicators that show completion status and guide users through multi-step processes or profile setup.
+    </p>
+  </div>
+
+  <div class="pattern-grid">
+    <!-- Interactive Example -->
+    <div class="demo-section">
+      <div class="demo-container demo-primary">
+        <h2 class="demo-title">
+          🎯 Interactive Progress Meter
+        </h2>
+        
+        <div class="completeness-container">
+          <!-- Progress Header -->
+          <div class="progress-header">
+            <h3 class="progress-title">Profile Completion</h3>
+            <div class="progress-stats">
+              <span class="progress-fraction">{{ completedTasks }}/{{ totalTasks }}</span>
+              <span class="progress-percentage">{{ completionPercentage }}%</span>
+            </div>
+          </div>
+
+          <!-- Main Progress Bar -->
+          <div class="progress-bar-container">
+            <div class="progress-bar">
+              <div class="progress-fill" 
+                   [style.width.%]="completionPercentage">
+                <div class="progress-shine"></div>
+              </div>
+            </div>
+            <div class="progress-labels">
+              <span class="progress-label-start">0%</span>
+              <span class="progress-label-end">100%</span>
+            </div>
+          </div>
+
+          <!-- Required vs Optional Progress -->
+          <div class="progress-breakdown">
+            <div class="progress-section">
+              <div class="section-header">
+                <span class="section-title">Required Fields</span>
+                <span class="section-stats">{{ requiredTasksCompleted }}/{{ totalRequiredTasks }}</span>
+              </div>
+              <div class="mini-progress-bar">
+                <div class="mini-progress-fill required" 
+                     [style.width.%]="requiredCompletionPercentage"></div>
+              </div>
+            </div>
+
+            <div class="progress-section">
+              <div class="section-header">
+                <span class="section-title">Overall Progress</span>
+                <span class="section-stats">{{ completedTasks }}/{{ totalTasks }}</span>
+              </div>
+              <div class="mini-progress-bar">
+                <div class="mini-progress-fill overall" 
+                     [style.width.%]="completionPercentage"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Task List -->
+          <div class="task-list">
+            <div class="task-list-header">
+              <h4 class="task-list-title">Complete Your Profile</h4>
+              <div *ngIf="isProfileComplete" class="completion-badge">
+                ✨ Complete!
+              </div>
+            </div>
+
+            <div class="tasks">
+              <div *ngFor="let task of tasks" 
+                   class="task-item"
+                   [class.completed]="task.completed"
+                   [class.required]="task.required">
+                
+                <button class="task-toggle" 
+                        (click)="toggleTask(task.id)"
+                        [title]="task.completed ? 'Mark as incomplete' : 'Mark as complete'">
+                  <span class="task-status">{{ getTaskStatusIcon(task) }}</span>
+                </button>
+                
+                <div class="task-content">
+                  <span class="task-title">{{ task.title }}</span>
+                  <div class="task-meta">
+                    <span *ngIf="task.required" class="required-badge">Required</span>
+                    <span *ngIf="!task.required" class="optional-badge">Optional</span>
+                  </div>
+                </div>
+                
+                <div class="task-actions">
+                  <button *ngIf="!task.completed" 
+                          class="action-btn primary">
+                    Complete
+                  </button>
+                  <button *ngIf="task.completed" 
+                          class="action-btn secondary">
+                    ✓ Done
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Next Step Suggestion -->
+          <div *ngIf="nextIncompleteTask && !isProfileComplete" class="next-step">
+            <div class="next-step-header">
+              <span class="next-step-icon">👉</span>
+              <span class="next-step-title">Next Step</span>
+            </div>
+            <div class="next-step-content">
+              <span class="next-step-task">{{ nextIncompleteTask.title }}</span>
+              <button class="next-step-btn">
+                Complete Now
+              </button>
+            </div>
+          </div>
+
+          <!-- Completion Celebration -->
+          <div *ngIf="isProfileComplete" class="completion-celebration">
+            <div class="celebration-content">
+              <div class="celebration-icon">🎉</div>
+              <h3 class="celebration-title">Profile Complete!</h3>
+              <p class="celebration-text">
+                Great job! Your profile is now complete and ready to be discovered.
+              </p>
+              <button class="celebration-btn">
+                View Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <div class="code-container">
+        <app-code-tabs 
+          [htmlCode]="htmlCode" 
+          [scssCode]="scssCode" 
+          [typescriptCode]="typescriptCode"
+          title="Code Example">
+        </app-code-tabs>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">
+      ✨ Key Features
+    </h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Visual Progress</h4>
+          <p class="feature-description">Clear progress bars showing completion percentage</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Task Breakdown</h4>
+          <p class="feature-description">Separate required and optional tasks</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Next Step Guidance</h4>
+          <p class="feature-description">Suggests the next action to take</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Completion Celebration</h4>
+          <p class="feature-description">Positive reinforcement when tasks are done</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">
+      🎯 Common Use Cases
+    </h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">👤</div>
+        <h4 class="use-case-name">Profile Setup</h4>
+        <p class="use-case-description">Guide users through account completion</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📋</div>
+        <h4 class="use-case-name">Onboarding</h4>
+        <p class="use-case-description">Multi-step user onboarding processes</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🎯</div>
+        <h4 class="use-case-name">Goal Tracking</h4>
+        <p class="use-case-description">Track progress toward objectives</p>
+      </div>
+    </div>
+  </div>
+</div>

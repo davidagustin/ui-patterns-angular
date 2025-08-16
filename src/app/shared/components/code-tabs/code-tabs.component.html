@@ -1,0 +1,57 @@
+<div class="code-tabs-container">
+  <div class="tabs-header">
+    <h3 class="tabs-title">{{ title }}</h3>
+    <div class="tab-buttons">
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'html'"
+        (click)="setActiveTab('html')">
+        HTML
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'scss'"
+        (click)="setActiveTab('scss')">
+        SCSS
+      </button>
+      <button 
+        class="tab-button"
+        [class.active]="activeTab === 'typescript'"
+        (click)="setActiveTab('typescript')">
+        TypeScript
+      </button>
+    </div>
+  </div>
+
+  <div class="tab-content">
+    <div *ngIf="activeTab === 'html'" class="code-panel">
+      <div class="code-header">
+        <span class="code-label">HTML Template</span>
+        <button class="copy-button" (click)="copyToClipboard(htmlCode)">
+          📋 Copy
+        </button>
+      </div>
+      <pre class="code-block"><code>{{ htmlCode }}</code></pre>
+    </div>
+
+    <div *ngIf="activeTab === 'scss'" class="code-panel">
+      <div class="code-header">
+        <span class="code-label">SCSS Styles</span>
+        <button class="copy-button" (click)="copyToClipboard(scssCode)">
+          📋 Copy
+        </button>
+      </div>
+      <pre class="code-block"><code>{{ scssCode }}</code></pre>
+    </div>
+
+    <div *ngIf="activeTab === 'typescript'" class="code-panel">
+      <div class="code-header">
+        <span class="code-label">TypeScript Component</span>
+        <button class="copy-button" (click)="copyToClipboard(typescriptCode)">
+          📋 Copy
+        </button>
+      </div>
+      <pre class="code-block"><code>{{ typescriptCode }}</code></pre>
+    </div>
+  </div>
+</div>

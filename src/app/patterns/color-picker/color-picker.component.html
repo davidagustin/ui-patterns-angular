@@ -1,0 +1,212 @@
+<div class="pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title">
+      🎨 Color Picker Pattern
+    </h1>
+    <p class="pattern-description">
+      Comprehensive color selection tools with HSL controls, presets, and custom color management.
+    </p>
+  </div>
+
+  <div class="pattern-grid">
+    <!-- Interactive Example -->
+    <div class="demo-section">
+      <div class="demo-container demo-primary">
+        <h2 class="demo-title">
+          🎯 Interactive Color Picker
+        </h2>
+        
+        <div class="color-picker-demo">
+          <!-- Color Preview -->
+          <div class="color-preview-section">
+            <div class="color-preview" 
+                 [style.backgroundColor]="selectedColor"
+                 (click)="togglePicker()"
+                 title="Click to open color picker">
+            </div>
+            
+            <div class="color-info">
+              <div class="color-label" [style.color]="selectedColor">Current Color</div>
+              <div class="color-hex">{{ selectedColor.toUpperCase() }}</div>
+            </div>
+          </div>
+
+          <!-- Color Input -->
+          <div class="color-input-group">
+            <input type="text" 
+                   [(ngModel)]="selectedColor"
+                   (input)="onColorChange(selectedColor)"
+                   class="color-text-input"
+                   placeholder="#000000">
+            <input type="color" 
+                   [(ngModel)]="selectedColor"
+                   (input)="onColorChange(selectedColor)"
+                   class="color-native-input">
+          </div>
+
+          <!-- Advanced Picker Panel -->
+          <div *ngIf="isPickerOpen" class="color-picker-panel">
+            <!-- HSL Controls -->
+            <div class="hsl-controls">
+              <div class="hsl-control">
+                <label class="hsl-label">Hue: {{ hsl.h }}°</label>
+                <input type="range" 
+                       min="0" max="360" 
+                       [value]="hsl.h"
+                       (input)="onHslChange({ h: +$any($event.target).value })"
+                       class="hsl-slider slider-hue">
+              </div>
+              
+              <div class="hsl-control">
+                <label class="hsl-label">Saturation: {{ hsl.s }}%</label>
+                <input type="range" 
+                       min="0" max="100" 
+                       [value]="hsl.s"
+                       (input)="onHslChange({ s: +$any($event.target).value })"
+                       class="hsl-slider">
+              </div>
+              
+              <div class="hsl-control">
+                <label class="hsl-label">Lightness: {{ hsl.l }}%</label>
+                <input type="range" 
+                       min="0" max="100" 
+                       [value]="hsl.l"
+                       (input)="onHslChange({ l: +$any($event.target).value })"
+                       class="hsl-slider">
+              </div>
+            </div>
+
+            <button (click)="addToCustomColors()" class="add-custom-btn">
+              Add to Custom Colors
+            </button>
+          </div>
+
+          <!-- Preset Colors -->
+          <div class="color-section">
+            <h3 class="section-title">Preset Colors</h3>
+            <div class="color-grid">
+              <button *ngFor="let color of presetColors"
+                      class="color-swatch"
+                      [style.backgroundColor]="color"
+                      (click)="onColorChange(color)"
+                      [title]="color">
+              </button>
+            </div>
+          </div>
+
+          <!-- Custom Colors -->
+          <div *ngIf="customColors.length > 0" class="color-section">
+            <div class="section-header">
+              <h3 class="section-title">Custom Colors</h3>
+              <button (click)="clearCustomColors()" class="clear-btn">Clear All</button>
+            </div>
+            <div class="color-grid">
+              <button *ngFor="let color of customColors"
+                      class="color-swatch"
+                      [style.backgroundColor]="color"
+                      (click)="onColorChange(color)"
+                      [title]="color">
+              </button>
+            </div>
+          </div>
+
+          <!-- Color Information -->
+          <div class="color-info-panel">
+            <h3 class="section-title">Color Information</h3>
+            <div class="color-info-grid">
+              <div class="color-info-item">
+                <div class="color-info-label">HEX</div>
+                <div class="color-info-value">{{ selectedColor.toUpperCase() }}</div>
+              </div>
+              <div class="color-info-item">
+                <div class="color-info-label">HSL</div>
+                <div class="color-info-value">{{ hsl.h }}°, {{ hsl.s }}%, {{ hsl.l }}%</div>
+              </div>
+              <div class="color-info-item">
+                <div class="color-info-label">Contrast</div>
+                <div class="contrast-sample"
+                     [style.backgroundColor]="selectedColor"
+                     [style.color]="getContrastColor(selectedColor)">
+                  Sample Text
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <div class="code-container">
+        <app-code-tabs 
+          [htmlCode]="htmlCode" 
+          [scssCode]="scssCode" 
+          [typescriptCode]="typescriptCode"
+          title="Code Example">
+        </app-code-tabs>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">
+      ✨ Key Features
+    </h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">HSL Controls</h4>
+          <p class="feature-description">Intuitive hue, saturation, and lightness sliders</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Multiple Input Methods</h4>
+          <p class="feature-description">Hex input, native color picker, and custom sliders</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Preset & Custom Colors</h4>
+          <p class="feature-description">Pre-defined color palette and custom color management</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Color Information</h4>
+          <p class="feature-description">Display HEX, RGB, HSL values and contrast preview</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">
+      🎯 Common Use Cases
+    </h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">🎨</div>
+        <h4 class="use-case-name">Design Tools</h4>
+        <p class="use-case-description">Theme customization and design systems</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🏠</div>
+        <h4 class="use-case-name">Customization</h4>
+        <p class="use-case-description">User interface personalization</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📊</div>
+        <h4 class="use-case-name">Data Visualization</h4>
+        <p class="use-case-description">Chart colors and data representation</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="notifications-pattern">
+  <div class="pattern-header">
+    <h1 class="pattern-title">
+      <span class="pattern-icon">🔔</span>
+      Notifications Pattern
+    </h1>
+    <p class="pattern-description">
+      Display contextual messages and alerts to provide user feedback.
+    </p>
+  </div>
+
+  <div class="demo-container">
+    <div class="demo-controls">
+      <button (click)="showNotification('success', 'Success!', 'Operation completed successfully')" 
+              class="btn btn-success">Success</button>
+      <button (click)="showNotification('error', 'Error!', 'Something went wrong')" 
+              class="btn btn-error">Error</button>
+      <button (click)="showNotification('warning', 'Warning!', 'Please check your input')" 
+              class="btn btn-warning">Warning</button>
+      <button (click)="showNotification('info', 'Info', 'Here is some information')" 
+              class="btn btn-info">Info</button>
+    </div>
+  </div>
+
+  <app-code-tabs 
+    [htmlCode]="htmlCode" 
+    [scssCode]="scssCode" 
+    [typescriptCode]="typescriptCode"
+    title="Notifications Implementation">
+  </app-code-tabs>
+</div>
+
+<div class="notifications-container" [class]="'position-' + position">
+  <div *ngFor="let notification of notifications" 
+       class="notification" 
+       [class]="'notification-' + notification.type">
+    <div class="notification-icon">
+      {{ getIconForType(notification.type) }}
+    </div>
+    <div class="notification-content">
+      <h4 class="notification-title">{{ notification.title }}</h4>
+      <p class="notification-message">{{ notification.message }}</p>
+    </div>
+    <button (click)="removeNotification(notification.id)" 
+            class="notification-close">×</button>
+  </div>
+</div>

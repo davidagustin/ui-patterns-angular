@@ -1,41 +1,189 @@
-<app-pattern-header 
-  title="Pagination Pattern" 
-  icon="=�"
-  description="Break large datasets into manageable pages with intuitive navigation controls.">
-</app-pattern-header>
+<div class="pattern-container">
+  <app-pattern-header 
+    title="Pagination" 
+    description="Pagination provides navigation through multiple pages of content, improving performance and user experience by breaking large datasets into manageable chunks."
+    icon="📄">
+  </app-pattern-header>
 
-<div class="pattern-demo">
-  <div class="pagination-container">
-    <div class="pagination-info">
-      <span>Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
-      {{ currentPage * itemsPerPage > totalItems ? totalItems : currentPage * itemsPerPage }} of {{ totalItems }} entries</span>
-    </div>
+  <!-- Key Features -->
+  <div class="demo-section">
+    <h3>Key Features</h3>
+    <ul class="feature-list">
+      <li class="feature-item">Smart page number display with ellipsis for large datasets</li>
+      <li class="feature-item">First/last page navigation buttons</li>
+      <li class="feature-item">Configurable items per page selection</li>
+      <li class="feature-item">Current page state and total items information</li>
+      <li class="feature-item">Keyboard navigation and accessibility support</li>
+      <li class="feature-item">Responsive design that adapts to mobile devices</li>
+    </ul>
+  </div>
 
-    <nav class="pagination-nav" aria-label="Pagination">
-      <button 
-        (click)="previousPage()"
-        [disabled]="currentPage === 1"
-        class="pagination-button prev">
-        � Previous
-      </button>
-
-      <div class="pagination-pages">
+  <!-- Demo Controls -->
+  <div class="demo-section">
+    <h3>Interactive Demo</h3>
+    <p>Try navigating through different pages and changing the items per page setting. The pagination automatically adjusts based on the dataset size.</p>
+    
+    <!-- Demo Configuration -->
+    <div class="demo-controls">
+      <h4>Try Different Configurations:</h4>
+      <div class="config-buttons">
         <button 
-          *ngFor="let page of getVisiblePages()"
-          (click)="goToPage(page)"
-          [class.active]="page === currentPage"
-          class="pagination-button page">
-          {{ page }}
+          *ngFor="let config of demoConfigs"
+          (click)="applyDemoConfig(config)"
+          class="btn btn-secondary">
+          {{ config.label }}
         </button>
       </div>
+    </div>
 
-      <button 
-        (click)="nextPage()"
-        [disabled]="currentPage === totalPages"
-        class="pagination-button next">
-        Next �
-      </button>
-    </nav>
+    <!-- Configuration Options -->
+    <div class="config-options">
+      <div class="option-group">
+        <label>
+          <input type="checkbox" [(ngModel)]="showInfo"> Show info text
+        </label>
+        <label>
+          <input type="checkbox" [(ngModel)]="showFirstLast"> Show first/last buttons
+        </label>
+        <label for="maxVisible">Max visible pages:</label>
+        <select id="maxVisible" [(ngModel)]="maxVisiblePages" class="form-select">
+          <option value="3">3</option>
+          <option value="5">5</option>
+          <option value="7">7</option>
+          <option value="9">9</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Pagination Demo -->
+  <div class="demo-section">
+    <h3>Live Pagination</h3>
+    <div class="pagination-demo">
+      <!-- Pagination Info -->
+      <div *ngIf="showInfo" class="pagination-info">
+        <span>Showing {{ getStartItem() }} to {{ getEndItem() }} of {{ totalItems }} entries</span>
+      </div>
+
+      <!-- Main Pagination -->
+      <nav class="pagination-nav" aria-label="Pagination Navigation">
+        <!-- First Page Button -->
+        <button 
+          *ngIf="showFirstLast"
+          (click)="firstPage()"
+          [disabled]="currentPage === 1"
+          class="pagination-btn first-btn"
+          aria-label="Go to first page">
+          ⟨⟨
+        </button>
+
+        <!-- Previous Button -->
+        <button 
+          (click)="previousPage()"
+          [disabled]="currentPage === 1"
+          class="pagination-btn prev-btn"
+          aria-label="Go to previous page">
+          <span class="btn-text">⟨ Previous</span>
+        </button>
+
+        <!-- First Page (always visible for large sets) -->
+        <button 
+          *ngIf="shouldShowLeftEllipsis()"
+          (click)="goToPage(1)"
+          [class.active]="currentPage === 1"
+          class="pagination-btn page-btn">
+          1
+        </button>
+
+        <!-- Left Ellipsis -->
+        <span *ngIf="shouldShowLeftEllipsis()" class="pagination-ellipsis">...</span>
+
+        <!-- Visible Page Numbers -->
+        <div class="pagination-pages">
+          <button 
+            *ngFor="let page of getVisiblePages()"
+            (click)="goToPage(page)"
+            [class.active]="page === currentPage"
+            class="pagination-btn page-btn"
+            [attr.aria-label]="'Go to page ' + page"
+            [attr.aria-current]="page === currentPage ? 'page' : null">
+            {{ page }}
+          </button>
+        </div>
+
+        <!-- Right Ellipsis -->
+        <span *ngIf="shouldShowRightEllipsis()" class="pagination-ellipsis">...</span>
+
+        <!-- Last Page (always visible for large sets) -->
+        <button 
+          *ngIf="shouldShowRightEllipsis()"
+          (click)="goToPage(totalPages)"
+          [class.active]="currentPage === totalPages"
+          class="pagination-btn page-btn">
+          {{ totalPages }}
+        </button>
+
+        <!-- Next Button -->
+        <button 
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages"
+          class="pagination-btn next-btn"
+          aria-label="Go to next page">
+          <span class="btn-text">Next ⟩</span>
+        </button>
+
+        <!-- Last Page Button -->
+        <button 
+          *ngIf="showFirstLast"
+          (click)="lastPage()"
+          [disabled]="currentPage === totalPages"
+          class="pagination-btn last-btn"
+          aria-label="Go to last page">
+          ⟩⟩
+        </button>
+      </nav>
+
+      <!-- Items Per Page Selector -->
+      <div class="pagination-controls">
+        <label for="pageSize">Items per page:</label>
+        <select id="pageSize" 
+                [value]="itemsPerPage" 
+                (change)="onPageSizeChange($event)"
+                class="form-select">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Best Practices -->
+  <div class="demo-section">
+    <h3>Best Practices</h3>
+    <ul class="feature-list">
+      <li class="feature-item">Always show current page and total page information</li>
+      <li class="feature-item">Provide appropriate items per page options (5, 10, 20, 50, 100)</li>
+      <li class="feature-item">Use ellipsis (...) to indicate hidden pages in large datasets</li>
+      <li class="feature-item">Include first/last page buttons for quick navigation</li>
+      <li class="feature-item">Ensure pagination controls are keyboard accessible</li>
+      <li class="feature-item">Consider infinite scroll for better mobile experience in some cases</li>
+    </ul>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="demo-section">
+    <h3>Common Use Cases</h3>
+    <ul class="feature-list">
+      <li class="feature-item">Data tables with large datasets</li>
+      <li class="feature-item">Search results display</li>
+      <li class="feature-item">Product listing pages in e-commerce</li>
+      <li class="feature-item">Blog post archives</li>
+      <li class="feature-item">User management interfaces</li>
+      <li class="feature-item">API response data presentation</li>
+    </ul>
   </div>
 </div>
 

@@ -1,0 +1,175 @@
+<div class="archive-pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title gradient-text">📦 Archive Pattern</h1>
+    <p class="pattern-description">
+      Organize and manage items by archiving them. Keep active items visible while storing completed or old items in an archive.
+    </p>
+  </div>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Example</h2>
+        <p class="example-description">
+          Switch between active and archived views. Click the archive button to move items between states.
+        </p>
+        
+        <!-- Archive Controls -->
+        <div class="archive-controls">
+          <div class="view-tabs">
+            <button
+              (click)="toggleView(false)"
+              class="view-tab"
+              [class.active]="!showArchived">
+              Active ({{ activeItems.length }})
+            </button>
+            <button
+              (click)="toggleView(true)"
+              class="view-tab"
+              [class.active]="showArchived">
+              Archived ({{ archivedCount }})
+            </button>
+          </div>
+          
+          <button 
+            *ngIf="!showArchived && archivedCount > 0"
+            (click)="toggleView(true)"
+            class="archive-link">
+            View Archive →
+          </button>
+        </div>
+
+        <!-- Items List -->
+        <div class="items-list">
+          <div 
+            *ngFor="let item of filteredItems"
+            class="item-card"
+            [class.archived]="isArchived(item.id)">
+            
+            <div class="item-content">
+              <div 
+                class="status-indicator"
+                [ngClass]="getStatusColor(item.status)">
+              </div>
+              <div class="item-info">
+                <h3 class="item-title">{{ item.title }}</h3>
+                <div class="item-meta">
+                  <span class="item-category">{{ item.category }}</span>
+                  <span class="separator">•</span>
+                  <span class="item-date">{{ formatDate(item.date) }}</span>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              (click)="toggleArchive(item.id)"
+              class="archive-button"
+              [class.unarchive]="isArchived(item.id)"
+              [attr.aria-label]="isArchived(item.id) ? 'Unarchive item' : 'Archive item'">
+              
+              <svg *ngIf="isArchived(item.id)" class="archive-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              <svg *ngIf="!isArchived(item.id)" class="archive-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="filteredItems.length === 0" class="empty-state">
+            <div class="empty-icon">📦</div>
+            <p class="empty-title">
+              {{ showArchived ? 'No archived items' : 'No active items' }}
+            </p>
+            <p class="empty-text">
+              {{ showArchived 
+                ? 'Items you archive will appear here' 
+                : 'All items have been archived' }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Bulk Actions -->
+        <div 
+          *ngIf="!showArchived && activeItems.length > 0"
+          class="bulk-actions">
+          <h3 class="bulk-actions-title">Bulk Actions</h3>
+          <div class="action-buttons">
+            <button class="action-button primary">Archive Selected</button>
+            <button class="action-button secondary">Select All</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Toggle Views</h4>
+          <p class="feature-description">Switch between active and archived items</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Visual States</h4>
+          <p class="feature-description">Clear visual distinction for archived items</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Bulk Operations</h4>
+          <p class="feature-description">Archive multiple items at once</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Status Indicators</h4>
+          <p class="feature-description">Color-coded status for easy identification</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">📧</div>
+        <h4 class="use-case-name">Email Management</h4>
+        <p class="use-case-description">Archive old emails while keeping inbox clean</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📁</div>
+        <h4 class="use-case-name">File Organization</h4>
+        <p class="use-case-description">Archive completed projects and documents</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📋</div>
+        <h4 class="use-case-name">Task Management</h4>
+        <p class="use-case-description">Archive completed tasks and keep active ones visible</p>
+      </div>
+    </div>
+  </div>
+</div>

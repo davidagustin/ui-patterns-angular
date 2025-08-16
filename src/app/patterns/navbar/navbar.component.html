@@ -1,0 +1,164 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">🧭</span>
+    Navbar Pattern
+  </h1>
+  <p class="pattern-description">
+    Responsive navigation bar with search, notifications, user menu, and mobile support for modern web applications.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <nav class="navbar">
+    <div class="navbar-container">
+      <!-- Logo Section -->
+      <div class="navbar-brand">
+        <div class="logo">
+          <span class="logo-icon">⚡</span>
+          <span class="logo-text">Company</span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="navbar-nav desktop-nav">
+        <a *ngFor="let item of navigationItems"
+           class="nav-link"
+           [class.active]="item.active"
+           (click)="setActiveNavItem(item.id)">
+          {{ item.label }}
+        </a>
+      </div>
+
+      <!-- Search, Notifications, User Menu -->
+      <div class="navbar-actions">
+        <!-- Search -->
+        <div class="search-container">
+          <button class="search-trigger" (click)="toggleSearch()">
+            <svg fill="currentColor" viewBox="0 0 20 20">
+              <path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+            </svg>
+          </button>
+          
+          <div class="search-dropdown" [class.open]="isSearchOpen">
+            <div class="search-input-container">
+              <input type="text"
+                     class="search-input"
+                     placeholder="Search..."
+                     [(ngModel)]="searchQuery"
+                     (keydown.enter)="onSearch()">
+              <button class="search-submit" (click)="onSearch()">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
+                </svg>
+              </button>
+            </div>
+            
+            <div class="search-suggestions" *ngIf="filteredSuggestions.length > 0">
+              <div *ngFor="let suggestion of filteredSuggestions"
+                   class="suggestion-item"
+                   (click)="selectSuggestion(suggestion)">
+                <span class="suggestion-icon">
+                  <span *ngIf="suggestion.type === 'page'">📄</span>
+                  <span *ngIf="suggestion.type === 'user'">👤</span>
+                  <span *ngIf="suggestion.type === 'document'">📋</span>
+                </span>
+                <span class="suggestion-title">{{ suggestion.title }}</span>
+                <span class="suggestion-type">{{ suggestion.type }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="notifications-container">
+          <button class="notification-trigger" (click)="toggleNotifications()">
+            <svg fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"/>
+            </svg>
+            <span class="notification-badge" *ngIf="unreadNotificationsCount > 0">
+              {{ unreadNotificationsCount }}
+            </span>
+          </button>
+          
+          <div class="notifications-dropdown" [class.open]="isNotificationsOpen">
+            <div class="notifications-header">
+              <h3>Notifications</h3>
+              <button class="mark-all-read" (click)="markAllNotificationsRead()">
+                Mark all read
+              </button>
+            </div>
+            
+            <div class="notifications-list">
+              <div *ngFor="let notification of notifications"
+                   class="notification-item"
+                   [class.unread]="notification.unread"
+                   (click)="markNotificationRead(notification.id)">
+                <div class="notification-content">
+                  <div class="notification-title">{{ notification.title }}</div>
+                  <div class="notification-message">{{ notification.message }}</div>
+                  <div class="notification-time">{{ formatNotificationTime(notification.timestamp) }}</div>
+                </div>
+                <button class="notification-delete" (click)="deleteNotification(notification.id)">
+                  ×
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Menu -->
+        <div class="user-menu-container">
+          <button class="user-trigger" (click)="toggleUserMenu()">
+            <span class="user-avatar">{{ userProfile.avatar }}</span>
+            <span class="user-name desktop-only">{{ userProfile.name }}</span>
+            <svg class="chevron-down" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+            </svg>
+          </button>
+          
+          <div class="user-dropdown" [class.open]="isUserMenuOpen">
+            <div class="user-info">
+              <div class="user-details">
+                <div class="user-display-name">{{ userProfile.name }}</div>
+                <div class="user-email">{{ userProfile.email }}</div>
+                <div class="user-role">{{ userProfile.role }}</div>
+              </div>
+            </div>
+            
+            <div class="user-menu-items">
+              <a class="user-menu-item">Profile Settings</a>
+              <a class="user-menu-item">Account</a>
+              <a class="user-menu-item">Preferences</a>
+              <hr class="menu-divider">
+              <a class="user-menu-item">Help Center</a>
+              <a class="user-menu-item" (click)="onLogout()">Sign Out</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
+          <svg fill="currentColor" viewBox="0 0 20 20">
+            <path d="M3 5h14M3 10h14M3 15h14"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" [class.open]="isMobileMenuOpen">
+      <a *ngFor="let item of navigationItems"
+         class="mobile-nav-link"
+         [class.active]="item.active"
+         (click)="setActiveNavItem(item.id)">
+        {{ item.label }}
+      </a>
+    </div>
+  </nav>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

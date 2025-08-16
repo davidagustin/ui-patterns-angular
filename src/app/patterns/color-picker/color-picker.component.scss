@@ -1,0 +1,326 @@
+/* Color Picker Component */
+.color-picker-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  position: relative;
+}
+
+/* Color Preview Section */
+.color-preview-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.color-preview {
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-xl);
+  border: 2px solid var(--border-primary);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+
+  &:hover {
+    transform: scale(1.05);
+    border-color: var(--gray-400);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.color-info {
+  flex: 1;
+}
+
+.color-label {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin-bottom: var(--spacing-1);
+}
+
+.color-hex {
+  font-family: monospace;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* Color Input Group */
+.color-input-group {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+.color-text-input {
+  flex: 1;
+  padding: var(--spacing-2) var(--spacing-3);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  font-family: monospace;
+  font-size: var(--font-size-sm);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: all var(--transition-normal);
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: var(--focus-ring);
+  }
+}
+
+.color-native-input {
+  width: 3rem;
+  height: 2.5rem;
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  background: none;
+}
+
+/* Color Picker Panel */
+.color-picker-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-4);
+  box-shadow: var(--shadow-xl);
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* HSL Controls */
+.hsl-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
+}
+
+.hsl-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.hsl-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.hsl-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 1rem;
+  border-radius: var(--radius-md);
+  outline: none;
+  cursor: pointer;
+  background: var(--gray-200);
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    border: 2px solid var(--primary-500);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+  }
+
+  &::-moz-range-thumb {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    border: 2px solid var(--primary-500);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--gray-700);
+  }
+}
+
+.slider-hue {
+  background: linear-gradient(
+    to right,
+    hsl(0, 100%, 50%),
+    hsl(60, 100%, 50%),
+    hsl(120, 100%, 50%),
+    hsl(180, 100%, 50%),
+    hsl(240, 100%, 50%),
+    hsl(300, 100%, 50%),
+    hsl(360, 100%, 50%)
+  ) !important;
+}
+
+/* Color Grid */
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: var(--spacing-2);
+}
+
+.color-swatch {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-primary);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+
+  &:hover {
+    border-color: var(--gray-400);
+    transform: scale(1.1);
+    box-shadow: var(--shadow-md);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Color Sections */
+.color-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-title {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.clear-btn {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--transition-normal);
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+/* Add Custom Button */
+.add-custom-btn {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  background: var(--primary-600);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-normal);
+
+  &:hover {
+    background: var(--primary-700);
+  }
+
+  &:active {
+    background: var(--primary-800);
+  }
+}
+
+/* Color Info Panel */
+.color-info-panel {
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-4);
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--gray-900);
+  }
+}
+
+.color-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-4);
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-2);
+}
+
+.color-info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.color-info-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: var(--spacing-1);
+}
+
+.color-info-value {
+  font-family: monospace;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.contrast-sample {
+  padding: var(--spacing-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .color-grid {
+    grid-template-columns: repeat(8, 1fr);
+    gap: var(--spacing-3);
+  }
+  
+  .color-swatch {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  
+  .color-info-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-3);
+  }
+
+  .color-preview-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+  }
+}

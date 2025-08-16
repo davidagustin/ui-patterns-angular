@@ -1,0 +1,140 @@
+<app-pattern-header 
+  title="Input Feedback" 
+  description="Real-time validation and feedback for form inputs"
+  icon="💬">
+</app-pattern-header>
+
+<div class="input-feedback-demo">
+  <!-- Feedback Types Overview -->
+  <div class="feedback-types-grid">
+    <div *ngFor="let type of feedbackTypes" class="feedback-type-card">
+      <div class="type-icon">{{ type.icon }}</div>
+      <h3>{{ type.title }}</h3>
+      <p>{{ type.description }}</p>
+      <div class="type-example" [ngClass]="'example-' + type.type">
+        {{ type.example }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Form -->
+  <div class="form-container">
+    <h3>Registration Form with Real-time Feedback</h3>
+    
+    <form class="feedback-form">
+      <div *ngFor="let field of formFields" class="form-field">
+        <label class="field-label" [for]="field.id">
+          {{ field.label }}
+          <span *ngIf="field.rules.some(r => r.type === 'required')" class="required">*</span>
+        </label>
+        
+        <div class="input-container" [ngClass]="'status-' + getFieldStatus(field)">
+          <input
+            [id]="field.id"
+            [type]="field.type"
+            [name]="field.id"
+            [(ngModel)]="field.value"
+            [placeholder]="field.placeholder"
+            (input)="onFieldInput(field)"
+            (focus)="onFieldFocus(field)"
+            (blur)="onFieldBlur(field)"
+            class="form-input"
+            [class.has-feedback]="validateField(field)">
+          
+          <!-- Status Icon -->
+          <div class="status-icon" *ngIf="field.touched || field.focused">
+            <span *ngIf="getFieldStatus(field) === 'error'">❌</span>
+            <span *ngIf="getFieldStatus(field) === 'warning'">⚠️</span>
+            <span *ngIf="getFieldStatus(field) === 'success'">✅</span>
+            <span *ngIf="getFieldStatus(field) === 'info'">ℹ️</span>
+          </div>
+          
+          <!-- Progress Bar -->
+          <div class="validation-progress" *ngIf="field.touched && field.value">
+            <div class="progress-bar" 
+                 [style.width.%]="getFieldProgress(field)"
+                 [ngClass]="'progress-' + getFieldStatus(field)">
+            </div>
+          </div>
+          
+          <!-- Feedback Message -->
+          <div class="feedback-message" 
+               *ngIf="validateField(field) as feedback"
+               [ngClass]="'feedback-' + feedback.type">
+            <div class="feedback-content">
+              <span class="feedback-icon">{{ feedback.icon }}</span>
+              <span class="feedback-text">{{ feedback.message }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Field Requirements (shown when focused) -->
+        <div class="field-requirements" 
+             *ngIf="field.focused && field.rules.length > 0">
+          <div class="requirements-title">Requirements:</div>
+          <ul class="requirements-list">
+            <li *ngFor="let rule of field.rules" 
+                class="requirement-item"
+                [class.met]="checkRule(field.value, rule)"
+                [class.unmet]="!checkRule(field.value, rule)">
+              <span class="requirement-icon">
+                {{ checkRule(field.value, rule) ? '✅' : '⭕' }}
+              </span>
+              <span class="requirement-text">{{ rule.message }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" 
+                class="submit-btn"
+                [disabled]="!formFields.every(f => isFieldValid(f))">
+          Create Account
+        </button>
+        <div class="form-status">
+          <span *ngIf="formFields.every(f => isFieldValid(f))" class="status-valid">
+            ✅ All fields are valid
+          </span>
+          <span *ngIf="!formFields.every(f => isFieldValid(f))" class="status-invalid">
+            ❌ Please fix the errors above
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Features Section -->
+  <div class="features-section">
+    <h3>Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">⚡</div>
+        <h4>Real-time Validation</h4>
+        <p>Instant feedback as users type</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🎯</div>
+        <h4>Smart Timing</h4>
+        <p>Shows feedback at the right moment</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📊</div>
+        <h4>Progress Indicators</h4>
+        <p>Visual progress for complex validation</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🎨</div>
+        <h4>Multiple States</h4>
+        <p>Error, warning, success, and info states</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode"
+  [scssCode]="scssCode"
+  [typescriptCode]="typescriptCode"
+  [exampleCode]="exampleCode">
+</app-code-tabs>

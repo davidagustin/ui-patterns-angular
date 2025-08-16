@@ -1,0 +1,73 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">🎠</span>
+    Carousel Pattern
+  </h1>
+  <p class="pattern-description">
+    Interactive carousel component with auto-play, navigation arrows, dot indicators, thumbnails, and smooth transitions for showcasing content.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="carousel-container">
+    <!-- Main Carousel -->
+    <div class="carousel-wrapper">
+      <div class="carousel-track" 
+           [style.transform]="'translateX(-' + (currentIndex * 100) + '%)'">
+        <div *ngFor="let item of items" class="carousel-slide">
+          <div class="slide-content">
+            <div class="slide-image">{{ item.image }}</div>
+            <div class="slide-info">
+              <h3 class="slide-title">{{ item.title }}</h3>
+              <p class="slide-description">{{ item.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Navigation Arrows -->
+      <button class="carousel-nav prev" (click)="prevSlide()">
+        <svg fill="currentColor" viewBox="0 0 20 20">
+          <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/>
+        </svg>
+      </button>
+      <button class="carousel-nav next" (click)="nextSlide()">
+        <svg fill="currentColor" viewBox="0 0 20 20">
+          <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"/>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Dots Indicator -->
+    <div class="carousel-indicators">
+      <button *ngFor="let item of items; let i = index"
+              (click)="goToSlide(i)"
+              class="indicator-dot"
+              [class.active]="currentIndex === i">
+      </button>
+    </div>
+    
+    <!-- Thumbnails -->
+    <div class="carousel-thumbnails">
+      <button *ngFor="let item of items; let i = index"
+              (click)="goToSlide(i)"
+              class="thumbnail"
+              [class.active]="currentIndex === i">
+        <span>{{ item.thumbnail }}</span>
+      </button>
+    </div>
+    
+    <!-- Controls -->
+    <div class="carousel-controls">
+      <button (click)="toggleAutoPlay()" class="control-btn">
+        {{ autoPlay ? 'Pause' : 'Play' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

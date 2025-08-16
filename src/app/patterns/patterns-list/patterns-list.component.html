@@ -1,0 +1,94 @@
+<div class="patterns-list-container">
+  <div class="header-section">
+    <h1 class="main-title">
+      <span class="title-icon">🎨</span>
+      UI Patterns Library
+    </h1>
+    <p class="main-description">
+      A comprehensive collection of reusable UI patterns and components for modern web applications.
+    </p>
+  </div>
+
+  <div class="search-section">
+    <div class="search-container">
+      <input 
+        type="text" 
+        placeholder="Search patterns..."
+        [(ngModel)]="searchQuery"
+        (input)="filterPatterns()"
+        class="search-input"
+        aria-label="Search patterns">
+      <div class="search-icon">🔍</div>
+    </div>
+  </div>
+
+  <div class="categories-section">
+    <h2 class="section-title">Categories</h2>
+    <div class="category-filters">
+      <button 
+        *ngFor="let category of categories"
+        (click)="selectCategory(category)"
+        [class.active]="selectedCategory === category"
+        class="category-btn">
+        {{ category }}
+      </button>
+    </div>
+  </div>
+
+  <div class="patterns-grid">
+    <div 
+      *ngFor="let pattern of filteredPatterns"
+      class="pattern-card"
+      [routerLink]="['/patterns', pattern.route]">
+      <div class="pattern-header">
+        <div class="pattern-icon">{{ pattern.icon }}</div>
+        <div class="pattern-info">
+          <h3 class="pattern-name">{{ pattern.name }}</h3>
+          <p class="pattern-description">{{ pattern.description }}</p>
+        </div>
+      </div>
+      <div class="pattern-meta">
+        <span class="pattern-category">{{ pattern.category }}</span>
+        <span class="pattern-status" [class]="pattern.status">
+          {{ pattern.status }}
+        </span>
+      </div>
+      <div class="pattern-tags">
+        <span 
+          *ngFor="let tag of pattern.tags" 
+          class="pattern-tag">
+          {{ tag }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="filteredPatterns.length === 0" class="no-results">
+    <div class="no-results-icon">🔍</div>
+    <h3 class="no-results-title">No patterns found</h3>
+    <p class="no-results-description">
+      Try adjusting your search terms or category filter.
+    </p>
+  </div>
+
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">{{ patterns.length }}</div>
+        <div class="stat-label">Total Patterns</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ categories.length }}</div>
+        <div class="stat-label">Categories</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ getCompletedCount() }}</div>
+        <div class="stat-label">Completed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ getInProgressCount() }}</div>
+        <div class="stat-label">In Progress</div>
+      </div>
+    </div>
+  </div>
+</div>

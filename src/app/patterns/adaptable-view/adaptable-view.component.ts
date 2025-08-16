@@ -236,7 +236,7 @@ export class AdaptableViewComponent {
       <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
         <app-code-tabs 
           [htmlCode]="htmlCode" 
-          [cssCode]="cssCode" 
+          [scssCode]="scssCode" 
           [typescriptCode]="typescriptCode"
           title="Code Example">
         </app-code-tabs>
@@ -246,11 +246,11 @@ export class AdaptableViewComponent {
 </div>`;
   }
 
-  get cssCode(): string {
-    return `/* This Angular component uses Tailwind CSS classes directly in the template */
-/* No custom CSS is needed as all styling is handled by Tailwind utilities */
+  get scssCode(): string {
+    return `/* This Angular component uses SCSS with CSS variables for styling */
+/* Custom SCSS provides maintainable, scalable styles with proper design tokens */
 
-/* Key Tailwind classes used for the Adaptable View pattern: */
+/* Key SCSS features used for the Adaptable View pattern: */
 
 /* View Mode Selector */
 /* bg-gray-100 dark:bg-gray-800 - Background for button group */
@@ -315,7 +315,7 @@ export class AdaptableViewComponent {
 /* bg-white dark:bg-gray-800 - Background colors */
 /* border-gray-200 dark:border-gray-700 - Border colors */
 
-/* Benefits of Tailwind CSS approach: */
+/* Benefits of SCSS approach: */
 /* - Consistent design system */
 /* - Built-in responsive design */
 /* - Automatic dark mode support */

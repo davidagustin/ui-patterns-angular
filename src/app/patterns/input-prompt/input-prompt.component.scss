@@ -1,0 +1,457 @@
+/* Input Prompt Styles */
+.input-prompt-demo {
+  padding: var(--spacing-6);
+}
+
+.form-section,
+.command-section,
+.examples-section {
+  margin-bottom: var(--spacing-8);
+
+  h3 {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-4) 0;
+  }
+
+  .section-description {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    margin: 0 0 var(--spacing-6) 0;
+    line-height: 1.5;
+  }
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-6);
+}
+
+.field-group {
+  position: relative;
+}
+
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-2);
+  font-size: var(--font-size-sm);
+
+  .field-icon {
+    font-size: 1rem;
+  }
+
+  .required {
+    color: var(--red-500);
+    margin-left: var(--spacing-1);
+  }
+}
+
+.input-container {
+  position: relative;
+}
+
+.prompt-input {
+  width: 100%;
+  padding: var(--spacing-3);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-normal);
+  background: var(--bg-primary);
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: var(--focus-ring);
+  }
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+}
+
+/* Prompts Dropdown */
+.prompts-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  margin-top: var(--spacing-1);
+  max-height: 200px;
+  overflow: hidden;
+  animation: dropdownIn 0.2s ease-out;
+
+  @keyframes dropdownIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.prompts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-2) var(--spacing-3);
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--border-primary);
+  font-size: var(--font-size-xs);
+
+  .prompts-title {
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .prompts-count {
+    color: var(--text-tertiary);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--gray-800);
+  }
+}
+
+.prompts-list {
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.prompt-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-2) var(--spacing-3);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  border-bottom: 1px solid var(--border-secondary);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover,
+  &.selected {
+    background: var(--primary-50);
+    color: var(--primary-700);
+
+    @media (prefers-color-scheme: dark) {
+      background: var(--primary-900);
+      color: var(--primary-300);
+    }
+  }
+
+  .prompt-text {
+    font-size: var(--font-size-sm);
+    flex: 1;
+  }
+
+  .prompt-type {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+    opacity: 0.7;
+  }
+}
+
+/* Command Palette */
+.command-palette {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.command-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--bg-primary);
+  border: 2px solid var(--primary-200);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2);
+  transition: all var(--transition-normal);
+
+  &:focus-within {
+    border-color: var(--primary-500);
+    box-shadow: var(--focus-ring);
+  }
+
+  .command-icon {
+    font-size: 1.25rem;
+    margin: 0 var(--spacing-2);
+    color: var(--primary-600);
+  }
+
+  .shortcut-hint {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+    background: var(--gray-100);
+    padding: var(--spacing-1) var(--spacing-2);
+    border-radius: var(--radius-sm);
+    margin-left: var(--spacing-2);
+
+    @media (prefers-color-scheme: dark) {
+      background: var(--gray-700);
+    }
+  }
+}
+
+.command-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: var(--font-size-base);
+  padding: var(--spacing-2);
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+}
+
+/* Commands Dropdown */
+.commands-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  z-index: 1000;
+  margin-top: var(--spacing-2);
+  max-height: 400px;
+  overflow: hidden;
+  animation: dropdownIn 0.2s ease-out;
+}
+
+.commands-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-3);
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--border-primary);
+  font-size: var(--font-size-sm);
+
+  .commands-title {
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .commands-count {
+    color: var(--text-tertiary);
+    font-size: var(--font-size-xs);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--gray-800);
+  }
+}
+
+.commands-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.command-item {
+  padding: var(--spacing-3);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  border-bottom: 1px solid var(--border-secondary);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover,
+  &.selected {
+    background: var(--primary-50);
+
+    @media (prefers-color-scheme: dark) {
+      background: var(--primary-900);
+    }
+  }
+}
+
+.command-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.command-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.command-category-icon {
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+.command-name {
+  font-weight: 500;
+  color: var(--text-primary);
+  flex: 1;
+}
+
+.command-shortcut {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  background: var(--gray-100);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+  font-family: monospace;
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--gray-700);
+  }
+}
+
+.command-description {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-left: 1.5rem;
+}
+
+/* Examples Section */
+.example-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-4);
+}
+
+.example-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-6);
+  text-align: center;
+  transition: all var(--transition-normal);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .example-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-3);
+  }
+
+  h4 {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 var(--spacing-2) 0;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .command-input-container {
+    .shortcut-hint {
+      display: none;
+    }
+  }
+
+  .commands-dropdown,
+  .prompts-dropdown {
+    max-height: 250px;
+  }
+
+  .example-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .prompts-dropdown,
+  .commands-dropdown {
+    animation: none;
+  }
+
+  .prompt-item,
+  .command-item,
+  .example-card {
+    transition: none;
+  }
+}
+
+/* Focus States */
+.prompt-item:focus,
+.command-item:focus {
+  outline: none;
+  background: var(--primary-100);
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--primary-800);
+  }
+}
+
+/* Scrollbar Styling */
+.prompts-list::-webkit-scrollbar,
+.commands-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.prompts-list::-webkit-scrollbar-track,
+.commands-list::-webkit-scrollbar-track {
+  background: var(--gray-100);
+}
+
+.prompts-list::-webkit-scrollbar-thumb,
+.commands-list::-webkit-scrollbar-thumb {
+  background: var(--gray-300);
+  border-radius: 3px;
+
+  &:hover {
+    background: var(--gray-400);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .prompts-list::-webkit-scrollbar-track,
+  .commands-list::-webkit-scrollbar-track {
+    background: var(--gray-700);
+  }
+
+  .prompts-list::-webkit-scrollbar-thumb,
+  .commands-list::-webkit-scrollbar-thumb {
+    background: var(--gray-600);
+
+    &:hover {
+      background: var(--gray-500);
+    }
+  }
+}

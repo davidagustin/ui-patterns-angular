@@ -1,0 +1,186 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">📋</span>
+    Select Dropdown Pattern
+  </h1>
+  <p class="pattern-description">
+    Customizable select dropdowns with search, multi-select, grouping, and virtualization for handling large datasets.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="select-examples">
+    <!-- Basic Select -->
+    <div class="example-section">
+      <h3>Basic Select</h3>
+      <div class="select-container">
+        <button class="select-trigger" (click)="toggleBasicDropdown()">
+          <span class="select-value">{{ getBasicSelectedLabel() }}</span>
+          <svg class="select-arrow" [class.open]="basicIsOpen" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+          </svg>
+        </button>
+        
+        <div class="select-dropdown" [class.open]="basicIsOpen">
+          <div *ngFor="let option of basicOptions" 
+               class="select-option"
+               [class.disabled]="option.disabled"
+               [class.selected]="basicValue === option.value"
+               (click)="selectBasicOption(option)">
+            <span class="option-label">{{ option.label }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Multi-Select -->
+    <div class="example-section">
+      <h3>Multi-Select</h3>
+      <div class="select-container multi-select">
+        <button class="select-trigger" (click)="toggleMultiDropdown()">
+          <div class="selected-items">
+            <span *ngFor="let value of multiValue" 
+                  class="selected-tag">
+              {{ getMultiOptionLabel(value) }}
+              <button class="remove-btn" (click)="removeMultiSelection(value); $event.stopPropagation()">×</button>
+            </span>
+            <span *ngIf="multiValue.length === 0" class="placeholder">{{ getMultiSelectedLabels() }}</span>
+          </div>
+          <svg class="select-arrow" [class.open]="multiIsOpen" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+          </svg>
+        </button>
+        
+        <div class="select-dropdown" [class.open]="multiIsOpen">
+          <div *ngFor="let option of multiOptions" 
+               class="select-option"
+               [class.selected]="isMultiOptionSelected(option.value)"
+               (click)="toggleMultiOption(option)">
+            <input type="checkbox" 
+                   [checked]="isMultiOptionSelected(option.value)"
+                   readonly>
+            <span class="option-icon" *ngIf="option.icon">{{ option.icon }}</span>
+            <span class="option-label">{{ option.label }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Searchable Select -->
+    <div class="example-section">
+      <h3>Searchable Select</h3>
+      <div class="select-container searchable">
+        <button class="select-trigger" (click)="toggleSearchableDropdown()">
+          <span class="select-value">{{ getSearchableSelectedLabel() }}</span>
+          <svg class="select-arrow" [class.open]="searchableIsOpen" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+          </svg>
+        </button>
+        
+        <div class="select-dropdown" [class.open]="searchableIsOpen">
+          <div class="search-container">
+            <input type="text" 
+                   class="search-input searchable-input"
+                   placeholder="Search countries..."
+                   [(ngModel)]="searchQuery"
+                   (click)="$event.stopPropagation()">
+            <button *ngIf="searchQuery" 
+                    class="clear-search"
+                    (click)="clearSearchQuery()">×</button>
+          </div>
+          
+          <div class="options-list">
+            <div *ngFor="let option of filteredSearchableOptions" 
+                 class="select-option"
+                 [class.selected]="searchableValue === option.value"
+                 (click)="selectSearchableOption(option)">
+              <span class="option-icon" *ngIf="option.icon">{{ option.icon }}</span>
+              <span class="option-label">{{ option.label }}</span>
+            </div>
+            
+            <div *ngIf="filteredSearchableOptions.length === 0" class="no-results">
+              No countries found
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grouped Select -->
+    <div class="example-section">
+      <h3>Grouped Select</h3>
+      <div class="select-container">
+        <button class="select-trigger" (click)="toggleGroupedDropdown()">
+          <span class="select-value">{{ getGroupedSelectedLabel() }}</span>
+          <svg class="select-arrow" [class.open]="groupedIsOpen" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+          </svg>
+        </button>
+        
+        <div class="select-dropdown" [class.open]="groupedIsOpen">
+          <ng-container *ngFor="let group of groupKeys">
+            <div class="group-header">{{ group }}</div>
+            <div *ngFor="let option of groupedOptionsByGroup[group]" 
+                 class="select-option"
+                 [class.selected]="groupedValue === option.value"
+                 (click)="selectGroupedOption(option)">
+              <span class="option-label">{{ option.label }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- Large Dataset Select -->
+    <div class="example-section">
+      <h3>Large Dataset (1000+ items)</h3>
+      <div class="select-container searchable">
+        <button class="select-trigger" (click)="toggleLargeDropdown()">
+          <span class="select-value">{{ getLargeSelectedLabel() }}</span>
+          <svg class="select-arrow" [class.open]="largeIsOpen" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+          </svg>
+        </button>
+        
+        <div class="select-dropdown" [class.open]="largeIsOpen">
+          <div class="search-container">
+            <input type="text" 
+                   class="search-input large-search-input"
+                   placeholder="Search items..."
+                   [(ngModel)]="largeSearchQuery"
+                   (click)="$event.stopPropagation()">
+            <button *ngIf="largeSearchQuery" 
+                    class="clear-search"
+                    (click)="clearLargeSearchQuery()">×</button>
+          </div>
+          
+          <div class="options-list">
+            <div *ngFor="let option of filteredLargeOptions" 
+                 class="select-option"
+                 [class.selected]="largeValue === option.value"
+                 (click)="selectLargeOption(option)">
+              <div class="option-content">
+                <div class="option-label">{{ option.label }}</div>
+                <div class="option-description" *ngIf="option.description">{{ option.description }}</div>
+              </div>
+            </div>
+            
+            <div *ngIf="!largeSearchQuery.trim()" class="search-hint">
+              Search to find specific items. Showing first 50 items.
+            </div>
+            
+            <div *ngIf="largeSearchQuery.trim() && filteredLargeOptions.length === 0" class="no-results">
+              No items found matching "{{ largeSearchQuery }}"
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

@@ -1,7 +1,7 @@
-// Since we're using Tailwind CSS classes, minimal styles are needed
-// Any component-specific styles that can't be handled by Tailwind can go here
+// SCSS styles for the Adaptable View pattern
+// Using CSS variables and proper SCSS syntax for maintainable styling
 
-// Custom line-clamp utilities if not available in Tailwind
+// Custom line-clamp utilities
 .line-clamp-1 {
   display: -webkit-box;
   -webkit-line-clamp: 1;

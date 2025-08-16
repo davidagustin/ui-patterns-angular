@@ -1,0 +1,129 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">📋</span>
+    Sidebar Pattern
+  </h1>
+  <p class="pattern-description">
+    Collapsible sidebar navigation with hierarchical menu items, perfect for admin dashboards and complex applications.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="sidebar-container">
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" 
+            (click)="toggleMobile()"
+            *ngIf="!isMobileOpen">
+      <svg fill="currentColor" viewBox="0 0 20 20">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+
+    <!-- Mobile Backdrop -->
+    <div class="mobile-overlay"
+         [class.visible]="isMobileOpen"
+         (click)="closeMobile()">
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar"
+           [class.collapsed]="isCollapsed"
+           [class.mobile-open]="isMobileOpen">
+      
+      <!-- Sidebar Header -->
+      <div class="sidebar-header">
+        <div class="logo-section">
+          <div class="logo">A</div>
+          <span class="logo-text" *ngIf="!isCollapsed">Admin</span>
+        </div>
+        
+        <button class="collapse-btn" 
+                (click)="toggleCollapse()"
+                *ngIf="!isMobileOpen">
+          <svg fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 6L6 10l4 4V6z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title" *ngIf="!isCollapsed">Main</div>
+          
+          <div *ngFor="let item of menuItems" class="nav-item-container">
+            <!-- Main Menu Item -->
+            <a class="nav-item"
+               [class.active]="item.active"
+               [class.has-children]="hasChildren(item)"
+               (click)="hasChildren(item) ? toggleSubmenu(item.id) : setActiveMenu(item.id)">
+              
+              <span class="nav-icon">{{ item.icon }}</span>
+              <span class="nav-text" *ngIf="!isCollapsed">{{ item.label }}</span>
+              
+              <!-- Badge -->
+              <span *ngIf="item.badge && !isCollapsed" 
+                    class="nav-badge">
+                {{ item.badge }}
+              </span>
+              
+              <!-- Expand Arrow -->
+              <svg *ngIf="hasChildren(item) && !isCollapsed"
+                   class="expand-arrow"
+                   [class.expanded]="isMenuExpanded(item.id)"
+                   fill="currentColor" viewBox="0 0 20 20">
+                <path d="M6 8l4 4 4-4H6z"/>
+              </svg>
+            </a>
+
+            <!-- Submenu -->
+            <div *ngIf="hasChildren(item) && isMenuExpanded(item.id)"
+                 class="submenu">
+              <a *ngFor="let child of item.children" 
+                 class="submenu-item"
+                 [class.active]="child.active"
+                 (click)="setActiveMenu(child.id)">
+                <span class="submenu-icon">{{ child.icon }}</span>
+                <span class="submenu-text">{{ child.label }}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- User Profile -->
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">{{ userProfile.initials }}</div>
+          <div class="user-info" *ngIf="!isCollapsed">
+            <div class="user-name">{{ userProfile.name }}</div>
+            <div class="user-role">{{ userProfile.role }}</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1>{{ getActivePageName() }}</h1>
+      <p>This is the main content area. The sidebar can be collapsed and expanded.</p>
+      <div class="content-card">
+        <h3>Sidebar Features:</h3>
+        <ul>
+          <li>✅ Collapsible design</li>
+          <li>✅ Hierarchical navigation</li>
+          <li>✅ Badge notifications</li>
+          <li>✅ Mobile responsive</li>
+          <li>✅ User profile section</li>
+          <li>✅ Dark theme support</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

@@ -1,0 +1,158 @@
+<div class="copy-box-container">
+  <app-pattern-header
+    title="📋 Copy Box Pattern"
+    description="Provide easy-to-use copy functionality for code snippets, commands, and text content with visual feedback."
+    [showBreadcrumb]="false">
+  </app-pattern-header>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Example</h2>
+        <p class="example-description">
+          Click the copy buttons to copy code snippets, commands, or text content to your clipboard.
+        </p>
+        
+        <!-- Code Snippets -->
+        <div class="copy-section">
+          <h3 class="section-title">Code Snippets</h3>
+          <div class="copy-items">
+            <div *ngFor="let snippet of codeSnippets" class="copy-item">
+              <div class="copy-header">
+                <h4 class="item-title">{{ snippet.title }}</h4>
+                <button 
+                  (click)="copyToClipboard(snippet.id, snippet.code)"
+                  class="copy-btn"
+                  [class.copied]="isCopied(snippet.id)"
+                  [attr.aria-label]="'Copy ' + snippet.title">
+                  <span class="copy-icon" *ngIf="!isCopied(snippet.id)">📋</span>
+                  <span class="copy-icon" *ngIf="isCopied(snippet.id)">✓</span>
+                  <span class="copy-text">{{ isCopied(snippet.id) ? 'Copied!' : 'Copy' }}</span>
+                </button>
+              </div>
+              <div class="code-block">
+                <pre><code [class]="'language-' + snippet.language">{{ snippet.code }}</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Commands -->
+        <div class="copy-section">
+          <h3 class="section-title">Commands</h3>
+          <div class="copy-items">
+            <div *ngFor="let command of commands" class="copy-item">
+              <div class="copy-header">
+                <h4 class="item-title">{{ command.title }}</h4>
+                <button 
+                  (click)="copyToClipboard(command.id, command.command)"
+                  class="copy-btn"
+                  [class.copied]="isCopied(command.id)"
+                  [attr.aria-label]="'Copy ' + command.title">
+                  <span class="copy-icon" *ngIf="!isCopied(command.id)">📋</span>
+                  <span class="copy-icon" *ngIf="isCopied(command.id)">✓</span>
+                  <span class="copy-text">{{ isCopied(command.id) ? 'Copied!' : 'Copy' }}</span>
+                </button>
+              </div>
+              <div class="command-block">
+                <code>{{ command.command }}</code>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Text Snippets -->
+        <div class="copy-section">
+          <h3 class="section-title">Text Snippets</h3>
+          <div class="copy-items">
+            <div *ngFor="let text of textSnippets" class="copy-item">
+              <div class="copy-header">
+                <h4 class="item-title">{{ text.title }}</h4>
+                <button 
+                  (click)="copyToClipboard(text.id, text.content)"
+                  class="copy-btn"
+                  [class.copied]="isCopied(text.id)"
+                  [attr.aria-label]="'Copy ' + text.title">
+                  <span class="copy-icon" *ngIf="!isCopied(text.id)">📋</span>
+                  <span class="copy-icon" *ngIf="isCopied(text.id)">✓</span>
+                  <span class="copy-text">{{ isCopied(text.id) ? 'Copied!' : 'Copy' }}</span>
+                </button>
+              </div>
+              <div class="text-block">
+                <p>{{ text.content }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">One-Click Copy</h4>
+          <p class="feature-description">Copy content with a single click</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Visual Feedback</h4>
+          <p class="feature-description">Clear indication when content is copied</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Multiple Formats</h4>
+          <p class="feature-description">Support for code, commands, and text</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Accessibility</h4>
+          <p class="feature-description">Screen reader support and ARIA labels</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">💻</div>
+        <h4 class="use-case-name">Code Documentation</h4>
+        <p class="use-case-description">Share code examples easily</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🔧</div>
+        <h4 class="use-case-name">Command Reference</h4>
+        <p class="use-case-description">Quick command copying</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📝</div>
+        <h4 class="use-case-name">Text Sharing</h4>
+        <p class="use-case-description">Copy formatted text content</p>
+      </div>
+    </div>
+  </div>
+</div>

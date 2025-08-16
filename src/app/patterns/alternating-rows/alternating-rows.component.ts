@@ -204,7 +204,7 @@ export class AlternatingRowsComponent {
       <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
         <app-code-tabs 
           [htmlCode]="htmlCode" 
-          [cssCode]="cssCode" 
+          [scssCode]="scssCode" 
           [typescriptCode]="typescriptCode"
           title="Code Example">
         </app-code-tabs>
@@ -214,11 +214,11 @@ export class AlternatingRowsComponent {
 </div>`;
   }
 
-  get cssCode(): string {
-    return `/* This Angular component uses Tailwind CSS classes directly in the template */
-/* No custom CSS is needed as all styling is handled by Tailwind utilities */
+  get scssCode(): string {
+    return `/* This Angular component uses SCSS with CSS variables for styling */
+/* Custom SCSS provides maintainable, scalable styles with proper design tokens */
 
-/* Key Tailwind classes used for the Alternating Rows pattern: */
+/* Key SCSS features used for the Alternating Rows pattern: */
 
 /* Table Container */
 /* overflow-x-auto - Horizontal scroll for small screens */
@@ -280,7 +280,7 @@ export class AlternatingRowsComponent {
 /* All classes have dark: variants for automatic dark mode */
 /* Colors automatically adapt based on system preference */
 
-/* Benefits of Tailwind CSS approach: */
+/* Benefits of SCSS approach: */
 /* - Consistent color scheme with automatic dark mode */
 /* - Built-in responsive behavior */
 /* - No custom CSS to maintain */

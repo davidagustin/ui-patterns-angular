@@ -1,0 +1,119 @@
+<div class="buttons-pattern">
+  <div class="pattern-header">
+    <h1 class="pattern-title">
+      <span class="pattern-icon">🔘</span>
+      Buttons Pattern
+    </h1>
+    <p class="pattern-description">
+      Interactive buttons for triggering actions, with various styles, sizes, and states.
+    </p>
+  </div>
+
+  <div class="demo-container">
+    <!-- Button Types -->
+    <div class="demo-section">
+      <h3 class="section-title">Button Types</h3>
+      <div class="button-grid">
+        <button *ngFor="let btn of buttonExamples"
+                class="btn"
+                [class]="'btn-' + btn.type + ' btn-' + btn.size"
+                [class.active]="buttonStates[btn.id]"
+                (click)="handleButtonClick(btn.id)">
+          {{ btn.label }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Button Sizes -->
+    <div class="demo-section">
+      <h3 class="section-title">Button Sizes</h3>
+      <div class="button-row">
+        <button *ngFor="let size of sizeExamples"
+                class="btn btn-primary"
+                [class]="'btn-' + size.size">
+          {{ size.label }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Icon Buttons -->
+    <div class="demo-section">
+      <h3 class="section-title">Icon Buttons</h3>
+      <div class="button-row">
+        <button *ngFor="let btn of iconButtons"
+                class="btn btn-icon"
+                [class]="'btn-' + btn.type"
+                (click)="handleButtonClick(btn.id)">
+          <span class="btn-icon">{{ btn.icon }}</span>
+          <span class="btn-text">{{ btn.label }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Loading States -->
+    <div class="demo-section">
+      <h3 class="section-title">Loading States</h3>
+      <div class="button-row">
+        <button class="btn btn-primary"
+                [class.loading]="loadingStates.submit"
+                [disabled]="loadingStates.submit"
+                (click)="handleLoadingAction('submit')">
+          <span *ngIf="!loadingStates.submit">Submit</span>
+          <span *ngIf="loadingStates.submit" class="loading-content">
+            <span class="spinner"></span>
+            Submitting...
+          </span>
+        </button>
+
+        <button class="btn btn-secondary"
+                [class.loading]="loadingStates.save"
+                [disabled]="loadingStates.save"
+                (click)="handleLoadingAction('save')">
+          <span *ngIf="!loadingStates.save">Save Draft</span>
+          <span *ngIf="loadingStates.save" class="loading-content">
+            <span class="spinner"></span>
+            Saving...
+          </span>
+        </button>
+
+        <button class="btn btn-danger"
+                [class.loading]="loadingStates.delete"
+                [disabled]="loadingStates.delete"
+                (click)="handleLoadingAction('delete')">
+          <span *ngIf="!loadingStates.delete">Delete</span>
+          <span *ngIf="loadingStates.delete" class="loading-content">
+            <span class="spinner"></span>
+            Deleting...
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Disabled States -->
+    <div class="demo-section">
+      <h3 class="section-title">Disabled States</h3>
+      <div class="button-row">
+        <button class="btn btn-primary" disabled>Primary Disabled</button>
+        <button class="btn btn-secondary" disabled>Secondary Disabled</button>
+        <button class="btn btn-danger" disabled>Danger Disabled</button>
+      </div>
+    </div>
+
+    <!-- Button Groups -->
+    <div class="demo-section">
+      <h3 class="section-title">Button Groups</h3>
+      <div class="btn-group">
+        <button class="btn btn-secondary">Left</button>
+        <button class="btn btn-secondary active">Center</button>
+        <button class="btn btn-secondary">Right</button>
+      </div>
+    </div>
+  </div>
+
+  <app-code-tabs 
+    [htmlCode]="htmlCode" 
+    [scssCode]="scssCode" 
+    [typescriptCode]="typescriptCode"
+    title="Buttons Implementation">
+  </app-code-tabs>
+</div>

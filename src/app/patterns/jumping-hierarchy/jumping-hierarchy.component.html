@@ -1,0 +1,184 @@
+<div class="container">
+  <div class="header">
+    <h1 class="title">🎯 Jumping in Hierarchy Pattern</h1>
+    <p class="description">
+      Allow users to jump directly to different levels in a hierarchical structure, bypassing intermediate navigation steps for faster access.
+    </p>
+  </div>
+
+  <div class="main-grid">
+    <div class="example-section">
+      <div class="example-container">
+        <h2 class="example-title">🎯 Interactive Example</h2>
+        <p class="example-description">
+          Click on any level to jump directly to that part of the hierarchy. Notice how you can skip intermediate levels for faster navigation.
+        </p>
+        
+        <div class="hierarchy-examples">
+          <!-- Product Hierarchy -->
+          <div class="hierarchy-card">
+            <h3 class="hierarchy-title">Product Hierarchy</h3>
+            
+            <div class="hierarchy-levels">
+              <ng-container *ngFor="let level of hierarchyLevels">
+                <button 
+                  (click)="jumpToLevel(level.level)"
+                  class="hierarchy-level"
+                  [class.level-active]="selectedLevel === level.level"
+                  [attr.aria-label]="'Jump to ' + level.label + ' level'"
+                  [attr.aria-pressed]="selectedLevel === level.level">
+                  <span class="level-icon">{{level.icon}}</span>
+                  <span class="level-label">{{level.label}}</span>
+                  <span class="level-badge" [attr.data-color]="level.color">Level {{level.level}}</span>
+                </button>
+                <div class="level-path">{{level.path}}</div>
+              </ng-container>
+            </div>
+
+            <div class="quick-jump-bar">
+              <span class="jump-label">Quick Jump:</span>
+              <button 
+                *ngFor="let level of hierarchyLevels"
+                (click)="jumpToLevel(level.level)"
+                class="quick-jump-btn"
+                [class.jump-active]="selectedLevel === level.level">
+                {{level.label}}
+              </button>
+            </div>
+
+            <div class="current-level">
+              <div class="level-info">
+                <span class="current-icon">{{getCurrentLevel(hierarchyLevels).icon}}</span>
+                <div class="current-details">
+                  <div class="current-label">Current: {{getCurrentLevel(hierarchyLevels).label}}</div>
+                  <div class="current-path">{{getCurrentLevel(hierarchyLevels).path}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Organization Structure -->
+          <div class="hierarchy-card">
+            <h3 class="hierarchy-title">Organization Structure</h3>
+            
+            <div class="hierarchy-levels">
+              <ng-container *ngFor="let level of organizationLevels">
+                <button 
+                  (click)="jumpToLevel(level.level)"
+                  class="hierarchy-level"
+                  [class.level-active]="selectedLevel === level.level"
+                  [attr.aria-label]="'Jump to ' + level.label + ' level'"
+                  [attr.aria-pressed]="selectedLevel === level.level">
+                  <span class="level-icon">{{level.icon}}</span>
+                  <span class="level-label">{{level.label}}</span>
+                  <span class="level-badge" [attr.data-color]="level.color">Level {{level.level}}</span>
+                </button>
+                <div class="level-path">{{level.path}}</div>
+              </ng-container>
+            </div>
+
+            <div class="current-level">
+              <div class="level-info">
+                <span class="current-icon">{{getCurrentLevel(organizationLevels).icon}}</span>
+                <div class="current-details">
+                  <div class="current-label">Current: {{getCurrentLevel(organizationLevels).label}}</div>
+                  <div class="current-path">{{getCurrentLevel(organizationLevels).path}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dropdown Jump Navigation -->
+          <div class="hierarchy-card">
+            <h4 class="hierarchy-subtitle">Dropdown Jump Navigation</h4>
+            <div class="dropdown-jump">
+              <span class="jump-label">Jump to:</span>
+              <select
+                [value]="selectedLevel"
+                (change)="onDropdownChange($event)"
+                class="jump-select"
+                aria-label="Select hierarchy level">
+                <option 
+                  *ngFor="let level of hierarchyLevels" 
+                  [value]="level.level">
+                  {{level.icon}} {{level.label}} - {{level.path.split(' > ').pop()}}
+                </option>
+              </select>
+              <button
+                (click)="jumpToLevel(selectedLevel)"
+                class="jump-go-btn">
+                Go
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="code-section">
+      <app-code-tabs
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode"
+        [scssCode]="scssCode"
+        [typescriptCode]="typescriptCode"
+      ></app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-container">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Direct Level Access</h4>
+          <p class="feature-description">Jump to any hierarchy level without traversing intermediate steps</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Multiple Interface Options</h4>
+          <p class="feature-description">Buttons, quick jump bar, and dropdown selection</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Visual Path Display</h4>
+          <p class="feature-description">Clear indication of current position and full path</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Level Identification</h4>
+          <p class="feature-description">Color-coded badges and icons for easy recognition</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-container">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">📁</div>
+        <h4 class="use-case-name">File Systems</h4>
+        <p class="use-case-description">Navigate deep folder structures quickly</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🏢</div>
+        <h4 class="use-case-name">Organizational Charts</h4>
+        <p class="use-case-description">Jump between different organizational levels</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🛒</div>
+        <h4 class="use-case-name">Product Categories</h4>
+        <p class="use-case-description">Skip between category levels in e-commerce</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,134 @@
+<app-pattern-header 
+  title="Inline Help" 
+  description="Contextual help and guidance within forms and interfaces"
+  icon="💡">
+</app-pattern-header>
+
+<div class="inline-help-demo">
+  <!-- Help Types Overview -->
+  <div class="help-types-grid">
+    <div *ngFor="let type of helpTypes" class="help-type-card">
+      <div class="type-icon">{{ type.icon }}</div>
+      <h3>{{ type.name }}</h3>
+      <p>{{ type.description }}</p>
+      <div class="type-demo">{{ type.demo }}</div>
+    </div>
+  </div>
+
+  <!-- Form with Different Help Types -->
+  <div class="form-container">
+    <h3>Registration Form with Inline Help</h3>
+    
+    <form class="help-form">
+      <div *ngFor="let field of formFields" class="field-group">
+        <label class="field-label">
+          {{ field.label }}
+          <span *ngIf="field.required" class="required">*</span>
+        </label>
+        
+        <div class="input-with-help">
+          <input 
+            [id]="field.id"
+            type="text" 
+            [placeholder]="field.placeholder"
+            [(ngModel)]="field.value"
+            [name]="field.id"
+            class="form-input">
+          
+          <!-- Tooltip Help -->
+          <div *ngIf="field.help.type === 'tooltip'" 
+               class="help-trigger tooltip"
+               (mouseenter)="showTooltip(field.help.id)"
+               (mouseleave)="hideTooltip()">
+            <span class="help-icon">{{ field.help.icon }}</span>
+            <div class="tooltip-content" 
+                 [class.show]="activeTooltip === field.help.id"
+                 [class.placement-right]="field.help.placement === 'right'">
+              <div class="tooltip-header">{{ field.help.title }}</div>
+              <div class="tooltip-body">{{ field.help.content }}</div>
+            </div>
+          </div>
+          
+          <!-- Popover Help -->
+          <button *ngIf="field.help.type === 'popover'" 
+                  type="button"
+                  class="help-trigger popover-btn"
+                  (click)="togglePopover(field.help.id)">
+            <span class="help-icon">{{ field.help.icon }}</span>
+          </button>
+          
+          <!-- Modal Help -->
+          <button *ngIf="field.help.type === 'modal'" 
+                  type="button"
+                  class="help-trigger modal-btn"
+                  (click)="openHelpModal()">
+            <span class="help-icon">{{ field.help.icon }}</span>
+          </button>
+        </div>
+        
+        <!-- Popover Content -->
+        <div *ngIf="field.help.type === 'popover' && activePopover === field.help.id" 
+             class="popover-content">
+          <div class="popover-header">
+            <h4>{{ field.help.title }}</h4>
+            <button class="close-btn" (click)="closePopover()">×</button>
+          </div>
+          <div class="popover-body">{{ field.help.content }}</div>
+        </div>
+        
+        <!-- Inline Help -->
+        <div *ngIf="field.help.type === 'inline'" class="inline-help">
+          <button class="inline-help-toggle" 
+                  (click)="toggleInlineHelp(field.help.id)">
+            <span class="help-icon">{{ field.help.icon }}</span>
+            <span>{{ field.help.title }}</span>
+            <span class="toggle-icon" 
+                  [class.expanded]="expandedHelp === field.help.id">▼</span>
+          </button>
+          <div class="inline-help-content" 
+               [class.expanded]="expandedHelp === field.help.id">
+            {{ field.help.content }}
+          </div>
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="submit-btn">Create Account</button>
+        <button type="button" class="help-btn" (click)="openHelpModal()">
+          Need Help?
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Help Modal -->
+  <div class="help-modal" 
+       *ngIf="showHelpModal" 
+       (click)="closeHelpModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Registration Help</h3>
+        <button class="close-btn" (click)="closeHelpModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="help-section" *ngFor="let field of formFields">
+          <h4>
+            <span class="section-icon">{{ field.help.icon }}</span>
+            {{ field.help.title }}
+          </h4>
+          <p>{{ field.help.content }}</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" (click)="closeHelpModal()">Got it!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode"
+  [scssCode]="scssCode"
+  [typescriptCode]="typescriptCode"
+  [exampleCode]="exampleCode">
+</app-code-tabs>

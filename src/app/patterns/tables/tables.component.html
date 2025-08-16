@@ -1,0 +1,148 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">📊</span>
+    Data Tables Pattern
+  </h1>
+  <p class="pattern-description">
+    Feature-rich data tables with sorting, filtering, pagination, and row selection for displaying structured data.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="table-container">
+    <!-- Search and Controls -->
+    <div class="table-controls">
+      <div class="search-container">
+        <input type="text" 
+               class="search-input"
+               placeholder="Search users..."
+               [(ngModel)]="searchQuery">
+        <button class="search-clear" 
+                *ngIf="searchQuery"
+                (click)="clearSearch()">×</button>
+      </div>
+      
+      <div class="page-size-selector">
+        <label for="pageSize">Show:</label>
+        <select id="pageSize" 
+                [value]="itemsPerPage"
+                (change)="onItemsPerPageChange(+$any($event.target).value)">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="select-column">
+              <input type="checkbox"
+                     [checked]="allSelected"
+                     [indeterminate]="someSelected"
+                     (change)="onSelectAll()">
+            </th>
+            <th *ngFor="let column of columns"
+                [class.sortable]="column.sortable"
+                (click)="onSort(column)">
+              <div class="column-header">
+                <span>{{ column.label }}</span>
+                <span *ngIf="column.sortable" class="sort-indicator">
+                  <span class="sort-arrow up"
+                        [class.active]="sortConfig.key === column.key && sortConfig.direction === 'asc'">▲</span>
+                  <span class="sort-arrow down"
+                        [class.active]="sortConfig.key === column.key && sortConfig.direction === 'desc'">▼</span>
+                </span>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of paginatedData" 
+              [class.selected]="isRowSelected(row.id)">
+            <td class="select-column">
+              <input type="checkbox"
+                     [checked]="isRowSelected(row.id)"
+                     (change)="onSelectRow(row.id)">
+            </td>
+            <td *ngFor="let column of columns" [attr.data-label]="column.label">
+              <ng-container [ngSwitch]="column.type">
+                <!-- Status Column -->
+                <span *ngSwitchCase="'status'" 
+                      class="status-badge"
+                      [ngClass]="getStatusClass(getCellValue(row, column))">
+                  {{ getCellValue(row, column) | titlecase }}
+                </span>
+                
+                <!-- Date Column -->
+                <span *ngSwitchCase="'date'">
+                  {{ formatDate(getCellValue(row, column)) }}
+                </span>
+                
+                <!-- Actions Column -->
+                <div *ngSwitchCase="'actions'" class="actions-cell">
+                  <button *ngFor="let action of row.actions"
+                          class="action-btn"
+                          [class]="'action-' + action"
+                          (click)="onAction(action, row.id)"
+                          [title]="action | titlecase">
+                    <span [ngSwitch]="action">
+                      <span *ngSwitchCase="'edit'">✏️</span>
+                      <span *ngSwitchCase="'delete'">🗑️</span>
+                      <span *ngSwitchCase="'view'">👁️</span>
+                      <span *ngSwitchDefault>{{ action }}</span>
+                    </span>
+                  </button>
+                </div>
+                
+                <!-- Default Text Column -->
+                <span *ngSwitchDefault>{{ getCellValue(row, column) }}</span>
+              </ng-container>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="table-footer">
+      <div class="pagination-info">
+        Showing {{ startItem }} to {{ endItem }} of {{ totalItems }} entries
+        <span *ngIf="selectedRows.length > 0">
+          ({{ selectedRows.length }} selected)
+        </span>
+      </div>
+      
+      <div class="pagination-controls">
+        <button class="pagination-btn"
+                [disabled]="currentPage === 1"
+                (click)="onPageChange(currentPage - 1)">
+          Previous
+        </button>
+        
+        <button *ngFor="let page of [].constructor(totalPages); let i = index"
+                class="pagination-btn page-number"
+                [class.active]="currentPage === i + 1"
+                (click)="onPageChange(i + 1)">
+          {{ i + 1 }}
+        </button>
+        
+        <button class="pagination-btn"
+                [disabled]="currentPage === totalPages"
+                (click)="onPageChange(currentPage + 1)">
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

@@ -1,0 +1,259 @@
+<div class="pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title gradient-text">📊 Data Visualization Pattern</h1>
+    <p class="pattern-description">
+      Interactive charts and graphs to display data insights with multiple visualization types including bar charts, pie charts, line charts, and metrics dashboards.
+    </p>
+  </div>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Data Dashboard</h2>
+        <p class="example-description">
+          Switch between different chart types to see the same data visualized in various formats.
+        </p>
+        
+        <div class="data-viz-container">
+          <!-- Chart Controls -->
+          <div class="chart-controls">
+            <button 
+              *ngFor="let chart of ['bar', 'pie', 'line', 'area']"
+              (click)="setActiveChart(chart)"
+              [class.active]="activeChart === chart"
+              class="chart-btn">
+              {{ chart | titlecase }} Chart
+            </button>
+          </div>
+
+          <!-- Metrics Dashboard -->
+          <div class="metrics-grid">
+            <div 
+              *ngFor="let metric of metricsData" 
+              class="metric-card"
+              [attr.data-color]="metric.color">
+              <div class="metric-header">
+                <span class="metric-icon">{{ metric.icon }}</span>
+                <h3 class="metric-title">{{ metric.title }}</h3>
+              </div>
+              <div class="metric-content">
+                <span class="metric-value">{{ metric.value }}</span>
+                <span 
+                  class="metric-change"
+                  [class.positive]="metric.change > 0"
+                  [class.negative]="metric.change < 0">
+                  {{ metric.change > 0 ? '+' : '' }}{{ metric.change }}%
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart Display Area -->
+          <div class="chart-display">
+            
+            <!-- Bar Chart -->
+            <div 
+              *ngIf="activeChart === 'bar'" 
+              class="chart-wrapper">
+              <h3 class="chart-title">Monthly Sales Performance</h3>
+              <div class="bar-chart">
+                <div class="chart-grid">
+                  <div class="grid-line" *ngFor="let line of [0,25,50,75,100]"></div>
+                </div>
+                <div class="bars-container">
+                  <div 
+                    *ngFor="let item of salesData" 
+                    class="bar-wrapper">
+                    <div 
+                      class="bar"
+                      [style.height.%]="getBarHeight(item.value, getMaxValue(salesData))"
+                      [style.background-color]="item.color">
+                      <span class="bar-value">${{ item.value | number }}</span>
+                    </div>
+                    <span class="bar-label">{{ item.label }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pie Chart -->
+            <div 
+              *ngIf="activeChart === 'pie'" 
+              class="chart-wrapper">
+              <h3 class="chart-title">Sales by Category</h3>
+              <div class="pie-chart-container">
+                <svg class="pie-chart" viewBox="0 0 100 100">
+                  <path 
+                    *ngFor="let slice of getPieSlices()"
+                    [attr.d]="slice.path"
+                    [attr.fill]="slice.color"
+                    class="pie-slice">
+                  </path>
+                </svg>
+                <div class="pie-legend">
+                  <div 
+                    *ngFor="let item of categoryData" 
+                    class="legend-item">
+                    <span 
+                      class="legend-color"
+                      [style.background-color]="item.color"></span>
+                    <span class="legend-label">{{ item.label }}</span>
+                    <span class="legend-value">{{ item.value }}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Line Chart -->
+            <div 
+              *ngIf="activeChart === 'line'" 
+              class="chart-wrapper">
+              <h3 class="chart-title">Performance Trends</h3>
+              <div class="line-chart-container">
+                <svg class="line-chart" viewBox="0 0 300 150">
+                  <defs>
+                    <linearGradient id="revenueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.3"/>
+                      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  
+                  <!-- Grid lines -->
+                  <g class="grid">
+                    <line *ngFor="let y of [30,60,90,120]" 
+                          [attr.x1]="0" [attr.x2]="300" 
+                          [attr.y1]="y" [attr.y2]="y" 
+                          stroke="#e5e7eb" stroke-width="1"/>
+                  </g>
+                  
+                  <!-- Revenue Line -->
+                  <polyline 
+                    [attr.points]="getLinePoints('revenue')"
+                    fill="none" 
+                    stroke="#3B82F6" 
+                    stroke-width="3"/>
+                    
+                  <!-- Profit Line -->
+                  <polyline 
+                    [attr.points]="getLinePoints('profit')"
+                    fill="none" 
+                    stroke="#10B981" 
+                    stroke-width="3"/>
+                </svg>
+                
+                <div class="line-legend">
+                  <div class="legend-item">
+                    <span class="legend-color" style="background-color: #3B82F6;"></span>
+                    <span>Revenue</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-color" style="background-color: #10B981;"></span>
+                    <span>Profit</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Area Chart -->
+            <div 
+              *ngIf="activeChart === 'area'" 
+              class="chart-wrapper">
+              <h3 class="chart-title">Customer Growth</h3>
+              <div class="area-chart-container">
+                <svg class="area-chart" viewBox="0 0 300 150">
+                  <defs>
+                    <linearGradient id="customerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.6"/>
+                      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.1"/>
+                    </linearGradient>
+                  </defs>
+                  
+                  <!-- Area fill -->
+                  <path 
+                    [attr.d]="getAreaPath('customers')"
+                    fill="url(#customerGradient)"/>
+                    
+                  <!-- Area line -->
+                  <polyline 
+                    [attr.points]="getLinePoints('customers')"
+                    fill="none" 
+                    stroke="#8B5CF6" 
+                    stroke-width="3"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Multiple Chart Types</h4>
+          <p class="feature-description">Bar, pie, line, and area charts with smooth transitions</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Interactive Metrics</h4>
+          <p class="feature-description">Key performance indicators with trend indicators</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Responsive Design</h4>
+          <p class="feature-description">Adapts to different screen sizes and devices</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Accessibility Support</h4>
+          <p class="feature-description">Screen reader friendly with proper ARIA labels</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">📈</div>
+        <h4 class="use-case-name">Business Analytics</h4>
+        <p class="use-case-description">Sales performance and KPI dashboards</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🔍</div>
+        <h4 class="use-case-name">Data Insights</h4>
+        <p class="use-case-description">User behavior and engagement metrics</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📊</div>
+        <h4 class="use-case-name">Reporting</h4>
+        <p class="use-case-description">Financial and operational reports</p>
+      </div>
+    </div>
+  </div>
+</div>

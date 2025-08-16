@@ -1,0 +1,88 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">📁</span>
+    File Upload Pattern
+  </h1>
+  <p class="pattern-description">
+    Drag and drop file upload component with progress tracking, file validation, and multiple file support.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="file-upload-container">
+    <!-- Upload Area -->
+    <div class="upload-area"
+         [class.drag-active]="dragActive"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event)">
+      
+      <div class="upload-content">
+        <div class="upload-icon">📁</div>
+        <h3 class="upload-title">Drop files here or click to browse</h3>
+        <p class="upload-subtitle">Supports images, PDFs, and text files up to 10MB</p>
+        
+        <input type="file"
+               multiple
+               class="file-input"
+               (change)="onFileSelect($event)"
+               accept="image/*,application/pdf,text/*">
+        
+        <button class="browse-btn" onclick="this.previousElementSibling.click()">
+          Browse Files
+        </button>
+      </div>
+    </div>
+
+    <!-- File List -->
+    <div class="file-list" *ngIf="files.length > 0">
+      <h4 class="list-title">Uploaded Files ({{ files.length }})</h4>
+      
+      <div *ngFor="let file of files" class="file-item">
+        <div class="file-info">
+          <div class="file-icon">
+            <span *ngIf="file.type.startsWith('image/')">🖼️</span>
+            <span *ngIf="file.type === 'application/pdf'">📄</span>
+            <span *ngIf="file.type.startsWith('text/')">📝</span>
+            <span *ngIf="!file.type.startsWith('image/') && file.type !== 'application/pdf' && !file.type.startsWith('text/')">📎</span>
+          </div>
+          
+          <div class="file-details">
+            <div class="file-name">{{ file.name }}</div>
+            <div class="file-meta">
+              {{ formatFileSize(file.size) }} • 
+              <span [class]="'status ' + file.status">{{ file.status }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="progress-container" *ngIf="file.status === 'uploading'">
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="file.progress"></div>
+          </div>
+          <span class="progress-text">{{ file.progress?.toFixed(0) }}%</span>
+        </div>
+        
+        <!-- Actions -->
+        <div class="file-actions">
+          <button class="action-btn success" *ngIf="file.status === 'success'">
+            ✓
+          </button>
+          <button class="action-btn error" *ngIf="file.status === 'error'">
+            ⚠️
+          </button>
+          <button class="action-btn remove" (click)="removeFile(file.id)">
+            🗑️
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

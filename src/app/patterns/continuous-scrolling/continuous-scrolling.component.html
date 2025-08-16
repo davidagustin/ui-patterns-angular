@@ -1,0 +1,127 @@
+<div class="pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title">
+      📜 Continuous Scrolling Pattern
+    </h1>
+    <p class="pattern-description">
+      Load content dynamically as users scroll, providing seamless browsing experience without pagination.
+    </p>
+  </div>
+
+  <div class="pattern-grid">
+    <!-- Interactive Example -->
+    <div class="demo-section">
+      <div class="demo-container demo-primary">
+        <h2 class="demo-title">
+          🎯 Interactive Infinite Scroll
+        </h2>
+        
+        <div class="continuous-scroll-demo">
+          <!-- Post List -->
+          <div class="posts-container">
+            <div *ngFor="let post of posts; trackBy: trackByPostId" class="post-item">
+              <div class="post-image">
+                <span class="image-placeholder">{{ post.image }}</span>
+              </div>
+              
+              <div class="post-content">
+                <h3 class="post-title">{{ post.title }}</h3>
+                <p class="post-excerpt">{{ post.content }}</p>
+                
+                <div class="post-meta">
+                  <span class="post-author">{{ post.author }}</span>
+                  <span class="post-date">{{ post.date }}</span>
+                  <span class="post-likes">❤️ {{ post.likes }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Loading Indicator -->
+          <div *ngIf="isLoading" class="loading-container">
+            <div class="loading-spinner"></div>
+            <span class="loading-text">Loading more posts...</span>
+          </div>
+
+          <!-- End Message -->
+          <div *ngIf="!hasMorePosts && !isLoading" class="end-message">
+            <span class="end-text">You've reached the end! 🎉</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <div class="code-container">
+        <app-code-tabs 
+          [htmlCode]="htmlCode" 
+          [scssCode]="scssCode" 
+          [typescriptCode]="typescriptCode"
+          title="Code Example">
+        </app-code-tabs>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">
+      ✨ Key Features
+    </h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Automatic Loading</h4>
+          <p class="feature-description">Detects scroll position and loads more content</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Performance Optimized</h4>
+          <p class="feature-description">Efficient scroll event handling and rendering</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Loading States</h4>
+          <p class="feature-description">Visual feedback during content loading</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">End Detection</h4>
+          <p class="feature-description">Graceful handling when no more content available</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">
+      🎯 Common Use Cases
+    </h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">📱</div>
+        <h4 class="use-case-name">Social Feeds</h4>
+        <p class="use-case-description">News feeds and social media timelines</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🛍️</div>
+        <h4 class="use-case-name">Product Catalogs</h4>
+        <p class="use-case-description">E-commerce product listings</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📰</div>
+        <h4 class="use-case-name">Article Lists</h4>
+        <p class="use-case-description">Blog posts and news articles</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -187,27 +187,18 @@ export class SimpleAccordion {
   get scssCode(): string {
     return `/* Accordion Menu Styles */
 .accordion-menu {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-
-  @media (prefers-color-scheme: dark) {
-    background: #1f2937;
-    border-color: #374151;
-  }
+  box-shadow: var(--shadow-sm);
 }
 
 .accordion-section {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--border-primary);
 
   &.last {
     border-bottom: none;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    border-bottom-color: #374151;
   }
 }
 
@@ -216,33 +207,31 @@ export class SimpleAccordion {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 1rem 1.5rem;
-  background: white;
+  padding: var(--spacing-4) var(--spacing-6);
+  background: var(--bg-primary);
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
   text-align: left;
+  color: var(--text-primary);
 
   &:hover {
-    background-color: #f9fafb;
+    background-color: var(--gray-50);
   }
 
   &.active {
-    background-color: #eff6ff;
-    color: #1d4ed8;
+    background-color: var(--primary-50);
+    color: var(--primary-700);
   }
 
   @media (prefers-color-scheme: dark) {
-    background: #1f2937;
-    color: #f9fafb;
-
     &:hover {
-      background-color: #374151;
+      background-color: var(--gray-800);
     }
 
     &.active {
-      background-color: #1e3a8a;
-      color: #93c5fd;
+      background-color: var(--primary-900);
+      color: var(--primary-300);
     }
   }
 }
@@ -250,11 +239,11 @@ export class SimpleAccordion {
 .header-content {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--spacing-3);
 }
 
 .section-icon {
-  font-size: 1.25rem;
+  font-size: var(--font-size-xl);
 }
 
 .section-info {
@@ -262,19 +251,16 @@ export class SimpleAccordion {
 }
 
 .section-title {
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   font-weight: 600;
   margin: 0;
+  color: var(--text-primary);
 }
 
 .section-count {
-  font-size: 0.875rem;
-  color: #6b7280;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
   margin: 0;
-
-  @media (prefers-color-scheme: dark) {
-    color: #9ca3af;
-  }
 }
 
 .chevron {
@@ -283,24 +269,24 @@ export class SimpleAccordion {
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  background-color: #f3f4f6;
+  background-color: var(--gray-100);
   border-radius: 50%;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
   transform: rotate(-90deg);
 
   &.open {
     transform: rotate(0deg);
-    background-color: #dbeafe;
-    color: #3b82f6;
+    background-color: var(--primary-100);
+    color: var(--primary-600);
   }
 
   @media (prefers-color-scheme: dark) {
-    background-color: #374151;
-    color: #9ca3af;
+    background-color: var(--gray-700);
+    color: var(--gray-400);
 
     &.open {
-      background-color: #1e40af;
-      color: #93c5fd;
+      background-color: var(--primary-800);
+      color: var(--primary-300);
     }
   }
 }
@@ -323,42 +309,39 @@ export class SimpleAccordion {
 }
 
 .content-inner {
-  padding: 1rem 1.5rem;
-  background-color: #f9fafb;
+  padding: var(--spacing-4) var(--spacing-6);
+  background-color: var(--gray-50);
 
   @media (prefers-color-scheme: dark) {
-    background-color: #111827;
+    background-color: var(--gray-900);
   }
 }
 
 .items-container {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--spacing-3);
 }
 
 .accordion-item {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 0.5rem;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
 
   &:hover {
-    border-color: #3b82f6;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-500);
+    box-shadow: var(--shadow-sm);
   }
 
   @media (prefers-color-scheme: dark) {
-    background: #1f2937;
-    border-color: #374151;
-
     &:hover {
-      border-color: #3b82f6;
+      border-color: var(--primary-500);
     }
   }
 }
@@ -366,7 +349,7 @@ export class SimpleAccordion {
 .item-indicator {
   width: 0.5rem;
   height: 0.5rem;
-  background-color: #3b82f6;
+  background-color: var(--primary-500);
   border-radius: 50%;
   margin-top: 0.5rem;
   flex-shrink: 0;
@@ -378,72 +361,67 @@ export class SimpleAccordion {
 }
 
 .item-title {
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
-  color: #111827;
-  margin: 0 0 0.25rem 0;
-
-  @media (prefers-color-scheme: dark) {
-    color: #f9fafb;
-  }
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-1) 0;
 }
 
 .item-description {
-  font-size: 0.75rem;
-  color: #6b7280;
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
   margin: 0;
-
-  @media (prefers-color-scheme: dark) {
-    color: #9ca3af;
-  }
 }
 
 .accordion-controls {
   display: flex;
-  gap: 0.5rem;
-  padding: 1rem 1.5rem;
-  background-color: #f9fafb;
-  border-top: 1px solid #e5e7eb;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4) var(--spacing-6);
+  background-color: var(--gray-50);
+  border-top: 1px solid var(--border-primary);
 
   @media (prefers-color-scheme: dark) {
-    background-color: #111827;
-    border-top-color: #374151;
+    background-color: var(--gray-900);
   }
 }
 
 .control-btn {
-  padding: 0.375rem 0.75rem;
-  font-size: 0.75rem;
+  padding: var(--spacing-1) var(--spacing-3);
+  font-size: var(--font-size-xs);
   border: none;
-  border-radius: 0.375rem;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
 
   &.expand {
-    background-color: #dbeafe;
-    color: #1d4ed8;
+    background-color: var(--primary-100);
+    color: var(--primary-700);
 
     &:hover {
-      background-color: #bfdbfe;
+      background-color: var(--primary-200);
     }
 
     @media (prefers-color-scheme: dark) {
-      background-color: #1e3a8a;
-      color: #93c5fd;
+      background-color: var(--primary-900);
+      color: var(--primary-300);
     }
   }
 
   &.collapse {
-    background-color: #f3f4f6;
-    color: #374151;
+    background-color: var(--gray-100);
+    color: var(--gray-700);
 
     &:hover {
-      background-color: #e5e7eb;
+      background-color: var(--gray-200);
     }
 
     @media (prefers-color-scheme: dark) {
-      background-color: #374151;
-      color: #f9fafb;
+      background-color: var(--gray-700);
+      color: var(--gray-300);
+
+      &:hover {
+        background-color: var(--gray-600);
+      }
     }
   }
 }
@@ -453,29 +431,29 @@ export class SimpleAccordion {
 .accordion-item:focus,
 .control-btn:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  box-shadow: var(--focus-ring);
 }
 
 /* Responsive design */
 @media (max-width: 640px) {
   .accordion-header {
-    padding: 0.75rem 1rem;
+    padding: var(--spacing-3) var(--spacing-4);
   }
   
   .content-inner {
-    padding: 0.75rem 1rem;
+    padding: var(--spacing-3) var(--spacing-4);
   }
   
   .accordion-item {
-    padding: 0.5rem;
+    padding: var(--spacing-2);
   }
   
   .section-title {
-    font-size: 0.875rem;
+    font-size: var(--font-size-sm);
   }
   
   .section-count {
-    font-size: 0.75rem;
+    font-size: var(--font-size-xs);
   }
 }`;
   }

@@ -1,0 +1,145 @@
+<app-pattern-header 
+  title="Input Prompt" 
+  description="Smart input fields with autocomplete suggestions and command palettes"
+  icon="💡">
+</app-pattern-header>
+
+<div class="input-prompt-demo">
+  <!-- Form Fields with Prompts -->
+  <div class="form-section">
+    <h3>Form Fields with Smart Prompts</h3>
+    
+    <div class="form-grid">
+      <div *ngFor="let field of formFields" class="field-group">
+        <label class="field-label">
+          <span class="field-icon">{{ field.icon }}</span>
+          {{ field.label }}
+          <span *ngIf="field.required" class="required">*</span>
+        </label>
+        
+        <div class="input-container">
+          <input 
+            [id]="field.id"
+            [type]="field.type"
+            [placeholder]="field.placeholder"
+            [value]="field.value"
+            (input)="onFieldInput(field, $event)"
+            (focus)="onFieldFocus(field)"
+            (blur)="onFieldBlur(field)"
+            (keydown)="onFieldKeydown(field, $event)"
+            class="prompt-input"
+            autocomplete="off">
+          
+          <!-- Prompts Dropdown -->
+          <div class="prompts-dropdown" 
+               *ngIf="field.showPrompts && getFilteredPrompts(field).length > 0">
+            <div class="prompts-header">
+              <span class="prompts-title">Suggestions</span>
+              <span class="prompts-count">{{ getFilteredPrompts(field).length }}</span>
+            </div>
+            
+            <div class="prompts-list">
+              <div *ngFor="let prompt of getFilteredPrompts(field); let i = index"
+                   class="prompt-item"
+                   [class.selected]="i === selectedPromptIndex"
+                   (mousedown)="selectPrompt(field, prompt)">
+                <span class="prompt-text">{{ prompt }}</span>
+                <span class="prompt-type" *ngIf="field.type === 'email'">@</span>
+                <span class="prompt-type" *ngIf="field.type === 'url'">🌐</span>
+                <span class="prompt-type" *ngIf="field.type === 'search'">🔍</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Command Palette -->
+  <div class="command-section">
+    <h3>Command Palette</h3>
+    <p class="section-description">
+      Type to search for commands and actions. Use keyboard navigation to select.
+    </p>
+    
+    <div class="command-palette">
+      <div class="command-input-container">
+        <div class="command-icon">⚡</div>
+        <input 
+          type="text" 
+          placeholder="Type a command... (try 'new', 'open', 'save')"
+          [value]="commandQuery"
+          (input)="onCommandInput($event)"
+          (focus)="onCommandFocus()"
+          (blur)="onCommandBlur()"
+          (keydown)="onCommandKeydown($event)"
+          class="command-input"
+          autocomplete="off">
+        <div class="shortcut-hint">Ctrl+Shift+P</div>
+      </div>
+      
+      <!-- Commands Dropdown -->
+      <div class="commands-dropdown" 
+           *ngIf="showCommandPrompts && filteredCommands.length > 0">
+        <div class="commands-header">
+          <span class="commands-title">Commands</span>
+          <span class="commands-count">{{ filteredCommands.length }} of {{ commands.length }}</span>
+        </div>
+        
+        <div class="commands-list">
+          <div *ngFor="let command of filteredCommands; let i = index"
+               class="command-item"
+               [class.selected]="i === selectedCommandIndex"
+               (mousedown)="executeCommand(command)">
+            <div class="command-content">
+              <div class="command-header">
+                <span class="command-category-icon">{{ getCategoryIcon(command.category) }}</span>
+                <span class="command-name">{{ command.command }}</span>
+                <span class="command-shortcut" *ngIf="command.shortcut">{{ command.shortcut }}</span>
+              </div>
+              <div class="command-description">{{ command.description }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage Examples -->
+  <div class="examples-section">
+    <h3>Usage Examples</h3>
+    
+    <div class="example-grid">
+      <div class="example-card">
+        <div class="example-icon">🔍</div>
+        <h4>Search Autocomplete</h4>
+        <p>Dynamic suggestions based on user input with keyboard navigation support.</p>
+      </div>
+      
+      <div class="example-card">
+        <div class="example-icon">📧</div>
+        <h4>Email Recipients</h4>
+        <p>Smart email address suggestions from contacts and recent recipients.</p>
+      </div>
+      
+      <div class="example-card">
+        <div class="example-icon">🏷️</div>
+        <h4>Tag Input</h4>
+        <p>Predefined tags with filtering and selection for content categorization.</p>
+      </div>
+      
+      <div class="example-card">
+        <div class="example-icon">⚡</div>
+        <h4>Command Palette</h4>
+        <p>Quick access to application commands with fuzzy search and shortcuts.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode"
+  [scssCode]="scssCode"
+  [typescriptCode]="typescriptCode"
+  [exampleCode]="exampleCode">
+</app-code-tabs>

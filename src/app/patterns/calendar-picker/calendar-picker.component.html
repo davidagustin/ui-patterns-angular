@@ -1,0 +1,116 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">📅</span>
+    Calendar Picker Pattern
+  </h1>
+  <p class="pattern-description">
+    Intuitive date and time selection with visual calendar interface, month navigation, and integrated time picker.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="calendar-picker">
+    <!-- Date Input -->
+    <div class="input-container">
+      <label class="input-label">Select Date & Time</label>
+      <div class="input-wrapper">
+        <input
+          type="text"
+          [value]="selectedDate ? formatSelectedDate() + ' at ' + selectedTime : 'Click to select date and time'"
+          (click)="toggleCalendar()"
+          readonly
+          class="calendar-input"
+          placeholder="Select date and time"
+        />
+        <div class="input-icon">📅</div>
+      </div>
+    </div>
+
+    <!-- Calendar Popup -->
+    <div *ngIf="showCalendar" class="calendar-dropdown">
+      <!-- Calendar Header -->
+      <div class="calendar-header">
+        <button
+          (click)="goToPreviousMonth()"
+          class="nav-button"
+          aria-label="Previous month"
+          title="Previous month">
+          ←
+        </button>
+        <h3 class="month-title">{{ getMonthName(currentMonth) }}</h3>
+        <button
+          (click)="goToNextMonth()"
+          class="nav-button"
+          aria-label="Next month"
+          title="Next month">
+          →
+        </button>
+      </div>
+
+      <!-- Today Button -->
+      <div class="today-section">
+        <button (click)="goToToday()" class="today-link">
+          Go to Today
+        </button>
+      </div>
+
+      <!-- Calendar Grid -->
+      <div class="calendar-grid">
+        <!-- Day Headers -->
+        <div *ngFor="let dayName of dayNames" class="day-header">
+          {{ dayName }}
+        </div>
+        
+        <!-- Calendar Days -->
+        <div *ngFor="let dayInfo of getCalendarDays()" class="day-cell">
+          <button
+            *ngIf="!dayInfo.isEmpty"
+            (click)="handleDateSelect(dayInfo.day)"
+            class="day-button"
+            [class.today]="dayInfo.isToday"
+            [class.selected]="dayInfo.isSelected">
+            {{ dayInfo.day }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Time Picker -->
+      <div class="time-section">
+        <label class="time-label">Time</label>
+        <input
+          type="time"
+          [value]="selectedTime"
+          (change)="onTimeChange($event)"
+          class="time-input"
+        />
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button (click)="closeCalendar()" class="cancel-button">
+          Cancel
+        </button>
+        <button (click)="closeCalendar()" class="ok-button">
+          OK
+        </button>
+      </div>
+    </div>
+
+    <!-- Selected Date Display -->
+    <div *ngIf="selectedDate" class="selected-display">
+      <div class="selected-content">
+        <span class="selected-icon">✅</span>
+        <div>
+          <p class="selected-date">Selected: {{ formatSelectedDate() }}</p>
+          <p class="selected-time">Time: {{ selectedTime }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

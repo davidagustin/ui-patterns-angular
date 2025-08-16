@@ -1,0 +1,133 @@
+<div class="categorization-pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title gradient-text">📁 Categorization Pattern</h1>
+    <p class="pattern-description">
+      Organize content into distinct categories with visual indicators and filtering capabilities.
+    </p>
+  </div>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Example</h2>
+        <p class="example-description">
+          Click on categories to filter items. Each category shows item count and uses color coding for easy identification.
+        </p>
+        
+        <!-- Category Navigation -->
+        <div class="category-nav">
+          <button
+            *ngFor="let category of categories"
+            (click)="selectCategory(category.id)"
+            class="category-button"
+            [class.active]="selectedCategory === category.id"
+            [attr.data-color]="category.color">
+            {{ category.name }}
+            <span class="category-count">{{ category.count }}</span>
+          </button>
+        </div>
+
+        <!-- Items Grid -->
+        <div class="items-grid">
+          <div 
+            *ngFor="let item of filteredItems"
+            class="item-card">
+            
+            <img 
+              [src]="item.image" 
+              [alt]="item.name"
+              class="item-image">
+            
+            <div class="item-content">
+              <div class="item-header">
+                <h3 class="item-title">{{ item.name }}</h3>
+                <span 
+                  *ngIf="findCategoryByItemCategory(item.category) as category"
+                  class="item-category"
+                  [attr.data-color]="category.color">
+                  {{ category.name }}
+                </span>
+              </div>
+              <p class="item-price">{{ item.price }}</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Empty State -->
+        <div *ngIf="filteredItems.length === 0" class="empty-state">
+          <div class="empty-icon">📂</div>
+          <p class="empty-text">No items found in this category</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Visual Categories</h4>
+          <p class="feature-description">Color-coded categories for easy identification</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Item Counts</h4>
+          <p class="feature-description">Display number of items in each category</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Instant Filtering</h4>
+          <p class="feature-description">Real-time content filtering by category</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Responsive Layout</h4>
+          <p class="feature-description">Adapts to different screen sizes</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">🛍️</div>
+        <h4 class="use-case-name">E-commerce</h4>
+        <p class="use-case-description">Product categories and department filtering</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📁</div>
+        <h4 class="use-case-name">Content Management</h4>
+        <p class="use-case-description">Document and file organization</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📊</div>
+        <h4 class="use-case-name">Data Analysis</h4>
+        <p class="use-case-description">Dataset categorization and filtering</p>
+      </div>
+    </div>
+  </div>
+</div>

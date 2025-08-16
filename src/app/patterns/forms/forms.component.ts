@@ -263,37 +263,45 @@ export class FormsComponent {
   }
 
   getFieldClasses(field: FormField): string {
-    const baseClasses = 'w-full px-3 py-2 border rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500';
-    const errorClasses = this.formErrors[field.id] ? 'border-red-500 dark:border-red-400' : 'border-gray-300 dark:border-gray-600';
-    const disabledClasses = field.disabled ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed' : 'bg-white dark:bg-gray-800';
+    let classes = 'form-input';
     
-    return `${baseClasses} ${errorClasses} ${disabledClasses} text-gray-900 dark:text-gray-100`;
+    if (field.type === 'select') {
+      classes = 'form-select';
+    } else if (field.type === 'textarea') {
+      classes = 'form-textarea';
+    }
+    
+    if (this.formErrors[field.id]) {
+      classes += ' error';
+    }
+    
+    return classes;
   }
 
   getLabelClasses(field: FormField): string {
-    return 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2';
+    return 'form-label';
   }
 
   getLayoutClasses(): string {
     switch (this.config.layout) {
       case 'horizontal':
-        return 'grid grid-cols-1 md:grid-cols-2 gap-6';
+        return 'form-horizontal';
       case 'inline':
-        return 'flex flex-wrap gap-4';
+        return 'form-inline';
       default:
-        return 'space-y-6';
+        return 'form-vertical';
     }
   }
 
   get htmlCode(): string {
     return `<!-- Basic Form Layout -->
-<form (ngSubmit)="onSubmit()" class="space-y-6">
+<form (ngSubmit)="onSubmit()" class="form-vertical">
   
   <!-- Text Input -->
   <div class="form-field">
-    <label for="firstName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+    <label for="firstName" class="form-label">
       First Name
-      <span class="text-red-500">*</span>
+      <span class="field-required">*</span>
     </label>
     <input 
       type="text" 
@@ -302,24 +310,22 @@ export class FormsComponent {
       [(ngModel)]="formData.firstName"
       (blur)="onFieldBlur('firstName')"
       placeholder="Enter your first name"
-      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
-             bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
-             transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-      [class.border-red-500]="formErrors['firstName']"
+      class="form-input"
+      [class.error]="formErrors['firstName']"
       required>
     
     <!-- Error Message -->
     <p *ngIf="formErrors['firstName']" 
-       class="text-red-500 dark:text-red-400 text-sm mt-1">
+       class="field-error">
       {{ formErrors['firstName'] }}
     </p>
   </div>
 
   <!-- Email Input -->
   <div class="form-field">
-    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+    <label for="email" class="form-label">
       Email Address
-      <span class="text-red-500">*</span>
+      <span class="field-required">*</span>
     </label>
     <input 
       type="email" 
@@ -328,32 +334,28 @@ export class FormsComponent {
       [(ngModel)]="formData.email"
       (blur)="onFieldBlur('email')"
       placeholder="Enter your email"
-      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
-             bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
-             transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-      [class.border-red-500]="formErrors['email']"
+      class="form-input"
+      [class.error]="formErrors['email']"
       required>
     
     <p *ngIf="formErrors['email']" 
-       class="text-red-500 dark:text-red-400 text-sm mt-1">
+       class="field-error">
       {{ formErrors['email'] }}
     </p>
   </div>
 
   <!-- Select Dropdown -->
   <div class="form-field">
-    <label for="country" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+    <label for="country" class="form-label">
       Country
-      <span class="text-red-500">*</span>
+      <span class="field-required">*</span>
     </label>
     <select 
       id="country" 
       name="country"
       [(ngModel)]="formData.country"
       (blur)="onFieldBlur('country')"
-      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
-             bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
-             transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+      class="form-select"
       required>
       <option value="">Select your country</option>
       <option value="us">United States</option>
@@ -364,7 +366,7 @@ export class FormsComponent {
 
   <!-- Textarea -->
   <div class="form-field">
-    <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+    <label for="message" class="form-label">
       Message
     </label>
     <textarea 
@@ -373,9 +375,7 @@ export class FormsComponent {
       [(ngModel)]="formData.message"
       placeholder="Enter your message"
       rows="4"
-      class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
-             bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
-             transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none">
+      class="form-textarea">
     </textarea>
   </div>
 
@@ -405,119 +405,212 @@ export class FormsComponent {
   </div>
 
   <!-- Submit Button -->
-  <div class="flex items-center justify-end space-x-3">
+  <div class="form-actions">
     <button 
       type="button" 
       (click)="resetForm()"
-      class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 
-             rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+      class="btn btn-secondary">
       Reset
     </button>
     
     <button 
       type="submit" 
       [disabled]="isSubmitting"
-      class="px-6 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 
-             text-white rounded-lg transition-colors flex items-center space-x-2">
-      <span *ngIf="isSubmitting" class="animate-spin">⏳</span>
+      class="btn btn-primary">
+      <span *ngIf="isSubmitting" class="btn-spinner">⏳</span>
       <span>{{ isSubmitting ? 'Submitting...' : 'Submit' }}</span>
     </button>
   </div>
 </form>`;
   }
 
-  get cssCode(): string {
-    return `/* This Angular component uses Tailwind CSS classes directly in the template */
-/* No custom CSS is needed as all styling is handled by Tailwind utilities */
+  get scssCode(): string {
+    return `/* Forms Component SCSS - Using CSS Custom Properties */
 
-/* Example of key Tailwind classes used: */
+/* Form Layouts */
+.form-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
 
-/* Form Layout */
-/* space-y-6 - Vertical spacing between form fields */
-/* grid grid-cols-1 md:grid-cols-2 gap-6 - Responsive grid layout */
-/* flex flex-wrap gap-4 - Inline form layout */
+.form-horizontal {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--spacing-3);
+  align-items: start;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  align-items: end;
+}
 
 /* Form Fields */
-/* block text-sm font-medium - Label styling */
-/* text-gray-700 dark:text-gray-300 - Label colors with dark mode */
-/* mb-2 - Margin bottom for labels */
+.form-field {
+  margin-bottom: var(--spacing-4);
+}
 
-/* Input Styling */
-/* w-full px-3 py-2 - Full width with padding */
-/* border border-gray-300 dark:border-gray-600 - Borders with dark mode */
-/* rounded-lg - Rounded corners */
-/* bg-white dark:bg-gray-800 - Background colors */
-/* text-gray-900 dark:text-gray-100 - Text colors */
-/* transition-colors - Smooth color transitions */
-/* focus:outline-none focus:ring-2 focus:ring-blue-500 - Focus states */
+.form-label {
+  display: block;
+  margin-bottom: var(--spacing-1);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+}
 
-/* Error States */
-/* border-red-500 dark:border-red-400 - Error border colors */
-/* text-red-500 dark:text-red-400 - Error text colors */
+/* Form Inputs */
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-3);
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 
-/* Disabled States */
-/* bg-gray-100 dark:bg-gray-700 - Disabled background */
-/* cursor-not-allowed - Disabled cursor */
+  &:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: var(--focus-ring);
+  }
 
-/* Buttons */
-/* px-4 py-2 - Button padding */
-/* bg-blue-500 hover:bg-blue-600 - Primary button colors */
-/* disabled:bg-blue-300 - Disabled button state */
-/* transition-colors - Smooth transitions */
+  &:disabled {
+    background-color: var(--bg-secondary);
+    color: var(--text-tertiary);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 
-/* Required Indicators */
-/* text-red-500 - Required asterisk color */
+  &.error {
+    border-color: var(--red-500);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  }
+}
 
-/* Help Text */
-/* text-xs text-gray-500 dark:text-gray-400 - Description text */
-/* mt-1 - Margin top for help text */
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
 
-/* Fieldsets and Legends */
-/* border-none - Remove default fieldset border */
-/* p-0 m-0 - Remove default fieldset padding/margin */
+/* Field States */
+.field-required {
+  color: var(--red-500);
+  margin-left: var(--spacing-1);
+}
 
-/* Checkbox and Radio Styling */
-/* w-4 h-4 - Checkbox/radio size */
-/* text-blue-600 - Checked color */
-/* bg-gray-100 border-gray-300 - Default colors */
-/* rounded - Checkbox corners (rounded-full for radio) */
-/* focus:ring-blue-500 - Focus ring color */
+.field-optional {
+  color: var(--text-tertiary);
+  margin-left: var(--spacing-1);
+  font-size: var(--font-size-xs);
+}
 
-/* File Input Styling */
-/* file:mr-4 file:py-2 file:px-4 - File button styling */
-/* file:rounded-lg file:border-0 - File button appearance */
-/* file:bg-blue-50 file:text-blue-700 - File button colors */
-/* file:hover:bg-blue-100 - File button hover */
+.field-description {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  margin-top: var(--spacing-1);
+  margin-bottom: 0;
+}
 
-/* Form Validation */
-/* invalid:border-red-500 - HTML5 validation styling */
-/* valid:border-green-500 - Valid state styling */
+.field-error {
+  color: var(--red-600);
+  font-size: var(--font-size-sm);
+  margin-top: var(--spacing-1);
+  margin-bottom: 0;
+  animation: errorShake 0.3s ease-in-out;
+
+  @media (prefers-color-scheme: dark) {
+    color: var(--red-400);
+  }
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-6);
+  padding-top: var(--spacing-4);
+  border-top: 1px solid var(--border-primary);
+}
+
+/* Button Spinner */
+.btn-spinner {
+  animation: spin 1s linear infinite;
+  margin-right: var(--spacing-2);
+}
+
+/* Success Message */
+.success-message {
+  margin-top: var(--spacing-4);
+  padding: var(--spacing-3);
+  background-color: var(--green-100);
+  border: 1px solid var(--green-300);
+  border-radius: var(--radius-lg);
+  color: var(--green-800);
+  font-size: var(--font-size-sm);
+  animation: successFadeIn 0.5s ease-out;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba(34, 197, 94, 0.1);
+    border-color: var(--green-700);
+    color: var(--green-200);
+  }
+}
+
+/* Animations */
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes successFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 
 /* Responsive Design */
-/* sm:grid-cols-2 md:grid-cols-3 - Responsive columns */
-/* space-y-4 sm:space-y-0 sm:space-x-4 - Responsive spacing */
+@media (max-width: 768px) {
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
 
-/* Dark Mode */
-/* dark: prefix - All form elements support dark mode */
-/* Consistent color scheme across all form elements */
-
-/* Animation Support */
-/* transition-all duration-200 - Smooth transitions */
-/* animate-spin - Loading spinner animation */
-
-/* Accessibility Features */
-/* focus:ring-2 focus:ring-offset-2 - Keyboard focus indicators */
-/* sr-only - Screen reader only text */
-/* aria-describedby - Associate help text with inputs */
-
-/* Benefits of using Tailwind CSS: */
-/* - Consistent form styling across the application */
-/* - Built-in responsive design utilities */
-/* - Comprehensive dark mode support */
-/* - Accessibility-friendly focus states */
-/* - Easy customization without writing CSS */
-/* - Form validation state styling */
-/* - Modern, clean form appearance */`;
+/* Benefits of this SCSS approach:
+ * - Uses CSS custom properties for consistent theming
+ * - Supports automatic dark mode via prefers-color-scheme
+ * - Includes comprehensive accessibility features
+ * - Provides smooth animations and transitions
+ * - Responsive design with mobile-first approach
+ * - Semantic class names for better maintainability
+ * - Error states with visual feedback
+ * - Focus management for keyboard navigation
+ * - High contrast mode support
+ * - Reduced motion support
+ */`;
   }
 
   get typescriptCode(): string {

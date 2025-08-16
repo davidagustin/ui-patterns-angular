@@ -182,13 +182,19 @@ export class CardsComponent {
     <div class="view-controls">
       <button (click)="setViewMode('grid')"
               class="view-btn"
-              [class.active]="viewMode === 'grid'">
-        Grid View
+              [class.active]="viewMode === 'grid'"
+              title="Grid View">
+        <svg class="view-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5z..."/>
+        </svg>
       </button>
       <button (click)="setViewMode('list')"
               class="view-btn"
-              [class.active]="viewMode === 'list'">
-        List View
+              [class.active]="viewMode === 'list'"
+              title="List View">
+        <svg class="view-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4..."/>
+        </svg>
       </button>
     </div>
   </div>
@@ -197,7 +203,8 @@ export class CardsComponent {
   <div class="cards-content" [class.list-view]="viewMode === 'list'">
     <div *ngFor="let card of filteredCards" 
          class="card-item"
-         [class.featured]="card.featured">
+         [class.featured]="card.featured"
+         [class.list-layout]="viewMode === 'list'">
       
       <!-- Card Image/Icon -->
       <div class="card-image">
@@ -225,8 +232,6 @@ export class CardsComponent {
             <span>{{ card.author }}</span>
             <span>•</span>
             <span>{{ card.readTime }}</span>
-            <span>•</span>
-            <span>{{ card.date | date:'MMM d' }}</span>
           </div>
         </div>
         
@@ -234,8 +239,8 @@ export class CardsComponent {
         <p class="card-description">{{ card.description }}</p>
         
         <!-- Tags -->
-        <div class="card-tags">
-          <span *ngFor="let tag of card.tags" class="tag">
+        <div class="card-tags" *ngIf="viewMode === 'grid'">
+          <span *ngFor="let tag of card.tags?.slice(0, 2)" class="tag">
             #{{ tag }}
           </span>
         </div>
@@ -246,18 +251,23 @@ export class CardsComponent {
             <button (click)="toggleLike(card.id)"
                     class="action-btn like-btn"
                     [class.active]="isLiked(card.id)">
-              ♥ {{ card.likes }}
+              <svg class="action-icon" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343..."/>
+              </svg>
+              <span>{{ card.likes }}</span>
             </button>
             
             <button (click)="toggleBookmark(card.id)"
                     class="action-btn bookmark-btn"
                     [class.active]="isBookmarked(card.id)">
-              ★
+              <svg class="action-icon" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"/>
+              </svg>
             </button>
           </div>
           
           <button (click)="onLearnMore(card.id)" class="read-more-btn">
-            Read More
+            Read
           </button>
         </div>
       </div>
@@ -267,77 +277,247 @@ export class CardsComponent {
   }
 
   get scssCode(): string {
-    return `/* Cards Component Styles */
+    return `/* Cards Container */
 .cards-container {
-
-/* Example of key Tailwind classes used: */
-
-/* Card Container */
-/* bg-white dark:bg-gray-800 - Background colors for light/dark mode */
-/* rounded-xl - Extra rounded corners */
-/* border border-gray-200 dark:border-gray-700 - Borders with dark mode */
-/* overflow-hidden - Hide overflow */
-/* transition-all duration-300 - Smooth transitions */
-/* hover:shadow-lg hover:-translate-y-1 - Hover effects */
-
-/* Grid Layout */
-/* grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 - Responsive grid */
-/* gap-6 - Grid gap */
-/* space-y-4 - Vertical spacing for list view */
-
-/* Featured Cards */
-/* ring-2 ring-blue-500/20 - Featured card ring */
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
 
 /* Filter Controls */
-/* flex flex-wrap items-center justify-between - Filter layout */
-/* px-4 py-2 rounded-lg - Button styling */
-/* bg-blue-100 dark:bg-blue-900/30 - Active filter background */
-/* text-blue-700 dark:text-blue-300 - Active filter text */
+.filter-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4);
+  border-bottom: 1px solid var(--border-primary);
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
 
-/* Card Content */
-/* text-lg font-semibold - Title styling */
-/* text-gray-600 dark:text-gray-400 - Description text */
-/* line-clamp-3 - Text truncation */
+.filter-btn {
+  padding: var(--spacing-1) var(--spacing-3);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background: var(--gray-100);
+  color: var(--gray-700);
+
+  &:hover {
+    background: var(--gray-200);
+  }
+
+  &.active {
+    background: var(--primary-100);
+    color: var(--primary-700);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--gray-700);
+    color: var(--gray-300);
+
+    &:hover {
+      background: var(--gray-600);
+    }
+
+    &.active {
+      background: var(--primary-900);
+      color: var(--primary-300);
+    }
+  }
+}
+
+/* Cards Content */
+.cards-content {
+  padding: var(--spacing-4);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-4);
+
+  &.list-view {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+  }
+}
+
+/* Card Item */
+.card-item {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  position: relative;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  &.featured {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.2);
+  }
+
+  &.list-layout {
+    display: flex;
+    flex-direction: row;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--gray-800);
+    border-color: var(--gray-700);
+  }
+}
+
+/* Card Image */
+.card-image {
+  position: relative;
+  height: 128px;
+  background: linear-gradient(135deg, var(--primary-50) 0%, var(--purple-50) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .list-layout & {
+    width: 80px;
+    flex-shrink: 0;
+    height: auto;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+  }
+}
 
 /* Badges */
-/* bg-yellow-500 text-white - Featured badge */
-/* bg-blue-500 text-white - Category badge */
-/* px-2 py-1 rounded-lg text-xs - Badge styling */
+.featured-badge {
+  position: absolute;
+  top: var(--spacing-1);
+  left: var(--spacing-1);
+  background: var(--yellow-500);
+  color: white;
+  padding: 2px var(--spacing-1);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
 
-/* Tags */
-/* bg-gray-100 dark:bg-gray-700 - Tag background */
-/* text-gray-600 dark:text-gray-400 - Tag text */
-/* flex flex-wrap gap-1 - Tag layout */
+.category-badge {
+  position: absolute;
+  top: var(--spacing-1);
+  right: var(--spacing-1);
+  background: var(--primary-500);
+  color: white;
+  padding: 2px var(--spacing-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
 
-/* Interactive Elements */
-/* hover:text-red-500 - Like button hover */
-/* hover:text-blue-500 - Bookmark button hover */
-/* bg-blue-500 hover:bg-blue-600 - Primary button */
-/* transition-colors - Color transitions */
+/* Card Content */
+.card-content {
+  padding: var(--spacing-3);
+  flex: 1;
+}
 
-/* List View */
-/* flex - Horizontal card layout for list view */
-/* w-32 flex-shrink-0 - Fixed width image in list view */
+.card-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-1) 0;
+  line-height: 1.4;
+  transition: color var(--transition-fast);
 
-/* Responsive Design */
-/* md:grid-cols-2 lg:grid-cols-3 - Responsive columns */
-/* space-x-4 - Horizontal spacing */
-/* flex-wrap - Wrapping elements */
+  .card-item:hover & {
+    color: var(--primary-600);
+  }
 
-/* Dark Mode */
-/* dark: prefix - Automatic dark mode support */
-/* All colors have dark mode variants defined */
+  @media (prefers-color-scheme: dark) {
+    .card-item:hover & {
+      color: var(--primary-400);
+    }
+  }
+}
 
-/* Focus states for accessibility */
-.card-item:focus,
-.filter-btn:focus {
+.card-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--spacing-3) 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card Tags */
+.tag {
+  padding: 2px var(--spacing-2);
+  background: var(--gray-100);
+  color: var(--gray-600);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--gray-700);
+    color: var(--gray-400);
+  }
+}
+
+/* Action Buttons */
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  background: none;
+  border: none;
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+
+  &.like-btn.active {
+    color: var(--red-500);
+  }
+
+  &.bookmark-btn.active {
+    color: var(--primary-500);
+  }
+}
+
+.read-more-btn {
+  padding: var(--spacing-1) var(--spacing-2);
+  background: var(--primary-500);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+
+  &:hover {
+    background: var(--primary-600);
+  }
+}
+
+/* Focus States */
+.filter-btn:focus,
+.action-btn:focus,
+.read-more-btn:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-  .cards-grid {
+/* Responsive Design */
+@media (max-width: 640px) {
+  .cards-content {
     grid-template-columns: 1fr;
   }
 }`;

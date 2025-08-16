@@ -1,0 +1,209 @@
+<div class="pattern-container">
+  <app-pattern-header
+    title="CAPTCHA Pattern"
+    emoji="🤖"
+    description="Verify that users are human with various types of CAPTCHA challenges that are both secure and user-friendly.">
+  </app-pattern-header>
+
+  <div class="pattern-grid">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-container">
+        <h2 class="example-title">🎯 Interactive Example</h2>
+        <p class="example-description">
+          Try different types of CAPTCHA challenges. Each type serves different security needs and user experience preferences.
+        </p>
+        
+        <div class="captcha-demo">
+          <!-- CAPTCHA Type Selector -->
+          <div class="captcha-types">
+            <button
+              (click)="setCaptchaType('image')"
+              [class.active]="captchaType === 'image'"
+              class="type-button">
+              Image CAPTCHA
+            </button>
+            <button
+              (click)="setCaptchaType('checkbox')"
+              [class.active]="captchaType === 'checkbox'"
+              class="type-button">
+              Checkbox CAPTCHA
+            </button>
+            <button
+              (click)="setCaptchaType('math')"
+              [class.active]="captchaType === 'math'"
+              class="type-button">
+              Math CAPTCHA
+            </button>
+          </div>
+
+          <!-- CAPTCHA Challenge -->
+          <div class="captcha-container">
+            <div *ngIf="isVerified; else captchaChallenge" class="verification-success">
+              <div class="success-icon">✅</div>
+              <h3 class="success-title">Verification Successful!</h3>
+              <p class="success-message">
+                You have successfully completed the CAPTCHA challenge.
+              </p>
+              <button (click)="resetCaptcha()" class="try-again-button">
+                Try Another CAPTCHA
+              </button>
+            </div>
+
+            <ng-template #captchaChallenge>
+              <div class="challenge-container">
+                <h3 class="challenge-title">Complete the CAPTCHA Challenge</h3>
+                
+                <!-- Image CAPTCHA -->
+                <div *ngIf="captchaType === 'image'" class="image-captcha">
+                  <div class="captcha-display">
+                    <div class="captcha-text">
+                      <span 
+                        *ngFor="let char of imageCaptcha.split(''); let i = index"
+                        class="captcha-char"
+                        [style]="getCharStyle(i)">
+                        {{ char }}
+                      </span>
+                    </div>
+                    <div class="captcha-instruction">
+                      Enter the characters you see above
+                    </div>
+                  </div>
+                  <input
+                    type="text"
+                    [(ngModel)]="userAnswer"
+                    placeholder="Enter the code"
+                    class="captcha-input"
+                    maxlength="6"
+                  />
+                  <button 
+                    (click)="generateImageCaptcha()" 
+                    class="refresh-button">
+                    Generate new code
+                  </button>
+                </div>
+
+                <!-- Checkbox CAPTCHA -->
+                <div *ngIf="captchaType === 'checkbox'" class="checkbox-captcha">
+                  <div class="checkbox-container">
+                    <input
+                      type="checkbox"
+                      id="captcha-checkbox"
+                      [(ngModel)]="checkboxChecked"
+                      class="checkbox-input"
+                    />
+                    <label for="captcha-checkbox" class="checkbox-label">
+                      I'm not a robot
+                    </label>
+                  </div>
+                  <p class="checkbox-instruction">
+                    Simply check the box to verify you're human
+                  </p>
+                </div>
+
+                <!-- Math CAPTCHA -->
+                <div *ngIf="captchaType === 'math'" class="math-captcha">
+                  <div class="math-display">
+                    <div class="math-problem">
+                      {{ mathProblem.num1 }} {{ mathProblem.operator }} {{ mathProblem.num2 }} = ?
+                    </div>
+                    <div class="math-instruction">
+                      Solve the math problem
+                    </div>
+                  </div>
+                  <input
+                    type="number"
+                    [(ngModel)]="userAnswer"
+                    placeholder="Enter your answer"
+                    class="captcha-input"
+                  />
+                  <button 
+                    (click)="generateMathProblem()" 
+                    class="refresh-button">
+                    Generate new problem
+                  </button>
+                </div>
+
+                <button
+                  (click)="verifyCaptcha()"
+                  class="verify-button"
+                  [disabled]="captchaType !== 'checkbox' && !userAnswer.trim()">
+                  Verify CAPTCHA
+                </button>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <div class="code-container">
+        <app-code-tabs 
+          [htmlCode]="htmlCode" 
+          [scssCode]="scssCode" 
+          [typescriptCode]="typescriptCode"
+          title="Code Example">
+        </app-code-tabs>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-title">Multiple Types</h4>
+          <p class="feature-description">Support for image, checkbox, and math CAPTCHAs</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-title">Accessibility</h4>
+          <p class="feature-description">Alternative options for users with disabilities</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-title">User-Friendly</h4>
+          <p class="feature-description">Clear instructions and error handling</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-title">Security</h4>
+          <p class="feature-description">Effective protection against automated bots</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">📝</div>
+        <h4 class="use-case-title">Form Protection</h4>
+        <p class="use-case-description">Prevent spam submissions on contact forms</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">👤</div>
+        <h4 class="use-case-title">User Registration</h4>
+        <p class="use-case-description">Verify human users during sign-up process</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">💬</div>
+        <h4 class="use-case-title">Comment Systems</h4>
+        <p class="use-case-description">Protect against automated comment spam</p>
+      </div>
+    </div>
+  </div>
+</div>

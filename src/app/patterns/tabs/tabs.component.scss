@@ -1,27 +1,57 @@
+/* Tabs Component - Pure SCSS with CSS Custom Properties */
+
+/* Pattern Header */
+.pattern-header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.pattern-title {
+  font-size: var(--font-size-4xl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-4);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+}
+
+.pattern-icon {
+  font-size: var(--font-size-4xl);
+}
+
+.pattern-description {
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Pattern Demo */
+.pattern-demo {
+  margin-bottom: var(--spacing-8);
+}
+
 /* Tabs Container */
 .tabs-container {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-
-  @media (prefers-color-scheme: dark) {
-    background: #1f2937;
-    border-color: #374151;
-  }
+  box-shadow: var(--shadow-sm);
 }
 
 /* Tab Navigation */
 .tab-nav {
   display: flex;
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
+  background: var(--gray-50);
+  border-bottom: 1px solid var(--border-primary);
   overflow-x: auto;
 
   @media (prefers-color-scheme: dark) {
-    background: #111827;
-    border-bottom-color: #374151;
+    background: var(--gray-900);
   }
 }
 
@@ -29,54 +59,64 @@
 .tab-button {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-5);
   background: none;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  color: #6b7280;
+  transition: all var(--transition-normal);
+  color: var(--text-secondary);
   border-bottom: 2px solid transparent;
   white-space: nowrap;
-  font-size: 14px;
+  font-size: var(--font-size-sm);
   font-weight: 500;
 
   &:hover:not(.disabled) {
-    color: #374151;
-    background: #f3f4f6;
+    color: var(--text-primary);
+    background: var(--gray-100);
   }
 
   &.active {
-    color: #3b82f6;
-    border-bottom-color: #3b82f6;
-    background: white;
+    color: var(--primary-600);
+    border-bottom-color: var(--primary-600);
+    background: var(--bg-primary);
 
     @media (prefers-color-scheme: dark) {
-      color: #60a5fa;
-      border-bottom-color: #60a5fa;
-      background: #1f2937;
+      color: var(--primary-400);
+      border-bottom-color: var(--primary-400);
     }
   }
 
   &.disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    color: #9ca3af;
+    color: var(--text-tertiary);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: var(--focus-ring);
   }
 
   @media (prefers-color-scheme: dark) {
-    color: #9ca3af;
-
     &:hover:not(.disabled) {
-      color: #f3f4f6;
-      background: #374151;
+      background: var(--gray-700);
     }
   }
 }
 
+.tab-icon {
+  font-size: var(--font-size-base);
+}
+
+.tab-title {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
 /* Tab Content */
 .tab-content {
-  padding: 24px;
+  padding: var(--spacing-6);
 }
 
 .tab-panel {
@@ -84,26 +124,19 @@
 }
 
 .panel-title {
-  font-size: 18px;
+  font-size: var(--font-size-lg);
   font-weight: 600;
-  color: #1f2937;
-  margin: 0 0 12px 0;
-
-  @media (prefers-color-scheme: dark) {
-    color: #f9fafb;
-  }
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-3) 0;
 }
 
 .panel-content {
-  color: #6b7280;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin: 0;
-
-  @media (prefers-color-scheme: dark) {
-    color: #d1d5db;
-  }
 }
 
+/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -112,5 +145,105 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Tab Navigation Scrolling */
+.tab-nav::-webkit-scrollbar {
+  height: 4px;
+}
+
+.tab-nav::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+.tab-nav::-webkit-scrollbar-thumb {
+  background: var(--border-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.tab-nav::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .pattern-title {
+    font-size: var(--font-size-3xl);
+    flex-direction: column;
+  }
+  
+  .pattern-description {
+    font-size: var(--font-size-base);
+  }
+  
+  .tab-button {
+    padding: var(--spacing-2) var(--spacing-4);
+    font-size: var(--font-size-xs);
+  }
+  
+  .tab-content {
+    padding: var(--spacing-4);
+  }
+  
+  .panel-title {
+    font-size: var(--font-size-base);
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .tabs-container {
+    border-width: 2px;
+  }
+  
+  .tab-button {
+    border-bottom-width: 3px;
+    
+    &.active {
+      font-weight: 600;
+    }
+  }
+  
+  .panel-title {
+    font-weight: 700;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .tab-panel {
+    animation: none;
+  }
+  
+  .tab-button {
+    transition: none;
+  }
+}
+
+/* Focus Management for Accessibility */
+.tab-button:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+/* Keyboard Navigation Indicators */
+.tab-nav:focus-within {
+  box-shadow: inset 0 0 0 2px var(--primary-500);
+}
+
+/* Print Styles */
+@media print {
+  .tab-nav {
+    display: none;
+  }
+  
+  .tab-panel[hidden] {
+    display: block !important;
+  }
+  
+  .panel-title::before {
+    content: "Section: ";
+    font-weight: normal;
   }
 }

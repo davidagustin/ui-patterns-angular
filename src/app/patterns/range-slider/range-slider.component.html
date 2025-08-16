@@ -1,0 +1,121 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">🎛️</span>
+    Range Slider Pattern
+  </h1>
+  <p class="pattern-description">
+    Interactive range sliders with single values, dual ranges, stepped controls, and custom styling for various use cases.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="range-slider-container">
+    <!-- Single Range Sliders -->
+    <div class="slider-group">
+      <h3 class="group-title">Single Range Sliders</h3>
+      
+      <!-- Price Slider -->
+      <div class="slider-item">
+        <label class="slider-label">
+          Price Range: {{ formatCurrency(priceRange.value) }}
+        </label>
+        <div class="slider-wrapper">
+          <input type="range"
+                 class="range-input"
+                 [min]="priceRange.min"
+                 [max]="priceRange.max"
+                 [value]="priceRange.value"
+                 (input)="onPriceChange($event)">
+          <div class="slider-track">
+            <div class="slider-progress" 
+                 [style.width.%]="(priceRange.value / priceRange.max) * 100">
+            </div>
+          </div>
+        </div>
+        <div class="slider-labels">
+          <span>{{ formatCurrency(priceRange.min) }}</span>
+          <span>{{ formatCurrency(priceRange.max) }}</span>
+        </div>
+      </div>
+
+      <!-- Volume Slider -->
+      <div class="slider-item">
+        <label class="slider-label">
+          Volume: {{ formatPercentage(volumeLevel.value) }}
+        </label>
+        <div class="slider-wrapper">
+          <input type="range"
+                 class="range-input volume"
+                 [min]="volumeLevel.min"
+                 [max]="volumeLevel.max"
+                 [value]="volumeLevel.value"
+                 (input)="onVolumeChange($event)">
+        </div>
+      </div>
+    </div>
+
+    <!-- Dual Range Slider -->
+    <div class="slider-group">
+      <h3 class="group-title">Dual Range Slider</h3>
+      
+      <div class="slider-item">
+        <label class="slider-label">
+          Price Filter: {{ formatCurrency(priceFilter.from) }} - {{ formatCurrency(priceFilter.to) }}
+        </label>
+        <div class="dual-slider-wrapper">
+          <div class="dual-slider-track">
+            <div class="dual-slider-progress"
+                 [style.left.%]="getDualRangeProgress().left"
+                 [style.width.%]="getDualRangeProgress().width">
+            </div>
+          </div>
+          <input type="range"
+                 class="dual-range-input from"
+                 [min]="priceFilter.min"
+                 [max]="priceFilter.max"
+                 [value]="priceFilter.from"
+                 (input)="onDualRangeFromChange($event)">
+          <input type="range"
+                 class="dual-range-input to"
+                 [min]="priceFilter.min"
+                 [max]="priceFilter.max"
+                 [value]="priceFilter.to"
+                 (input)="onDualRangeToChange($event)">
+        </div>
+      </div>
+    </div>
+
+    <!-- Stepped Slider -->
+    <div class="slider-group">
+      <h3 class="group-title">Stepped Slider</h3>
+      
+      <div class="slider-item">
+        <label class="slider-label">
+          Rating: {{ rating.value }} / {{ rating.max }}
+        </label>
+        <div class="slider-wrapper">
+          <input type="range"
+                 class="range-input stepped"
+                 [min]="rating.min"
+                 [max]="rating.max"
+                 [step]="rating.step"
+                 [value]="rating.value"
+                 (input)="onRatingChange($event)">
+          <div class="step-markers">
+            <span *ngFor="let i of [].constructor(rating.max)" 
+                  class="step-marker"
+                  [class.active]="i + 1 <= rating.value">
+              {{ i + 1 }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

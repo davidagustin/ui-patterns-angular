@@ -1,0 +1,155 @@
+<app-pattern-header
+  title="Drag & Reorder Pattern"
+  description="Intuitive drag and drop reordering for prioritizing tasks, ranking items, and organizing content with visual feedback and position indicators."
+  [features]="[
+    'Visual ranking with position numbers',
+    'Priority-based task organization',
+    'Team lineup ranking system',
+    'Completion state management',
+    'Medal rankings for top performers',
+    'Smooth drag animations'
+  ]"
+  [useCases]="[
+    'Task priority management',
+    'Team roster ordering',
+    'Content prioritization',
+    'Feature roadmap planning',
+    'Player ranking systems',
+    'Order of operations'
+  ]">
+</app-pattern-header>
+
+<div class="pattern-sections">
+  <div class="pattern-example-card">
+    <h2 class="card-title">🎯 Interactive Example</h2>
+    <p class="example-description">
+      Drag items to reorder them by priority. Tasks can be marked complete, and players can be selected for the lineup.
+    </p>
+    
+    <div class="drag-reorder-pattern">
+      <!-- Task Lists Section -->
+      <div class="lists-section">
+        <h3 class="section-title">Project Task Lists</h3>
+        <p class="section-description">Drag tasks to reorder them by priority</p>
+        
+        <div class="task-lists-grid">
+          <div *ngFor="let list of taskLists" class="task-list">
+            <div class="list-header">
+              <h4 class="list-title">{{ list.title }}</h4>
+              <span class="list-count">{{ list.items.length }} tasks</span>
+            </div>
+            
+            <div class="list-container"
+                 cdkDropList
+                 [cdkDropListData]="list.items"
+                 [cdkDropListDisabled]="!list.allowReorder"
+                 (cdkDropListDropped)="onListDrop($event)">
+              
+              <div *ngFor="let task of list.items; let i = index" 
+                   class="reorder-item"
+                   [class.completed]="task.completed"
+                   cdkDrag
+                   [cdkDragDisabled]="task.completed">
+                
+                <div class="item-order">{{ i + 1 }}</div>
+                
+                <div class="drag-handle" cdkDragHandle>
+                  <svg class="handle-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                  </svg>
+                </div>
+                
+                <div class="item-content">
+                  <div class="item-header">
+                    <h5 class="item-title">{{ task.title }}</h5>
+                    <div class="item-priority" [class]="'priority-' + task.priority">
+                      <span class="priority-icon">{{ getPriorityIcon(task.priority) }}</span>
+                      <span class="priority-text">{{ task.priority }}</span>
+                    </div>
+                  </div>
+                  <p class="item-description">{{ task.description }}</p>
+                </div>
+                
+                <button 
+                  (click)="toggleTaskCompletion(list.id, task.id)"
+                  class="completion-toggle"
+                  [class.completed]="task.completed">
+                  <svg *ngIf="task.completed" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                  <svg *ngIf="!task.completed" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team Lineup Section -->
+      <div class="lineup-section">
+        <h3 class="section-title">Team Lineup Ranking</h3>
+        <p class="section-description">Reorder players by performance ranking</p>
+        
+        <div class="lineup-container"
+             cdkDropList
+             [cdkDropListData]="players"
+             (cdkDropListDropped)="onPlayerDrop($event)">
+          
+          <div *ngFor="let player of players; let i = index" 
+               class="player-item"
+               [class.selected]="player.completed"
+               cdkDrag>
+            
+            <div class="player-rank">
+              <span class="rank-number">{{ i + 1 }}</span>
+              <div class="rank-medal" [class]="'rank-' + (i + 1)">
+                <span *ngIf="i === 0">🥇</span>
+                <span *ngIf="i === 1">🥈</span>
+                <span *ngIf="i === 2">🥉</span>
+                <span *ngIf="i > 2">{{ i + 1 }}</span>
+              </div>
+            </div>
+            
+            <div class="drag-handle" cdkDragHandle>
+              <svg class="handle-icon" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+              </svg>
+            </div>
+            
+            <div class="player-content">
+              <h5 class="player-name">{{ player.title }}</h5>
+              <p class="player-stats">{{ player.description }}</p>
+            </div>
+            
+            <button 
+              (click)="togglePlayerSelection(player.id)"
+              class="selection-toggle"
+              [class.selected]="player.completed">
+              <svg *ngIf="player.completed" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+              <span *ngIf="!player.completed">Select</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reset Controls -->
+      <div class="controls-section">
+        <button (click)="resetToDefaults()" class="reset-btn">
+          Reset All Lists
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-code-tabs 
+    [exampleCode]="exampleCode"
+    [htmlCode]="htmlCode" 
+    [scssCode]="scssCode" 
+    [typescriptCode]="typescriptCode"
+    title="Code Example">
+  </app-code-tabs>
+</div>

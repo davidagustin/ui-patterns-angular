@@ -1,0 +1,120 @@
+<div class="pattern-header">
+  <h1 class="pattern-title">
+    <span class="pattern-icon">=�</span>
+    Data Grid Pattern
+  </h1>
+  <p class="pattern-description">
+    Advanced data table with sorting, filtering, inline editing, row selection, and export capabilities for managing complex datasets.
+  </p>
+</div>
+
+<div class="pattern-demo">
+  <div class="data-grid-container">
+    <!-- Controls -->
+    <div class="grid-controls">
+      <div class="search-section">
+        <input
+          type="text"
+          placeholder="Search all fields..."
+          [(ngModel)]="searchTerm"
+          class="search-input">
+        <span class="result-count">{{ filteredData.length }} of {{ data.length }} records</span>
+      </div>
+      
+      <div class="action-section">
+        <button (click)="viewMode = viewMode === 'table' ? 'cards' : 'table'"
+                class="view-toggle-btn">
+          {{ viewMode === 'table' ? '=� Cards' : '=� Table' }}
+        </button>
+        
+        <button *ngIf="selectedRows.size > 0"
+                (click)="deleteSelected()"
+                class="delete-btn">
+          Delete ({{ selectedRows.size }})
+        </button>
+        
+        <button (click)="exportData()" class="export-btn">
+          Export CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- Data Table -->
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="select-column">
+              <input type="checkbox"
+                     [checked]="selectedRows.size === sortedData.length && sortedData.length > 0"
+                     (change)="onSelectAll()">
+            </th>
+            <th *ngFor="let column of columns"
+                [class.sortable]="column.sortable"
+                (click)="column.sortable && onSort(column.key)">
+              <div class="header-content">
+                <span>{{ column.label }}</span>
+                <svg *ngIf="column.sortable" class="sort-icon" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of sortedData"
+              [class.selected]="selectedRows.has(row.id)">
+            <td class="select-column">
+              <input type="checkbox"
+                     [checked]="selectedRows.has(row.id)"
+                     (change)="onSelectRow(row.id)">
+            </td>
+            <td *ngFor="let column of columns"
+                [class.editable]="column.editable"
+                (click)="column.editable && onEditCell(row.id, column.key)">
+              
+              <!-- Editable Cell -->
+              <div *ngIf="editingCell?.rowId === row.id && editingCell?.field === column.key">
+                <input *ngIf="column.type !== 'select'"
+                       [type]="column.type || 'text'"
+                       [value]="getRowValue(row, column.key)"
+                       (blur)="onSaveCell($any($event.target).value)"
+                       (keydown.enter)="onSaveCell($any($event.target).value)"
+                       (keydown.escape)="onCancelEdit()"
+                       class="edit-input"
+                       autofocus>
+                
+                <select *ngIf="column.type === 'select'"
+                        [value]="getRowValue(row, column.key)"
+                        (blur)="onSaveCell($any($event.target).value)"
+                        (change)="onSaveCell($any($event.target).value)"
+                        class="edit-select"
+                        autofocus>
+                  <option *ngFor="let option of column.options" [value]="option">
+                    {{ option }}
+                  </option>
+                </select>
+              </div>
+              
+              <!-- Display Cell -->
+              <div *ngIf="editingCell?.rowId !== row.id || editingCell?.field !== column.key"
+                   class="cell-content">
+                <span *ngIf="column.key !== 'status'">{{ getRowValue(row, column.key) }}</span>
+                <span *ngIf="column.key === 'status'" 
+                      [class]="'status-badge ' + getStatusClass(row.status)">
+                  {{ row.status }}
+                </span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

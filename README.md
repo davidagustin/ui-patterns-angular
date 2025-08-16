@@ -19,18 +19,47 @@ Visit the live application: [UI Patterns Angular](https://your-deployment-url.co
 
 ### Navigation & Layout
 - **Accordion Menu** - Expandable content sections with smooth animations
+- **Navbar** - Navigation bars with dropdowns, search, and mobile responsiveness
+- **Sidebar** - Collapsible side navigation with nested menus
 - **Tabs** - Organize content into navigable sections with icons and disabled states
-- **Modal** - Overlay dialogs with backdrop, focus management, and form support
-- **Dropdown Menu** - Interactive dropdowns with separators, icons, and disabled items
+- **Breadcrumbs** - Navigation path indicators with active states
+- **Bottom Navigation** - Mobile-optimized bottom tab navigation
+- **Jumping Hierarchy** - Direct level access in hierarchical structures
 
-### Data & Forms
+### Content & Display
 - **Cards** - Content cards with filtering, grid/list views, and interactive actions
-- **Forms** - Comprehensive form patterns with validation and reactive forms
-- **Pagination** - Page navigation with customizable page ranges and item counts
+- **Modal** - Overlay dialogs with backdrop, focus management, and form support
+- **Carousel** - Image and content sliders with navigation controls
+- **Gallery** - Image galleries with lightbox and grid layouts
+- **Continuous Scrolling** - Infinite scroll with intersection observer
+- **Data Grid** - Advanced tables with sorting, filtering, and pagination
 
-### Component Library
-- **90+ Additional Patterns** identified for conversion from React source
-- **Shared Components** - CodeTabsComponent, PatternHeaderComponent for consistency
+### Forms & Input
+- **Forms** - Comprehensive form patterns with validation and reactive forms
+- **Autocomplete** - Search input with suggestions and filtering
+- **File Upload** - Drag-and-drop file upload with progress indicators
+- **Range Slider** - Interactive range inputs with dual handles
+- **Color Picker** - HSL and RGB color selection interfaces
+- **Calendar Picker** - Date selection with month/year navigation
+
+### Feedback & Status
+- **Notifications** - Toast notifications with different severity levels
+- **Completeness Meter** - Progress indicators and completion status
+- **Captcha** - Human verification with visual challenges
+- **Archive** - Data archiving and restoration interfaces
+
+### Utilities & Tools
+- **Search** - Advanced search with filters and real-time results
+- **Pagination** - Page navigation with customizable page ranges and item counts
+- **Copy Box** - Code snippet copying with syntax highlighting
+- **Dashboard** - Analytics dashboards with charts and metrics
+
+### 90+ Total Patterns
+Complete Angular implementations converted from React patterns with:
+- **Four Code Examples** - Example, HTML, SCSS, TypeScript tabs
+- **Accessibility Features** - ARIA labels, keyboard navigation, focus management
+- **Responsive Design** - Mobile-first with breakpoint optimizations
+- **Dark Mode Support** - CSS custom properties for theme switching
 
 ## 🛠️ Tech Stack
 
@@ -172,7 +201,7 @@ export class PatternComponent {
 - **Copy-Paste Ready**: All code examples are production-ready
 
 ### 🎨 Design System
-- **Pure SCSS**: Custom SCSS with CSS variables and mixins (no Tailwind dependency)
+- **Pure SCSS**: Custom SCSS with CSS custom properties and semantic classes (no Tailwind dependency)
 - **Dark Mode**: Automatic dark/light theme switching via CSS media queries
 - **Responsive**: Mobile-first responsive design with breakpoint mixins
 - **Accessibility**: ARIA attributes, keyboard navigation, and focus management
@@ -260,10 +289,12 @@ Current bundle sizes (production build):
 
 | Chunk     | Size     | Gzipped |
 |-----------|----------|---------|
-| main      | 349.4 kB | 81.3 kB |
+| main      | 1.17 MB  | 192.8 kB |
 | polyfills | 33.1 kB  | 10.7 kB |
-| styles    | 1.6 kB   | 0.6 kB  |
-| **Total** | **384.9 kB** | **93.1 kB** |
+| styles    | 9.5 kB   | 2.1 kB  |
+| **Total** | **1.21 MB** | **206.1 kB** |
+
+*Note: Large bundle size due to comprehensive pattern library with 90+ components. Actual transfer size remains optimized with gzip compression.*
 
 ## 🚀 Deployment
 

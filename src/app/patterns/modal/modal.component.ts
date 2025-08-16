@@ -148,19 +148,14 @@ export class ModalComponent {
 
 /* Modal Container */
 .modal-container {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
   max-width: 500px;
   width: 90%;
   max-height: 90vh;
   overflow: hidden;
   animation: modalSlideIn 0.3s ease-out;
-
-  @media (prefers-color-scheme: dark) {
-    background: #1f2937;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-  }
 
   @media (max-width: 640px) {
     width: 95%;
@@ -173,42 +168,34 @@ export class ModalComponent {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 24px;
-  border-bottom: 1px solid #e5e7eb;
-
-  @media (prefers-color-scheme: dark) {
-    border-bottom-color: #374151;
-  }
+  padding: var(--spacing-5) var(--spacing-6);
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .modal-title {
-  font-size: 18px;
+  font-size: var(--font-size-lg);
   font-weight: 600;
-  color: #1f2937;
+  color: var(--text-primary);
   margin: 0;
-
-  @media (prefers-color-scheme: dark) {
-    color: #f9fafb;
-  }
 }
 
 .modal-close {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 6px;
-  color: #6b7280;
-  transition: all 0.2s ease;
+  padding: var(--spacing-2);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  transition: all var(--transition-normal);
 
   &:hover {
-    background: #f3f4f6;
-    color: #374151;
+    background: var(--gray-100);
+    color: var(--text-primary);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    box-shadow: var(--focus-ring);
   }
 
   svg {
@@ -217,24 +204,17 @@ export class ModalComponent {
   }
 
   @media (prefers-color-scheme: dark) {
-    color: #9ca3af;
-
     &:hover {
-      background: #374151;
-      color: #f3f4f6;
+      background: var(--gray-700);
     }
   }
 }
 
 /* Modal Body */
 .modal-body {
-  padding: 24px;
-  color: #6b7280;
+  padding: var(--spacing-6);
+  color: var(--text-secondary);
   line-height: 1.6;
-
-  @media (prefers-color-scheme: dark) {
-    color: #d1d5db;
-  }
 }
 
 /* Modal Footer */
@@ -242,67 +222,65 @@ export class ModalComponent {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 12px;
-  padding: 20px 24px;
-  border-top: 1px solid #e5e7eb;
-  background: #f9fafb;
+  gap: var(--spacing-3);
+  padding: var(--spacing-5) var(--spacing-6);
+  border-top: 1px solid var(--border-primary);
+  background: var(--gray-50);
 
   @media (prefers-color-scheme: dark) {
-    border-top-color: #374151;
-    background: #111827;
+    background: var(--gray-900);
   }
 }
 
 /* Buttons */
 .btn {
-  padding: 8px 16px;
+  padding: var(--spacing-2) var(--spacing-4);
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--transition-normal);
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    box-shadow: var(--focus-ring);
   }
 
   &.btn-primary {
-    background: #3b82f6;
+    background: var(--primary-600);
     color: white;
 
     &:hover {
-      background: #2563eb;
+      background: var(--primary-700);
     }
   }
 
   &.btn-secondary {
-    background: #f3f4f6;
-    color: #374151;
-    border: 1px solid #d1d5db;
+    background: var(--gray-100);
+    color: var(--gray-700);
+    border: 1px solid var(--border-primary);
 
     &:hover {
-      background: #e5e7eb;
+      background: var(--gray-200);
     }
 
     @media (prefers-color-scheme: dark) {
-      background: #374151;
-      color: #f9fafb;
-      border-color: #4b5563;
+      background: var(--gray-700);
+      color: var(--gray-300);
 
       &:hover {
-        background: #4b5563;
+        background: var(--gray-600);
       }
     }
   }
 
   &.btn-success {
-    background: #10b981;
+    background: var(--green-600);
     color: white;
 
     &:hover {
-      background: #059669;
+      background: var(--green-700);
     }
   }
 }

@@ -1,0 +1,289 @@
+<div class="pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title">
+      🔍 Advanced Data Filtering Pattern
+    </h1>
+    <p class="pattern-description">
+      Comprehensive faceted search and filtering system with dynamic counts, price ranges, and multi-select capabilities.
+    </p>
+  </div>
+
+  <div class="pattern-grid">
+    <!-- Interactive Example -->
+    <div class="demo-section">
+      <div class="demo-container demo-primary">
+        <h2 class="demo-title">
+          🎯 Interactive Filtering Example
+        </h2>
+        <p class="demo-description">
+          Switch between different filters to see how the product list and counts update dynamically.
+        </p>
+        
+        <div class="filtering-layout">
+          <!-- Filters Sidebar -->
+          <div class="filters-sidebar">
+            <div class="filter-header">
+              <h2 class="filter-title">Filters</h2>
+              <button 
+                *ngIf="getActiveFiltersCount() > 0"
+                (click)="clearAllFilters()"
+                class="clear-all-btn">
+                Clear All
+              </button>
+            </div>
+
+            <!-- Search Filter -->
+            <div class="filter-section">
+              <label class="filter-label">Search Products</label>
+              <input
+                type="text"
+                [(ngModel)]="searchTerm"
+                placeholder="Search by name or brand..."
+                class="search-input">
+            </div>
+
+            <!-- Price Range Filter -->
+            <div class="filter-section">
+              <label class="filter-label">
+                Price Range: ${{ priceRange[0] }} - ${{ priceRange[1] }}
+              </label>
+              <div class="price-range-container">
+                <input
+                  type="range"
+                  min="0"
+                  max="1000"
+                  [value]="priceRange[1]"
+                  (input)="onPriceRangeChange($event, 1)"
+                  class="price-range-slider">
+                <div class="price-range-labels">
+                  <span>$0</span>
+                  <span>$1000</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Categories Filter -->
+            <div class="filter-section">
+              <h3 class="filter-subtitle">Categories</h3>
+              <div class="filter-options">
+                <label 
+                  *ngFor="let item of getFilterCounts('category', categories)" 
+                  class="filter-option">
+                  <input
+                    type="checkbox"
+                    [checked]="selectedCategories.includes(item.value)"
+                    (change)="handleFilterToggle('category', item.value)"
+                    class="filter-checkbox">
+                  <span class="filter-text">{{ item.value }}</span>
+                  <span class="filter-count">({{ item.count }})</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Brands Filter -->
+            <div class="filter-section">
+              <h3 class="filter-subtitle">Brands</h3>
+              <div class="filter-options">
+                <label 
+                  *ngFor="let item of getFilterCounts('brand', brands)" 
+                  class="filter-option">
+                  <input
+                    type="checkbox"
+                    [checked]="selectedBrands.includes(item.value)"
+                    (change)="handleFilterToggle('brand', item.value)"
+                    class="filter-checkbox">
+                  <span class="filter-text">{{ item.value }}</span>
+                  <span class="filter-count">({{ item.count }})</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Ratings Filter -->
+            <div class="filter-section">
+              <h3 class="filter-subtitle">Minimum Rating</h3>
+              <div class="filter-options">
+                <label 
+                  *ngFor="let rating of ratings" 
+                  class="filter-option">
+                  <input
+                    type="checkbox"
+                    [checked]="selectedRatings.includes(rating)"
+                    (change)="handleRatingToggle(rating)"
+                    class="filter-checkbox">
+                  <span class="filter-text">{{ rating }}★ & up</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Sizes Filter -->
+            <div class="filter-section">
+              <h3 class="filter-subtitle">Sizes</h3>
+              <div class="filter-options">
+                <label 
+                  *ngFor="let item of getFilterCounts('size', sizes)" 
+                  class="filter-option">
+                  <input
+                    type="checkbox"
+                    [checked]="selectedSizes.includes(item.value)"
+                    (change)="handleFilterToggle('size', item.value)"
+                    class="filter-checkbox">
+                  <span class="filter-text">{{ item.value }}</span>
+                  <span class="filter-count">({{ item.count }})</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Products Area -->
+          <div class="products-area">
+            <!-- Results Header -->
+            <div class="results-header">
+              <div class="results-info">
+                <h2 class="results-title">Products ({{ filteredProducts.length }})</h2>
+                <p *ngIf="getActiveFiltersCount() > 0" class="active-filters">
+                  {{ getActiveFiltersCount() }} active filter{{ getActiveFiltersCount() !== 1 ? 's' : '' }}
+                </p>
+              </div>
+              
+              <div class="sort-controls">
+                <select 
+                  [(ngModel)]="sortBy" 
+                  class="sort-select">
+                  <option value="name">Sort by Name</option>
+                  <option value="price">Sort by Price</option>
+                  <option value="rating">Sort by Rating</option>
+                </select>
+                
+                <button 
+                  (click)="toggleSortOrder()" 
+                  class="sort-order-btn">
+                  {{ sortOrder === 'asc' ? '↑' : '↓' }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid" *ngIf="filteredProducts.length > 0">
+              <div 
+                *ngFor="let product of filteredProducts" 
+                class="product-card">
+                <div class="product-header">
+                  <h3 class="product-name">{{ product.name }}</h3>
+                  <span class="product-brand">{{ product.brand }}</span>
+                </div>
+                
+                <div class="product-rating">
+                  <span 
+                    *ngFor="let filled of getStarArray(product.rating)" 
+                    class="star" 
+                    [class.filled]="filled">★</span>
+                  <span class="rating-value">({{ product.rating }})</span>
+                </div>
+                
+                <div class="product-footer">
+                  <span class="product-price">${{ product.price }}</span>
+                  <span 
+                    class="stock-status" 
+                    [class.in-stock]="product.inStock"
+                    [class.out-of-stock]="!product.inStock">
+                    {{ product.inStock ? 'In Stock' : 'Out of Stock' }}
+                  </span>
+                </div>
+                
+                <div class="product-meta">
+                  <span class="product-category">{{ product.category }}</span>
+                  <span class="product-size">{{ product.size }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- No Results -->
+            <div *ngIf="filteredProducts.length === 0" class="no-results">
+              <div class="no-results-icon">🔍</div>
+              <h3 class="no-results-title">No products found</h3>
+              <p class="no-results-text">Try adjusting your filters or search terms</p>
+              <button 
+                (click)="clearAllFilters()" 
+                class="clear-filters-btn">
+                Clear All Filters
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <div class="code-container">
+        <app-code-tabs 
+          [htmlCode]="htmlCode" 
+          [scssCode]="scssCode" 
+          [typescriptCode]="typescriptCode"
+          title="Code Example">
+        </app-code-tabs>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">
+      ✨ Key Features
+    </h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Faceted Search</h4>
+          <p class="feature-description">Multiple filter categories with dynamic counts</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Price Range Slider</h4>
+          <p class="feature-description">Interactive price filtering with visual feedback</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Multi-Select Filters</h4>
+          <p class="feature-description">Combine multiple filter values for precise results</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div>
+          <h4 class="feature-name">Real-time Updates</h4>
+          <p class="feature-description">Filter counts update dynamically as you select options</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">
+      🎯 Common Use Cases
+    </h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">🛒</div>
+        <h4 class="use-case-name">E-commerce</h4>
+        <p class="use-case-description">Product catalogs with advanced filtering</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📚</div>
+        <h4 class="use-case-name">Content Libraries</h4>
+        <p class="use-case-description">Document and media filtering systems</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">👥</div>
+        <h4 class="use-case-name">User Directories</h4>
+        <p class="use-case-description">Employee and contact filtering</p>
+      </div>
+    </div>
+  </div>
+</div>

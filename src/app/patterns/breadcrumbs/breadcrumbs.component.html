@@ -1,0 +1,163 @@
+<div class="pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title">
+      <span class="pattern-icon">🗂️</span>
+      Breadcrumbs Pattern
+    </h1>
+    <p class="pattern-description">
+      Breadcrumbs provide users with a clear navigation trail showing their current location within a website's hierarchy, making it easy to understand their position and navigate back to previous pages.
+    </p>
+  </div>
+
+  <!-- Key Features -->
+  <div class="demo-section">
+    <h3>Key Features</h3>
+    <ul class="feature-list">
+      <li class="feature-item">Interactive navigation with clickable breadcrumb links</li>
+      <li class="feature-item">Responsive design with mobile-friendly collapsing</li>
+      <li class="feature-item">Accessibility support with proper ARIA labels and keyboard navigation</li>
+      <li class="feature-item">Visual separators and current page highlighting</li>
+      <li class="feature-item">Icon support for visual hierarchy enhancement</li>
+      <li class="feature-item">Dark mode compatibility</li>
+    </ul>
+  </div>
+
+  <!-- Basic Breadcrumbs -->
+  <div class="demo-section">
+    <h3>Basic Breadcrumbs</h3>
+    <p>A simple breadcrumb navigation showing the current page path with icons and separators.</p>
+    
+    <nav aria-label="Basic breadcrumb navigation" class="breadcrumbs-nav">
+      <ol class="breadcrumbs-list">
+        <li class="breadcrumb-item" *ngFor="let item of basicBreadcrumbs; let last = last">
+          <a 
+            *ngIf="item.url && !last" 
+            href="javascript:void(0)"
+            class="breadcrumb-link"
+            (click)="navigateTo(item)"
+          >
+            <span *ngIf="item.icon" class="breadcrumb-icon" [attr.data-icon]="item.icon"></span>
+            {{ item.label }}
+          </a>
+          <span *ngIf="!item.url || last" class="breadcrumb-current" [attr.aria-current]="last ? 'page' : null">
+            <span *ngIf="item.icon" class="breadcrumb-icon" [attr.data-icon]="item.icon"></span>
+            {{ item.label }}
+          </span>
+          <span *ngIf="!last" class="breadcrumb-separator" aria-hidden="true">/</span>
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- Complex Breadcrumbs -->
+  <div class="demo-section">
+    <h3>Complex Breadcrumbs</h3>
+    <p>A longer breadcrumb trail demonstrating multiple levels of navigation hierarchy.</p>
+    
+    <nav aria-label="Complex breadcrumb navigation" class="breadcrumbs-nav">
+      <ol class="breadcrumbs-list">
+        <li class="breadcrumb-item" *ngFor="let item of complexBreadcrumbs; let last = last">
+          <a 
+            *ngIf="item.url && !last" 
+            href="javascript:void(0)"
+            class="breadcrumb-link"
+            (click)="navigateTo(item)"
+          >
+            <span *ngIf="item.icon" class="breadcrumb-icon" [attr.data-icon]="item.icon"></span>
+            {{ item.label }}
+          </a>
+          <span *ngIf="!item.url || last" class="breadcrumb-current" [attr.aria-current]="last ? 'page' : null">
+            <span *ngIf="item.icon" class="breadcrumb-icon" [attr.data-icon]="item.icon"></span>
+            {{ item.label }}
+          </span>
+          <span *ngIf="!last" class="breadcrumb-separator" aria-hidden="true">/</span>
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- Responsive Breadcrumbs -->
+  <div class="demo-section">
+    <h3>Responsive Breadcrumbs with Collapse</h3>
+    <p>
+      Responsive breadcrumbs that intelligently collapse on mobile devices. 
+      <button class="btn btn-secondary btn-sm" (click)="toggleMobileView()">
+        {{ isMobileCollapsed ? 'Show All Items' : 'Collapse Items' }}
+      </button>
+    </p>
+    
+    <nav aria-label="Responsive breadcrumb navigation" class="breadcrumbs-nav responsive">
+      <ol class="breadcrumbs-list" [class.collapsed]="isMobileCollapsed">
+        <li class="breadcrumb-item" *ngFor="let item of longBreadcrumbs; let first = first; let last = last">
+          <button 
+            *ngIf="first && longBreadcrumbs.length > 3 && isMobileCollapsed" 
+            class="breadcrumb-toggle"
+            (click)="toggleMobileView()"
+            [attr.aria-expanded]="!isMobileCollapsed"
+            aria-label="Show all breadcrumb items"
+          >
+            ...
+          </button>
+          <a 
+            *ngIf="item.url && !last" 
+            href="javascript:void(0)"
+            class="breadcrumb-link"
+            (click)="navigateTo(item)"
+            [class.hidden-mobile]="shouldHideOnMobile(longBreadcrumbs, item, first, last)"
+          >
+            <span *ngIf="item.icon" class="breadcrumb-icon" [attr.data-icon]="item.icon"></span>
+            {{ item.label }}
+          </a>
+          <span 
+            *ngIf="!item.url || last" 
+            class="breadcrumb-current"
+            [attr.aria-current]="last ? 'page' : null"
+            [class.hidden-mobile]="shouldHideOnMobile(longBreadcrumbs, item, first, last)"
+          >
+            <span *ngIf="item.icon" class="breadcrumb-icon" [attr.data-icon]="item.icon"></span>
+            {{ item.label }}
+          </span>
+          <span 
+            *ngIf="!last" 
+            class="breadcrumb-separator" 
+            aria-hidden="true"
+            [class.hidden-mobile]="shouldHideOnMobile(longBreadcrumbs, item, first, last)"
+          >
+            /
+          </span>
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="demo-section">
+    <h3>Common Use Cases</h3>
+    <ul class="feature-list">
+      <li class="feature-item">E-commerce category navigation (Home > Electronics > Phones > Smartphones)</li>
+      <li class="feature-item">Document management systems (Files > Projects > 2024 > Reports)</li>
+      <li class="feature-item">Multi-level admin dashboards (Dashboard > Analytics > Reports > Monthly)</li>
+      <li class="feature-item">Content management hierarchies (CMS > Pages > Blog > Categories)</li>
+      <li class="feature-item">File system navigation interfaces</li>
+    </ul>
+  </div>
+
+  <!-- Best Practices -->
+  <div class="demo-section">
+    <h3>Best Practices</h3>
+    <ul class="feature-list">
+      <li class="feature-item">Keep breadcrumb labels concise and descriptive</li>
+      <li class="feature-item">Use proper semantic HTML with nav and ol elements</li>
+      <li class="feature-item">Implement ARIA labels for screen reader accessibility</li>
+      <li class="feature-item">Consider mobile responsiveness for long breadcrumb trails</li>
+      <li class="feature-item">Make the current page non-clickable and visually distinct</li>
+      <li class="feature-item">Use consistent separators and visual hierarchy</li>
+    </ul>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode" 
+  [scssCode]="scssCode" 
+  [typescriptCode]="typescriptCode">
+</app-code-tabs>

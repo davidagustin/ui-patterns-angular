@@ -1,0 +1,188 @@
+<div class="pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title gradient-text">🔍 Expandable Input Pattern</h1>
+    <p class="pattern-description">
+      Dynamic input fields that expand and adapt based on user interaction, perfect for search, tags, and textarea inputs.
+    </p>
+  </div>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Input Examples</h2>
+        <p class="example-description">
+          Explore different types of expandable inputs with dynamic behavior and smooth animations.
+        </p>
+        
+        <div class="expandable-input-container">
+          <!-- Demo Controls -->
+          <div class="demo-controls">
+            <button 
+              *ngFor="let demo of ['search', 'textarea', 'tags']"
+              (click)="setActiveDemo(demo)"
+              [class.active]="activeDemo === demo"
+              class="demo-btn">
+              {{ demo | titlecase }} Demo
+            </button>
+          </div>
+
+          <!-- Search Demo -->
+          <div *ngIf="activeDemo === 'search'" class="search-demo">
+            <h3 class="demo-title">Expandable Search with Suggestions</h3>
+            
+            <div class="expandable-search" [class.expanded]="isExpanded">
+              <div class="search-container">
+                <input
+                  type="text"
+                  [(ngModel)]="searchValue"
+                  (focus)="onSearchFocus()"
+                  (blur)="onSearchBlur()"
+                  (input)="onSearchInput($event)"
+                  placeholder="Start typing to search..."
+                  class="search-input">
+                
+                <button 
+                  *ngIf="searchValue"
+                  (click)="clearSearch()"
+                  class="clear-button">
+                  ×
+                </button>
+                
+                <div class="search-icon">
+                  🔍
+                </div>
+              </div>
+              
+              <div *ngIf="showSuggestions && filteredSuggestions.length > 0" 
+                   class="suggestions-dropdown">
+                <div 
+                  *ngFor="let suggestion of filteredSuggestions"
+                  class="suggestion-item"
+                  (click)="selectSuggestion(suggestion)">
+                  <span class="suggestion-icon">{{ suggestion.icon }}</span>
+                  <div class="suggestion-content">
+                    <span class="suggestion-text">{{ suggestion.text }}</span>
+                    <span class="suggestion-category">{{ suggestion.category }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Textarea Demo -->
+          <div *ngIf="activeDemo === 'textarea'" class="textarea-demo">
+            <h3 class="demo-title">Auto-expanding Textarea</h3>
+            
+            <div class="expandable-textarea-container">
+              <textarea
+                [(ngModel)]="textareaValue"
+                placeholder="Start typing and watch the textarea expand..."
+                class="expandable-textarea"
+                rows="2"></textarea>
+              
+              <div class="character-count">
+                {{ textareaValue.length }} characters
+              </div>
+            </div>
+          </div>
+
+          <!-- Tags Demo -->
+          <div *ngIf="activeDemo === 'tags'" class="tags-demo">
+            <h3 class="demo-title">Expandable Tag Input</h3>
+            
+            <div class="tag-input-container">
+              <div class="tags-list">
+                <span 
+                  *ngFor="let tag of tags; let i = index"
+                  class="tag-item">
+                  {{ tag }}
+                  <button 
+                    (click)="removeTag(i)"
+                    class="tag-remove">
+                    ×
+                  </button>
+                </span>
+              </div>
+              
+              <input
+                type="text"
+                [(ngModel)]="tagInput"
+                (keypress)="onTagKeyPress($event)"
+                placeholder="Add tags (press Enter)"
+                class="tag-input">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Dynamic Expansion</h4>
+          <p class="feature-description">Smooth width and height transitions</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Smart Suggestions</h4>
+          <p class="feature-description">Real-time filtered autocomplete</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Tag Management</h4>
+          <p class="feature-description">Add and remove tags dynamically</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Accessibility</h4>
+          <p class="feature-description">Keyboard navigation and screen reader support</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">🔍</div>
+        <h4 class="use-case-name">Search Interfaces</h4>
+        <p class="use-case-description">Expandable search with autocomplete</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📝</div>
+        <h4 class="use-case-name">Content Input</h4>
+        <p class="use-case-description">Auto-expanding text areas</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🏷️</div>
+        <h4 class="use-case-name">Tag Systems</h4>
+        <p class="use-case-description">Dynamic tag input and management</p>
+      </div>
+    </div>
+  </div>
+</div>

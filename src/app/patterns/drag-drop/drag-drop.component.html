@@ -1,0 +1,125 @@
+<app-pattern-header
+  title="Drag & Drop Pattern"
+  description="Intuitive drag and drop interface for moving items between containers with smart category validation and visual feedback."
+  [features]="[
+    'Visual drag handles and previews',
+    'Category-based drop validation',
+    'Multiple connected drop zones',
+    'Smooth animations and transitions',
+    'Mobile-friendly touch support',
+    'Accessibility keyboard navigation'
+  ]"
+  [useCases]="[
+    'Task management boards',
+    'File organization systems',
+    'Content categorization',
+    'Kanban boards',
+    'Priority sorting',
+    'Content management'
+  ]">
+</app-pattern-header>
+
+<div class="pattern-sections">
+  <div class="pattern-example-card">
+    <h2 class="card-title">🎯 Interactive Example</h2>
+    <p class="example-description">
+      Drag items from the source list to appropriate drop zones. Items can only be dropped in zones that accept their category.
+    </p>
+    
+    <div class="drag-drop-pattern">
+      <!-- Source Items -->
+      <div class="source-section">
+        <h3 class="section-title">Available Items</h3>
+        <div class="items-container"
+             cdkDropList
+             #sourceList="cdkDropList"
+             [cdkDropListData]="items"
+             [cdkDropListConnectedTo]="getConnectedLists()"
+             (cdkDropListDropped)="onItemDrop($event)">
+          
+          <div *ngFor="let item of items" 
+               class="drag-item"
+               [class]="'category-' + item.category"
+               cdkDrag>
+            
+            <div class="drag-handle" cdkDragHandle>
+              <svg class="handle-icon" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+              </svg>
+            </div>
+            
+            <div class="item-content">
+              <div class="category-indicator" [class]="'category-' + item.category"></div>
+              <div class="item-info">
+                <h4 class="item-title">{{ item.title }}</h4>
+                <p class="item-description">{{ item.description }}</p>
+                <span class="item-category">{{ item.category }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drop Zones -->
+      <div class="drop-zones-section">
+        <h3 class="section-title">Drop Zones</h3>
+        <div class="zones-grid">
+          <div *ngFor="let zone of dropZones" 
+               class="drop-zone"
+               [class.has-items]="zone.items.length > 0">
+            
+            <div class="zone-header">
+              <h4 class="zone-title">{{ zone.title }}</h4>
+              <span class="items-count">{{ zone.items.length }} items</span>
+            </div>
+            
+            <div class="zone-drop-area"
+                 cdkDropList
+                 [id]="zone.id"
+                 [cdkDropListData]="zone.items"
+                 [cdkDropListConnectedTo]="getConnectedLists()"
+                 (cdkDropListDropped)="onZoneDrop($event, zone.id)">
+              
+              <div *ngFor="let item of zone.items" 
+                   class="dropped-item"
+                   [class]="'category-' + item.category"
+                   cdkDrag>
+                
+                <div class="item-content">
+                  <h5 class="item-title">{{ item.title }}</h5>
+                  <p class="item-description">{{ item.description }}</p>
+                </div>
+                
+                <div class="drag-handle" cdkDragHandle>
+                  <svg class="handle-icon" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/>
+                  </svg>
+                </div>
+              </div>
+              
+              <div *ngIf="zone.items.length === 0" class="empty-zone">
+                <div class="empty-icon">📦</div>
+                <p class="empty-text">Drop {{ zone.acceptedCategories.join(', ') }} items here</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reset Button -->
+      <div class="controls-section">
+        <button (click)="resetToDefaults()" class="reset-btn">
+          Reset to Defaults
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-code-tabs 
+    [exampleCode]="exampleCode"
+    [htmlCode]="htmlCode" 
+    [scssCode]="scssCode" 
+    [typescriptCode]="typescriptCode"
+    title="Code Example">
+  </app-code-tabs>
+</div>

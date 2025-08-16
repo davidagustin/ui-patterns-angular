@@ -1,0 +1,218 @@
+<div class="pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title gradient-text">👆 Double Tap Pattern</h1>
+    <p class="pattern-description">
+      Interactive double-tap gestures for quick actions like liking, zooming, and selecting items with visual feedback and accessibility support.
+    </p>
+  </div>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Double Tap Demo</h2>
+        <p class="example-description">
+          Try double-tapping on different elements to trigger special actions. Each demo shows different use cases.
+        </p>
+        
+        <div class="double-tap-container">
+          <!-- Demo Controls -->
+          <div class="demo-controls">
+            <button 
+              *ngFor="let demo of ['cards', 'gallery', 'list']"
+              (click)="setCurrentDemo(demo)"
+              [class.active]="currentDemo === demo"
+              class="demo-btn">
+              {{ demo | titlecase }} Demo
+            </button>
+          </div>
+
+          <!-- Instructions Banner -->
+          <div *ngIf="showInstructions" class="instructions-banner">
+            <div class="instructions-content">
+              <span class="instructions-icon">👆</span>
+              <div class="instructions-text">
+                <h4>Double-tap to interact!</h4>
+                <p>Try double-tapping on items to trigger special actions</p>
+              </div>
+              <button (click)="dismissInstructions()" class="dismiss-btn">×</button>
+            </div>
+          </div>
+
+          <!-- Cards Demo -->
+          <div *ngIf="currentDemo === 'cards'" class="cards-demo">
+            <h3 class="demo-title">Double-tap to Like Cards</h3>
+            <div class="cards-grid">
+              <div 
+                *ngFor="let card of cardItems"
+                class="tap-card"
+                [attr.data-card-id]="card.id"
+                (click)="handleCardDoubleTap(card)"
+                [class.liked]="card.liked"
+                tabindex="0">
+                
+                <div class="card-image">{{ card.image }}</div>
+                <div class="card-content">
+                  <h4 class="card-title">{{ card.title }}</h4>
+                  <p class="card-text">{{ card.content }}</p>
+                </div>
+                
+                <div class="card-footer">
+                  <div class="card-stats">
+                    <span class="like-count" [class.active]="card.liked">
+                      ❤️ {{ card.likes }}
+                    </span>
+                    <button 
+                      (click)="$event.stopPropagation(); toggleBookmark(card)"
+                      class="bookmark-btn"
+                      [class.active]="card.bookmarked">
+                      🔖
+                    </button>
+                  </div>
+                </div>
+                
+                <!-- Heart animation overlay -->
+                <div class="heart-overlay">❤️</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gallery Demo -->
+          <div *ngIf="currentDemo === 'gallery'" class="gallery-demo">
+            <h3 class="demo-title">Double-tap to Zoom Images</h3>
+            <div class="gallery-grid">
+              <div 
+                *ngFor="let image of galleryItems"
+                class="gallery-item"
+                (click)="handleImageDoubleTap(image)"
+                [class.zoomed]="zoomedImage === image.src">
+                
+                <div class="image-placeholder">{{ image.src }}</div>
+                <span class="image-label">{{ image.alt }}</span>
+              </div>
+            </div>
+            
+            <!-- Zoomed overlay -->
+            <div *ngIf="zoomedImage" class="zoom-overlay" (click)="zoomedImage = null">
+              <div class="zoomed-image">{{ zoomedImage }}</div>
+            </div>
+          </div>
+
+          <!-- List Demo -->
+          <div *ngIf="currentDemo === 'list'" class="list-demo">
+            <h3 class="demo-title">Double-tap to Select Items</h3>
+            <div class="list-container">
+              <div 
+                *ngFor="let item of listItems"
+                class="list-item"
+                (click)="handleListDoubleTap(item)"
+                [class.selected]="isSelected(item.id)">
+                
+                <div class="item-content">
+                  <h4 class="item-name">{{ item.name }}</h4>
+                  <span class="item-type">{{ item.type }}</span>
+                </div>
+                
+                <div class="selection-indicator" *ngIf="isSelected(item.id)">✓</div>
+              </div>
+            </div>
+            
+            <div *ngIf="selectedItems.size > 0" class="selection-summary">
+              {{ selectedItems.size }} item{{ selectedItems.size !== 1 ? 's' : '' }} selected
+              <button (click)="clearSelections()" class="clear-btn">Clear</button>
+            </div>
+          </div>
+
+          <!-- Event Log -->
+          <div class="event-log">
+            <div class="log-header">
+              <h4>Recent Actions</h4>
+              <button (click)="clearEventLog()" class="clear-log-btn">Clear</button>
+            </div>
+            <div class="log-entries">
+              <div 
+                *ngFor="let event of recentTaps; let i = index"
+                class="log-entry"
+                [style.animation-delay.ms]="i * 100">
+                <span class="event-action">{{ event.action }}</span>
+                <span class="event-target">{{ event.id }}</span>
+                <span class="event-time">{{ getTimeSince(event.timestamp) }}</span>
+              </div>
+              <div *ngIf="recentTaps.length === 0" class="no-events">
+                No recent actions
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Touch-Friendly</h4>
+          <p class="feature-description">Optimized for mobile and touch devices</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Visual Feedback</h4>
+          <p class="feature-description">Immediate animations and state changes</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Accessibility</h4>
+          <p class="feature-description">Keyboard support and screen reader friendly</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Multiple Actions</h4>
+          <p class="feature-description">Like, zoom, select, and bookmark functionality</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">❤️</div>
+        <h4 class="use-case-name">Social Media</h4>
+        <p class="use-case-description">Double-tap to like posts and photos</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🔍</div>
+        <h4 class="use-case-name">Image Galleries</h4>
+        <p class="use-case-description">Double-tap to zoom in on images</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">✅</div>
+        <h4 class="use-case-name">List Selection</h4>
+        <p class="use-case-description">Double-tap to select multiple items</p>
+      </div>
+    </div>
+  </div>
+</div>

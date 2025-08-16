@@ -1,0 +1,272 @@
+<div class="bottom-navigation-pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title gradient-text">📱 Bottom Navigation Pattern</h1>
+    <p class="pattern-description">
+      Create mobile-friendly bottom navigation bars with icons, badges, and floating action buttons for intuitive app navigation.
+    </p>
+  </div>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Examples</h2>
+        <p class="example-description">
+          Three different bottom navigation styles: basic tabs, with notification badges, and with floating action button.
+        </p>
+        
+        <div class="navigation-examples">
+          <!-- Basic Bottom Navigation -->
+          <div class="example-variant">
+            <h3 class="variant-title">1. Basic Bottom Navigation</h3>
+            <div class="bottom-nav-container">
+              <!-- Mock Content Area -->
+              <div class="content-area">
+                <div class="content-center">
+                  <div class="content-icon">{{ getCurrentScreenIcon('basic') }}</div>
+                  <h3 class="content-title">{{ getCurrentScreenContent('basic') }} Screen</h3>
+                  <p class="content-description">
+                    This is the {{ getCurrentScreenContent('basic').toLowerCase() }} content area.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Bottom Navigation -->
+              <div class="bottom-nav">
+                <nav class="bottom-nav-list">
+                  <button
+                    *ngFor="let item of basicNavItems"
+                    (click)="setActiveNavItem(item.id)"
+                    [class]="'nav-item ' + (activeNavItem === item.id ? 'active' : '')"
+                    [attr.aria-current]="activeNavItem === item.id ? 'page' : null">
+                    <span class="nav-item-icon">{{ item.icon }}</span>
+                    <span class="nav-item-label">{{ item.label }}</span>
+                  </button>
+                </nav>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Navigation with Badges -->
+          <div class="example-variant">
+            <h3 class="variant-title">2. With Notification Badges</h3>
+            <div class="bottom-nav-container">
+              <!-- Mock Content Area -->
+              <div class="content-area">
+                <div class="content-center">
+                  <div class="content-icon">{{ getCurrentScreenIcon('badge') }}</div>
+                  <h3 class="content-title">{{ getCurrentScreenContent('badge') }} Screen</h3>
+                  <p class="content-description">{{ getBadgeScreenDescription() }}</p>
+                </div>
+              </div>
+
+              <!-- Bottom Navigation with Badges -->
+              <div class="bottom-nav">
+                <nav class="bottom-nav-list">
+                  <button
+                    *ngFor="let item of badgeNavItems"
+                    (click)="setActiveBadgeItem(item.id)"
+                    [class]="'nav-item ' + (activeBadgeItem === item.id ? 'active' : '')"
+                    [attr.aria-current]="activeBadgeItem === item.id ? 'page' : null">
+                    <div class="nav-item-with-badge">
+                      <span class="nav-item-icon">{{ item.icon }}</span>
+                      <span *ngIf="item.badge" 
+                            class="nav-item-badge"
+                            [attr.aria-label]="item.badge + ' notifications'">
+                        {{ item.badge }}
+                      </span>
+                    </div>
+                    <span class="nav-item-label">{{ item.label }}</span>
+                  </button>
+                </nav>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Navigation with Floating Action Button -->
+          <div class="example-variant">
+            <h3 class="variant-title">3. With Floating Action Button</h3>
+            <div class="bottom-nav-container">
+              <!-- Mock Content Area -->
+              <div class="content-area">
+                <div class="content-center">
+                  <div class="content-icon">{{ getCurrentScreenIcon('floating') }}</div>
+                  <h3 class="content-title">{{ getCurrentScreenContent('floating') }} Screen</h3>
+                  <p class="content-description">{{ getFloatingScreenDescription() }}</p>
+                </div>
+              </div>
+
+              <!-- Bottom Navigation with FAB -->
+              <div class="bottom-nav floating-nav">
+                <nav class="bottom-nav-list">
+                  <button
+                    *ngFor="let item of floatingNavItems"
+                    (click)="setActiveFloatingItem(item.id)"
+                    [class]="'nav-item ' + (item.isFloating ? 'fab-item' : (activeFloatingItem === item.id ? 'active' : ''))"
+                    [attr.aria-current]="activeFloatingItem === item.id ? 'page' : null">
+                    <div *ngIf="item.isFloating; else regularItem" class="fab-button">
+                      <span class="fab-icon">{{ item.icon }}</span>
+                    </div>
+                    <ng-template #regularItem>
+                      <span class="nav-item-icon">{{ item.icon }}</span>
+                      <span class="nav-item-label">{{ item.label }}</span>
+                    </ng-template>
+                  </button>
+                </nav>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gesture-Enhanced Bottom Navigation -->
+          <div class="example-variant">
+            <h3 class="variant-title">4. With Gesture Support</h3>
+            <div class="bottom-nav-container">
+              <!-- Mock Content Area with Swipe Indicator -->
+              <div class="content-area">
+                <div class="content-center">
+                  <div class="content-icon">{{ getCurrentScreenIcon('gesture') }}</div>
+                  <h3 class="content-title">{{ getCurrentScreenContent('gesture') }} Screen</h3>
+                  <p class="content-description">Swipe left/right or tap tabs to navigate</p>
+                  
+                  <!-- Swipe Indicator -->
+                  <div class="swipe-indicator">
+                    <span class="swipe-text">← Swipe</span>
+                    <div class="indicator-dots">
+                      <div
+                        *ngFor="let item of basicNavItems; let i = index"
+                        [class]="'indicator-dot ' + (activeGestureItem === item.id ? 'active' : '')">
+                      </div>
+                    </div>
+                    <span class="swipe-text">Swipe →</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom Navigation with Enhanced Interactions -->
+              <div class="bottom-nav gesture-nav">
+                <!-- Active Indicator -->
+                <div class="active-indicator" 
+                     [style.transform]="'translateX(' + (getActiveItemIndex('gesture') * 100) + '%)'">
+                </div>
+                
+                <nav class="bottom-nav-list">
+                  <button
+                    *ngFor="let item of basicNavItems"
+                    (click)="setActiveGestureItem(item.id)"
+                    (mouseenter)="onGestureItemHover()"
+                    [class]="'nav-item gesture-item ' + (activeGestureItem === item.id ? 'active' : '')"
+                    [attr.aria-current]="activeGestureItem === item.id ? 'page' : null">
+                    <span [class]="'nav-item-icon ' + (activeGestureItem === item.id ? 'active-icon' : '')">
+                      {{ item.icon }}
+                    </span>
+                    <span class="nav-item-label">{{ item.label }}</span>
+                    
+                    <!-- Ripple Effect Container -->
+                    <div class="ripple-container">
+                      <div class="ripple-effect"></div>
+                    </div>
+                  </button>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="interactive-features">
+          <h4 class="features-subtitle">Interactive Features</h4>
+          <div class="features-list">
+            <div class="feature-bullet">• Active state indicators with color changes</div>
+            <div class="feature-bullet">• Notification badges with count display</div>
+            <div class="feature-bullet">• Floating action button with shadow effects</div>
+            <div class="feature-bullet">• Gesture support with haptic feedback</div>
+            <div class="feature-bullet">• Smooth hover and transition animations</div>
+            <div class="feature-bullet">• Ripple effects and scale transformations</div>
+            <div class="feature-bullet">• Responsive design for different screen sizes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Icon-Based Navigation</h4>
+          <p class="feature-description">Clear visual indicators with labels</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Notification Badges</h4>
+          <p class="feature-description">Count indicators for alerts and messages</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Floating Action Button</h4>
+          <p class="feature-description">Prominent call-to-action in navigation</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Active State Indicators</h4>
+          <p class="feature-description">Clear visual feedback for current tab</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Mobile-Optimized</h4>
+          <p class="feature-description">Touch-friendly with appropriate sizing</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Smooth Animations</h4>
+          <p class="feature-description">Hover effects and state transitions</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">📱</div>
+        <h4 class="use-case-name">Mobile Apps</h4>
+        <p class="use-case-description">Primary navigation for mobile applications</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🌐</div>
+        <h4 class="use-case-name">Progressive Web Apps</h4>
+        <p class="use-case-description">Native app-like navigation experience</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">💬</div>
+        <h4 class="use-case-name">Social Media Apps</h4>
+        <p class="use-case-description">Quick access to main features and feeds</p>
+      </div>
+    </div>
+  </div>
+</div>

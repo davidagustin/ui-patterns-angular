@@ -1,0 +1,202 @@
+<div class="pattern-container">
+  <div class="pattern-header">
+    <h1 class="pattern-title gradient-text">📅 Event Calendar Pattern</h1>
+    <p class="pattern-description">
+      Interactive calendar component for displaying and managing events with month/week views, event details, and responsive design.
+    </p>
+  </div>
+
+  <div class="pattern-layout">
+    <!-- Interactive Example -->
+    <div class="example-section">
+      <div class="example-card">
+        <h2 class="example-title">🎯 Interactive Calendar Demo</h2>
+        <p class="example-description">
+          Navigate through months, click on dates to view events, and explore different calendar views.
+        </p>
+        
+        <div class="event-calendar">
+          <!-- Calendar Header -->
+          <div class="calendar-header">
+            <div class="calendar-navigation">
+              <button (click)="previousMonth()" class="nav-button">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+              <h2 class="calendar-title">{{ currentMonth }}</h2>
+              <button (click)="nextMonth()" class="nav-button">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+            </div>
+            
+            <div class="calendar-controls">
+              <button (click)="goToToday()" class="today-button">
+                Today
+              </button>
+              <div class="view-toggle">
+                <button 
+                  (click)="viewMode = 'month'" 
+                  class="view-button"
+                  [class.active]="viewMode === 'month'">
+                  Month
+                </button>
+                <button 
+                  (click)="viewMode = 'week'" 
+                  class="view-button"
+                  [class.active]="viewMode === 'week'">
+                  Week
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Calendar Grid -->
+          <div class="calendar-grid">
+            <!-- Weekday Headers -->
+            <div class="weekdays-header">
+              <div class="weekday">Sun</div>
+              <div class="weekday">Mon</div>
+              <div class="weekday">Tue</div>
+              <div class="weekday">Wed</div>
+              <div class="weekday">Thu</div>
+              <div class="weekday">Fri</div>
+              <div class="weekday">Sat</div>
+            </div>
+            
+            <!-- Calendar Days -->
+            <div class="calendar-days">
+              <div *ngFor="let date of calendarDays" 
+                   class="calendar-day"
+                   [class.today]="isToday(date)"
+                   [class.selected]="isSelected(date)"
+                   [class.other-month]="!date"
+                   (click)="selectDate(date)">
+                
+                <div *ngIf="date" class="day-content">
+                  <span class="day-number">{{ date.getDate() }}</span>
+                  
+                  <div class="day-events">
+                    <div *ngFor="let event of getEventsForDate(date)" 
+                         class="event-indicator"
+                         [class]="'event-' + event.type"
+                         [title]="event.title">
+                      <span class="event-dot"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Event Details Sidebar -->
+          <div class="event-sidebar" *ngIf="selectedDate">
+            <div class="sidebar-header">
+              <h3 class="sidebar-title">
+                {{ selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' }) }}
+              </h3>
+              <button (click)="selectedDate = null" class="close-button">
+                <svg fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+            </div>
+            
+            <div class="sidebar-content">
+              <div *ngIf="getEventsForDate(selectedDate).length === 0" class="no-events">
+                <div class="no-events-icon">📅</div>
+                <p class="no-events-text">No events scheduled</p>
+              </div>
+              
+              <div *ngFor="let event of getEventsForDate(selectedDate)" class="event-card">
+                <div class="event-header">
+                  <div class="event-type-icon">{{ getEventTypeIcon(event.type) }}</div>
+                  <div class="event-info">
+                    <h4 class="event-title">{{ event.title }}</h4>
+                    <p class="event-time" *ngIf="event.time">{{ event.time }}</p>
+                  </div>
+                  <div class="event-type-badge" [class]="'badge-' + event.type">
+                    {{ event.type }}
+                  </div>
+                </div>
+                <p class="event-description" *ngIf="event.description">
+                  {{ event.description }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Code Example -->
+    <div class="code-section">
+      <app-code-tabs 
+        [exampleCode]="exampleCode"
+        [htmlCode]="htmlCode" 
+        [scssCode]="scssCode" 
+        [typescriptCode]="typescriptCode"
+        title="Code Example">
+      </app-code-tabs>
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div class="features-section">
+    <h3 class="features-title">✨ Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Multiple Views</h4>
+          <p class="feature-description">Month and week view modes</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Event Management</h4>
+          <p class="feature-description">View and organize different event types</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Interactive Navigation</h4>
+          <p class="feature-description">Easy month navigation and date selection</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-icon">✓</span>
+        <div class="feature-content">
+          <h4 class="feature-name">Responsive Design</h4>
+          <p class="feature-description">Works perfectly on all device sizes</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div class="use-cases-section">
+    <h3 class="use-cases-title">🎯 Common Use Cases</h3>
+    <div class="use-cases-grid">
+      <div class="use-case-item">
+        <div class="use-case-icon">🗓️</div>
+        <h4 class="use-case-name">Scheduling Apps</h4>
+        <p class="use-case-description">Appointment and meeting scheduling</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">📋</div>
+        <h4 class="use-case-name">Project Management</h4>
+        <p class="use-case-description">Task and deadline tracking</p>
+      </div>
+      <div class="use-case-item">
+        <div class="use-case-icon">🎉</div>
+        <h4 class="use-case-name">Event Planning</h4>
+        <p class="use-case-description">Event and activity organization</p>
+      </div>
+    </div>
+  </div>
+</div>

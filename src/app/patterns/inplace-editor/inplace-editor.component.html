@@ -1,0 +1,141 @@
+<app-pattern-header 
+  title="Inplace Editor" 
+  description="Edit content directly within the interface without navigation"
+  icon="✏️">
+</app-pattern-header>
+
+<div class="inplace-editor-demo">
+  <!-- User Profile Card -->
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="avatar">{{ userProfile.avatar }}</div>
+      <div class="profile-info">
+        <h2>{{ userProfile.name }}</h2>
+        <p>{{ userProfile.position }} at {{ userProfile.company }}</p>
+      </div>
+    </div>
+    
+    <div class="profile-fields">
+      <div *ngFor="let field of editableFields" class="field-group">
+        <label class="field-label">{{ field.label }}</label>
+        
+        <!-- Display Mode -->
+        <div *ngIf="!field.isEditing" 
+             class="display-value"
+             [class.empty]="!field.value"
+             (click)="startEdit(field)">
+          <span class="value-text">
+            {{ field.value || 'Click to add ' + field.label.toLowerCase() }}
+          </span>
+          <span class="edit-icon">✏️</span>
+        </div>
+        
+        <!-- Edit Mode -->
+        <div *ngIf="field.isEditing" class="edit-container">
+          <!-- Text Input -->
+          <input *ngIf="field.type === 'text' || field.type === 'email' || field.type === 'number'"
+                 #editInput
+                 [type]="field.type"
+                 [(ngModel)]="field.value"
+                 [placeholder]="field.placeholder"
+                 (keydown)="onKeydown($event, field)"
+                 [class.invalid]="!isFieldValid(field)"
+                 class="edit-input">
+          
+          <!-- Textarea -->
+          <textarea *ngIf="field.type === 'textarea'"
+                    #editInput
+                    [(ngModel)]="field.value"
+                    [placeholder]="field.placeholder"
+                    (keydown)="onKeydown($event, field)"
+                    [class.invalid]="!isFieldValid(field)"
+                    class="edit-textarea"
+                    rows="3"></textarea>
+          
+          <!-- Select -->
+          <select *ngIf="field.type === 'select'"
+                  #editInput
+                  [(ngModel)]="field.value"
+                  class="edit-select">
+            <option *ngFor="let option of field.options" [value]="option">
+              {{ option }}
+            </option>
+          </select>
+          
+          <!-- Edit Actions -->
+          <div class="edit-actions">
+            <button (click)="saveEdit(field)" 
+                    [disabled]="!isFieldValid(field)"
+                    class="save-btn" 
+                    title="Save (Enter)">
+              ✓
+            </button>
+            <button (click)="cancelEdit(field)" 
+                    class="cancel-btn" 
+                    title="Cancel (Esc)">
+              ✕
+            </button>
+          </div>
+          
+          <!-- Validation Error -->
+          <div *ngIf="!isFieldValid(field)" class="validation-error">
+            {{ getValidationError(field) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Edit Examples -->
+  <div class="quick-edit-section">
+    <h3>Quick Edit Examples</h3>
+    <div class="quick-edit-grid">
+      <div *ngFor="let item of quickEditItems" class="quick-edit-item">
+        <div class="item-icon">{{ item.icon }}</div>
+        <div class="item-content">
+          <label>{{ item.label }}</label>
+          <div class="editable-inline"
+               contenteditable="true"
+               (blur)="quickEdit(item, $event.target.textContent)"
+               (keydown.enter)="$event.target.blur()">
+            {{ item.value }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Highlights -->
+  <div class="features-section">
+    <h3>Key Features</h3>
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🎯</div>
+        <h4>Click to Edit</h4>
+        <p>Single click to activate edit mode</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">⌨️</div>
+        <h4>Keyboard Shortcuts</h4>
+        <p>Enter to save, Escape to cancel</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">✅</div>
+        <h4>Validation</h4>
+        <p>Real-time validation feedback</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔄</div>
+        <h4>Auto-save</h4>
+        <p>Changes saved automatically</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-code-tabs 
+  [htmlCode]="htmlCode"
+  [scssCode]="scssCode"
+  [typescriptCode]="typescriptCode"
+  [exampleCode]="exampleCode">
+</app-code-tabs>
