@@ -334,9 +334,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **Angular Team** - For the amazing framework
-- **Tailwind CSS** - For the utility-first CSS framework
+- **Angular Team** - For the amazing framework and tooling
+- **React UI Patterns** - Original inspiration source for pattern ideas
 - **Design Community** - For UI pattern inspiration and best practices
+- **CSS Custom Properties** - For enabling semantic design systems
 
 ## 📞 Support
 
